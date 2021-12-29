@@ -1,0 +1,35 @@
+.wrapper {
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+
+    color: var(--fabric-color-tertiary);
+    height: 35px;
+    overflow: hidden;
+    border-bottom: var(--fabric-border-primary) 1px solid;
+
+    width: 100%;
+    background-color: var(--fabric-background-tertiary);
+}
+
+.header {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 50%;
+
+    font-size: .9rem;
+    font-weight: bold;
+}
+
+.button {
+    padding: 4px !important;;
+
+    height: 100%;
+    gap: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
