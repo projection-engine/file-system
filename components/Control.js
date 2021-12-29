@@ -1,9 +1,8 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Control.module.css'
 import {Button} from "@f-ui/core";
-import {useRef} from "react";
+import React, {useRef} from "react";
 import handleImport from "../utils/handleImport";
-import React from 'react'
 
 export default function Control(props) {
 

@@ -1,9 +1,9 @@
-import styles from './styles/Explorer.module.css'
+import styles from '../styles/Explorer.module.css'
 import PropTypes from "prop-types";
 import React from "react";
-import Directories from "./components/Directories";
-import Files from "./components/Files";
-import Control from "./components/Control";
+import Directories from "./Directories";
+import Files from "./Files";
+import Control from "./Control";
 import {Alert} from "@f-ui/core";
 
 export default function Explorer(props) {

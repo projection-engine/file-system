@@ -1,5 +1,6 @@
 import Item from "./Item";
 import React from 'react'
+
 export default class Folder extends Item{
     items = []
     constructor(name="New Folder", parent, id, creationDate) {

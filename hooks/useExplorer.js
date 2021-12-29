@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from "react";
 import Folder from "../templates/Folder";
-import Dexie from "dexie";
+import {Dexie} from "dexie";
 import loadData from "../utils/loadData";
 
 export default function useExplorer(name, rootName) {
-    const [db, setDb] = useState(null)
+    const [db, setDb] = useState()
 
     const [directories, setDirectories] = useState([new Folder(rootName)])
     useEffect(() => {

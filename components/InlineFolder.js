@@ -1,8 +1,7 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Directories.module.css'
 import {Button} from "@f-ui/core";
-import {useRef, useState} from "react";
-import React from 'react'
+import React, {useRef, useState} from "react";
 
 export default function InlineFolder(props) {
     const [open, setOpen] = useState(false)

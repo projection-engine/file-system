@@ -1,8 +1,7 @@
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import PropTypes from "prop-types";
 import styles from '../styles/Context.module.css'
 import {Button} from "@f-ui/core";
-import React from 'react'
 
 export default function ContextMenu(props) {
     const ref = useRef()

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Explorer from "./Explorer";
+import Explorer from "./components/Explorer";
 import useExplorer from './hooks/useExplorer'
 
 export {
