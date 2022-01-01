@@ -1,0 +1,39 @@
+.wrapper{
+    width: 25%;
+    height: 100%;
+    background-color: var(--fabric-background-secondary);
+    border-radius: 5px;
+    display: grid;
+    align-items: flex-start;
+    align-content: flex-start;
+    gap: 4px;
+    padding: 4px;
+    overflow-y: auto;
+
+    border: var(--fabric-border-primary) 1px solid;
+}
+
+
+.folder{
+    height: fit-content;
+    display: grid;
+}
+.folderContent{
+    padding: 0 8px !important;
+    height: 30px;
+    font-weight: bold;
+    color: var(--fabric-color-secondary);
+    font-size: .9rem !important;
+    transition: all 150ms linear, height 0ms !important;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+}
+
+.overflow{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 100%;
+}

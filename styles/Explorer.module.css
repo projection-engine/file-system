@@ -1,0 +1,42 @@
+
+
+.content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 8px;
+    padding: 8px;
+}
+
+.wrapper {
+    background-color: var(--fabric-background-primary);
+
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+
+    transition: 150ms linear;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    overflow: hidden;
+
+    border: var(--fabric-border-primary) 1px solid;
+
+}
+
+.renameModal {
+    position: absolute;
+    background: var(--fabric-background-primary) !important;
+    border-radius: 5px;
+    top: 50%;
+    left: 50%;
+    width: 500px;
+    height: fit-content;
+    padding: 8px;
+    transform: translate(-50%, -50%);
+    display: grid;
+    gap: 16px;
+}
