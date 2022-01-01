@@ -1,8 +1,8 @@
 .wrapper{
     width: 25%;
     height: 100%;
-    background-color: var(--fabric-background-secondary);
-    border-radius: 5px;
+    background-color: var(--background-1);
+
     display: grid;
     align-items: flex-start;
     align-content: flex-start;
@@ -10,7 +10,6 @@
     padding: 4px;
     overflow-y: auto;
 
-    border: var(--fabric-border-primary) 1px solid;
 }
 
 
@@ -21,7 +20,7 @@
 .folderContent{
     padding: 0 8px !important;
     height: 30px;
-    font-weight: bold;
+
     color: var(--fabric-color-secondary);
     font-size: .9rem !important;
     transition: all 150ms linear, height 0ms !important;

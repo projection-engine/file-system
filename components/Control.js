@@ -10,9 +10,14 @@ export default function Control(props) {
     const ref = useRef()
     return (
         <div className={styles.wrapper}>
-            <h1 className={styles.header}>
-                {props.hook.rootName}
-            </h1>
+            <div style={{display: 'flex', width: '100%', alignItems: 'center', gap: '4px'}}>
+                <Button   className={styles.button} onClick={() => props.setHidden(!props.hidden)}>
+                    <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>{props.hidden ? 'expand_more' : 'expand_less'}</span>
+                </Button>
+                <h1 className={styles.header}>
+                    {props.label}
+                </h1>
+            </div>
             <input
                 type={'file'}
                 ref={ref} accept={props.accept}
@@ -33,5 +38,8 @@ export default function Control(props) {
 
 Control.propTypes = {
     hook: PropTypes.object.isRequired,
-    accept: PropTypes.array
+    accept: PropTypes.array,
+    label: PropTypes.string,
+    setHidden: PropTypes.func,
+    hidden: PropTypes.bool
 }

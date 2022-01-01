@@ -9,7 +9,7 @@
     height: fit-content;
     border-radius: 3px;
     box-shadow: rgba(0, 0, 0, .2) 2px 2px 2px 1px;
-    background-color: var(--fabric-background-primary);
+    background-color: var(--background-1);
     display: grid;
     align-items: flex-start;
 }
@@ -36,9 +36,9 @@
     font-size: 1.2rem !important;
 }
 .highlightIconWrapper{
-    background-color: var(--fabric-background-secondary);
-    border-top: var(--fabric-background-primary) 4px solid;
-    border-bottom: var(--fabric-background-primary) 4px solid;
+    background-color: var(--background-2);
+    border-top: var(--background-1) 4px solid;
+    border-bottom: var(--background-1) 4px solid;
     border-radius: 5px;
     width: 45px;
     height: 45px;

@@ -11,7 +11,7 @@
     border-bottom: var(--fabric-border-primary) 1px solid;
 
     width: 100%;
-    background-color: var(--fabric-background-tertiary);
+
 }
 
 .header {
@@ -32,4 +32,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: fit-content;
+
 }
