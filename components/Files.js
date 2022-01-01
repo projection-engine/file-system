@@ -55,7 +55,7 @@ export default function Files(props) {
                         }
                         case 'create-material': {
                             const newFile = new FileObj('New material', 'material', 0)
-                            props.hook.pushFile(newFile, '')
+                            props.hook.pushFile(newFile, JSON.stringify({name: 'New Material'}))
                             break
                         }
                         default:

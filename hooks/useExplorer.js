@@ -205,6 +205,7 @@ export default function useExplorer(name, rootName) {
         }).catch()
     }
     return {
+        db,
         moveFile,
         renameFolder,
         renameFile,
