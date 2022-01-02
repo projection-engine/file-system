@@ -3,7 +3,7 @@ import Folder from "../templates/Folder";
 import {Dexie} from "dexie";
 import loadData from "../utils/loadData";
 
-export default function useExplorer(name, rootName) {
+export default function useExplorer(name, rootName, setAlert) {
     const [db, setDb] = useState()
 
     const [directories, setDirectories] = useState([new Folder(rootName)])
@@ -141,11 +141,6 @@ export default function useExplorer(name, rootName) {
         })
 
     }
-
-    const [alert, setAlert] = useState({
-        type: undefined,
-        message: undefined
-    })
     const removeFolder = (folder) => {
         folder.items.forEach(i => {
             removeFile(i)
@@ -209,8 +204,6 @@ export default function useExplorer(name, rootName) {
         moveFile,
         renameFolder,
         renameFile,
-        alert,
-        setAlert,
         getFileBlob,
         ref,
         currentDirectory,

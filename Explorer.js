@@ -16,7 +16,7 @@ export default function Explorer(props) {
             <Control hidden={hidden} setHidden={setHidden}{...props}/>
             {hidden ?
                 null :
-                <>
+
                     <div className={styles.content}>
                         <Directories {...props}/>
                         <Files
@@ -27,13 +27,6 @@ export default function Explorer(props) {
                         />
                     </div>
 
-                    <Alert open={props.hook.alert.type !== undefined} handleClose={() => props.hook.setAlert({})}
-                           variant={props.hook.alert.type} delay={3500}>
-                        <div style={{color: 'var(--fabric-color-primary)'}}>
-                            {props.hook.alert.message}
-                        </div>
-                    </Alert>
-                </>
             }
         </div>
     )
@@ -43,5 +36,6 @@ Explorer.propTypes = {
     openEngineFile: PropTypes.func.isRequired,
     hook: PropTypes.object.isRequired,
     accept: PropTypes.array,
-    label: PropTypes.string
+    label: PropTypes.string,
+    setAlert: PropTypes.func.isRequired
 }

@@ -33,7 +33,7 @@ export default function Directories(props) {
                 handleChange={(e) => {
                     if (e.type === 'delete') {
                         if(props.hook.directories.length === 1){
-                            props.hook.setAlert({
+                            props.setAlert({
                                 type: 'info',
                                 message: 'You cannot delete the last directory.'
                             })
@@ -65,5 +65,6 @@ export default function Directories(props) {
 }
 
 Directories.propTypes = {
-    hook: PropTypes.object.isRequired
+    hook: PropTypes.object.isRequired,
+    setAlert: PropTypes.func.isRequired
 }

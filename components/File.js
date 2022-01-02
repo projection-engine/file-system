@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Files.module.css'
-import React, {useState} from "react";
+import React from "react";
 import {ToolTip} from "@f-ui/core";
 import parseFileType from "../../../utils/parseFileType";
 
