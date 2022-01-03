@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import styles from '../styles/Files.module.css'
 import React from "react";
 import {ToolTip} from "@f-ui/core";
-import parseFileType from "../../../utils/parseFileType";
+import parseFileType from "../../utils/parseFileType";
 
 export default function File(props) {
     const getIcon = (type) => {
@@ -46,7 +46,7 @@ export default function File(props) {
             draggable={true}
             onDoubleClick={() => {
                 if(props.data.type === 'obj' || props.data.type === 'material')
-                    props.openEngineFile(props.data.id)
+                    props.openEngineFile(props.data.id, props.data.name)
                 else
                     props.setSelected(props.data.id)
             }}

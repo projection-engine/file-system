@@ -1,6 +1,6 @@
 import FileClass from "../templates/File";
 import React from 'react'
-import {toDataURL} from "../../../../core/utils/imageManipulation";
+import {toDataURL} from "../../../core/utils/imageManipulation";
 
 export default function handleImport(files, hook) {
     let f = files
