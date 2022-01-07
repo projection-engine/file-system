@@ -4,7 +4,6 @@ import React, {useState} from "react";
 import Directories from "./components/Directories";
 import Files from "./components/Files";
 import Control from "./components/Control";
-import {Alert} from "@f-ui/core";
 import Visualizer from "./components/Visualizer";
 
 export default function Explorer(props) {
