@@ -2,11 +2,17 @@ import React, {useEffect, useRef, useState} from "react";
 import Folder from "../templates/Folder";
 import {Dexie} from "dexie";
 import loadData from "../utils/loadData";
+import cloneClass from "../../utils/cloneClass";
 
 export default function useExplorer(name, rootName, setAlert) {
     const [db, setDb] = useState()
-
+    const [openModal, setOpenModal] = useState(false)
+    const ref = useRef()
+    const uploadRef = useRef()
+    const [onRename, setOnRename] = useState({})
     const [directories, setDirectories] = useState([new Folder(rootName)])
+
+
     useEffect(() => {
         const database = new Dexie(name);
 
@@ -40,6 +46,7 @@ export default function useExplorer(name, rootName, setAlert) {
 
     const pushFile = (file, blob) => {
         db.open()
+
         currentDirectory.addItem(file)
         db.table('file').add({
             id: file.id,
@@ -106,8 +113,9 @@ export default function useExplorer(name, rootName, setAlert) {
     const removeFile = (file) => {
         db.table('file').delete(file.id)
             .then(r => {
-                const current = directories.findIndex(e => e.id === file.parent.id)
+                const current = directories.findIndex(e => e.id === currentDirectory.id)
                 setDirectories(prev => {
+
                     prev[current].removeItem(file)
                     return prev
                 })
@@ -159,16 +167,14 @@ export default function useExplorer(name, rootName, setAlert) {
             })
             .catch()
     }
-    const [openModal, setOpenModal] = useState(false)
-    const ref = useRef()
-    const uploadRef = useRef()
-    const [onRename, setOnRename] = useState({})
-
 
     const getFileBlob = async (file) => {
         const f = await db.table('file').get(file)
 
         return f.blob
+    }
+    const getFile = async (file) => {
+        return await db.table('file').get(file)
     }
     const [currentDirectory, setCurrentDirectory] = useState(directories[0])
 
@@ -218,6 +224,7 @@ export default function useExplorer(name, rootName, setAlert) {
         uploadRef,
         onRename,
         setOnRename,
-        rootName
+        rootName,
+        getFile
     }
 }

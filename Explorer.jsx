@@ -11,11 +11,10 @@ export default function Explorer(props) {
     const [hidden, setHidden] = useState(true)
     return (
         <div className={styles.wrapper} style={{height: hidden ? '35px' : undefined}} ref={props.hook.ref}>
-            <Visualizer setSelected={setSelected} selected={selected}/>
-            <Control hidden={hidden} setHidden={setHidden}{...props}/>
+            <Visualizer setSelected={setSelected} selected={selected} hook={props.hook}/>
+            <Control hidden={hidden} setHidden={setHidden} {...props}/>
             {hidden ?
                 null :
-
                     <div className={styles.content}>
                         <Directories {...props}/>
                         <Files

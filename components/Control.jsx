@@ -11,7 +11,7 @@ export default function Control(props) {
     return (
         <div className={styles.wrapper}>
             <div style={{display: 'flex', width: '100%', alignItems: 'center', gap: '4px'}}>
-                <Button   className={styles.button} onClick={() => props.setHidden(!props.hidden)}>
+                <Button   clssName={styles.button} onClick={() => props.setHidden(!props.hidden)}>
                     <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>{props.hidden ? 'expand_more' : 'expand_less'}</span>
                 </Button>
                 <h1 className={styles.header}>
@@ -21,7 +21,9 @@ export default function Control(props) {
             <input
                 type={'file'}
                 ref={ref} accept={props.accept}
+                multiple={true}
                 onChange={e => {
+
                     handleImport(Array.from(e.target.files), props.hook)
                     e.target.value = "";
                 }}

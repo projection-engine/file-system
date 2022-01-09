@@ -73,6 +73,7 @@ export default function Files(props) {
                                   selected={props.selected}
                                   setSelected={props.setSelected}
                                   openEngineFile={props.openEngineFile}
+                                hook={props.hook}
                             />
                         </React.Fragment>
                     ))

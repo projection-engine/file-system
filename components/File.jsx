@@ -1,10 +1,19 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Files.module.css'
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {ToolTip} from "@f-ui/core";
 import parseFileType from "../../utils/parseFileType";
 
 export default function File(props) {
+    const [file, setFile] = useState()
+
+    useEffect(() => {
+        if (props.data.type === 'jpg' || props.data.type === 'jpeg' || props.data.type === 'png')
+            props.hook.getFile(props.data.id).then(res => {
+                setFile(res)
+            })
+    }, [])
+
     const getIcon = (type) => {
         switch (type) {
             case 'obj': {
@@ -14,10 +23,12 @@ export default function File(props) {
                     </div>
                 )
             }
+            case 'jpg':
+            case 'jpeg':
             case 'png': {
                 return (
                     <div className={styles.icon} style={{border: 'none'}}>
-                        <span className={'material-icons-round'} style={{fontSize: '2.5rem'}}>image</span>
+                        <img src={file?.blob} alt={'image'} className={styles.image}/>
                     </div>
                 )
             }
@@ -45,7 +56,7 @@ export default function File(props) {
             onDragStart={e => e.dataTransfer.setData('text', props.data.id)}
             draggable={true}
             onDoubleClick={() => {
-                if(props.data.type === 'obj' || props.data.type === 'material')
+                if (props.data.type === 'material')
                     props.openEngineFile(props.data.id, props.data.name)
                 else
                     props.setSelected(props.data.id)
@@ -103,4 +114,5 @@ File.propTypes = {
     selected: PropTypes.string,
     setSelected: PropTypes.func,
     openEngineFile: PropTypes.func.isRequired,
+    hook: PropTypes.object
 }
