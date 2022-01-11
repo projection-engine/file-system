@@ -36,3 +36,7 @@
     white-space: nowrap;
     max-width: 100%;
 }
+
+.hovered{
+    background-color: #0095ff;
+}

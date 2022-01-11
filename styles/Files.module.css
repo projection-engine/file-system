@@ -32,9 +32,9 @@
 
 
 .file {
-    width: calc(13% - 14px);
-
-    min-height: 100px;
+    width: calc(10% - 14px);
+    min-width: 125px;
+    min-height: 125px;
     border-radius: 5px;
     color: var(--fabric-color-tertiary);
     border: var(--fabric-border-primary) 1px solid;
@@ -113,4 +113,26 @@
 
 .infoRowContent {
     font-weight: normal;
+}
+
+.infoWrapper {
+    width: 100%;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.input {
+    color: var(--fabric-color-secondary);
+    outline: none;
+    background-color: var(--fabric-background-tertiary);
+    border-radius: 5px;
+    border: var(--fabric-border-primary) 1px solid;
+    padding: 4px 2px;
+    max-width: 100%;
+}
+.input:focus{
+    border-color: #0095ff;
+}
+.hovered{
+    border-color: #0095ff;
 }

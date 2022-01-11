@@ -1,33 +1,17 @@
 import React from 'react'
 import randomID from "../../utils/randomID";
 
-export default class Item{
+export default class Item {
     name = ''
     parent = null
-    id = randomID()
-    creationDate = new Date()
-    constructor(name, parent=null, id=this.id, creationDate=this.creationDate) {
-        this.id = id ? id : this.id
+    id
+    creationDate
+
+    constructor(name, parent, id, creationDate) {
+        this.id = id !== undefined ? id : randomID()
         this.name = name.replaceAll('/', '-')
         this.parent = parent
-        if(this.parent)
-            this.path = `${this.parent.path}/${this.name}`
-        else
-            this.path = this.name
-
-        this.creationDate = creationDate ? creationDate : this.creationDate
+        this.creationDate = creationDate !== undefined ? creationDate : new Date()
     }
 
-    set parent(newParent){
-        if(newParent !== this.parent) {
-            const prevParent = this.parent;
-            this.parent = newParent;
-
-            if(prevParent) {
-                prevParent.removeItem(this.name)
-            }
-            if(newParent)
-                newParent.addItem(this)
-        }
-    }
 }

@@ -6,7 +6,7 @@ export default class File extends Item{
     size = 0
     type = ''
     mimetype = ''
-    constructor(name, type, size, id = randomID(), parent, creationDate) {
+    constructor(name, type, size, id = randomID(), parent=null, creationDate) {
         super(name, parent, id, creationDate);
         const split = type.split('/')
 

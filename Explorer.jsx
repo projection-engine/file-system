@@ -2,7 +2,7 @@ import styles from './styles/Explorer.module.css'
 import PropTypes from "prop-types";
 import React, {useState} from "react";
 import Directories from "./components/Directories";
-import Files from "./components/Files";
+import Items from "./components/Items";
 import Control from "./components/Control";
 import Visualizer from "./components/Visualizer";
 
@@ -15,16 +15,14 @@ export default function Explorer(props) {
             <Control hidden={hidden} setHidden={setHidden} {...props}/>
             {hidden ?
                 null :
-                    <div className={styles.content}>
-                        <Directories {...props}/>
-                        <Files
-                            {...props}
-                            openEngineFile={props.openEngineFile}
-                            setSelected={setSelected}
-                            accept={props.accept ? props.accept : []}
-                        />
-                    </div>
-
+                <div className={styles.content}>
+                    <Directories {...props}/>
+                    <Items
+                        {...props}
+                        setSelected={setSelected}
+                        accept={props.accept ? props.accept : []}
+                    />
+                </div>
             }
         </div>
     )
