@@ -1,9 +1,9 @@
 .wrapper {
-    padding: 4px;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: 16px;
 
     color: var(--fabric-color-tertiary);
     height: 35px;
@@ -18,14 +18,14 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 50%;
+    max-width: 100%;
 
     font-size: .9rem;
     font-weight: bold;
 }
 
 .button {
-    padding: 4px !important;;
+    padding: 4px 8px !important;;
 
     height: 100%;
     gap: 4px;
@@ -38,4 +38,14 @@
     text-overflow: ellipsis;
     width: fit-content;
 
+}
+
+.contentWrapper{
+    width: fit-content;
+    display: flex;
+    justify-content: flex-start;
+
+    align-content: center;
+    align-items: center;
+    padding: 4px 0;
 }

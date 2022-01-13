@@ -71,9 +71,9 @@ export default function Items(props) {
                     {
                         requiredTrigger: 'data-folder-wrapper',
                         label: 'New material',
-                        icon: <span className={'material-icons-round'}>delete</span>,
+                        icon: <span className={'material-icons-round'}>public</span>,
                         onClick: () => {
-                            const newFile = new FileObj('New material', 'material', 0)
+                            const newFile = new FileObj('New material', 'material', 0, undefined, props.hook.currentDirectory)
                             props.hook.pushFile(newFile, JSON.stringify({name: 'New Material'}))
                         }
                     },

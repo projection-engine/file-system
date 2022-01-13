@@ -54,6 +54,7 @@ export default function Visualizer(props) {
     )
 }
 Visualizer.propTypes = {
+
     selected: PropTypes.string,
     setSelected: PropTypes.func,
     hook: PropTypes.object

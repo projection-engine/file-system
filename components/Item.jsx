@@ -45,9 +45,7 @@ export default function Item(props) {
                     props.hook.setCurrentDirectory(props.data.id)
             }}
             className={styles.file}
-            style={{
-                padding: props.type === 'Folder' ? '8px 4px 16px 4px' : undefined
-            }}
+
             onDragOver={e => {
                 if(props.type === 'Folder') {
                     e.preventDefault()
@@ -92,7 +90,7 @@ export default function Item(props) {
                                 </div>
                             </div>
                             :
-                            <div className={[styles.label, styles.overflow].join(' ')}>
+                            <div className={[styles.label, styles.overflow].join(' ')} style={{ textAlign: 'center'}}>
                                 {currentLabel}
                             </div>
                     )
