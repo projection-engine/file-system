@@ -5,7 +5,7 @@ import coreParser from "../../../core/utils/gltf/parser/coreParser";
 
 export default function handleImport(files, hook) {
 
-    files.forEach((fi, i) => {
+    files.forEach(fi => {
         let reader = new FileReader();
         const split = fi.name.split(/\.([a-zA-Z].+)$/)
         const nFile = new FileClass(split[0], split[1], fi.size, undefined, hook.currentDirectory)

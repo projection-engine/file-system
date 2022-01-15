@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import styles from '../styles/Files.module.css'
 import React, {useMemo, useState} from "react";
 import Item from "./Item";
-import ContextMenu from "../../components/context/ContextMenu";
+import ContextMenu from "../../../components/context/ContextMenu";
 import handleImport from "../utils/handleImport";
 import FileObj from '../templates/File'
 import Folder from "../templates/Folder";

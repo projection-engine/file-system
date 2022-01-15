@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Directories.module.css'
-import ContextMenu from "../../components/context/ContextMenu";
+import ContextMenu from "../../../components/context/ContextMenu";
 import React, {useEffect, useMemo} from "react";
 import Folder from "../templates/Folder";
-import TreeView from "../../components/tree/TreeView";
+import TreeView from "../../../components/tree/TreeView";
 import mapToView from "../utils/mapToView";
 import getFolderOptions from "../utils/getFolderOptions";
 

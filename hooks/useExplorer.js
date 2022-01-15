@@ -2,8 +2,8 @@ import React, {useEffect, useRef, useState} from "react";
 import Folder from "../templates/Folder";
 import {Dexie} from "dexie";
 import loadData from "../utils/loadData";
-import randomID from "../../components/shared/utils/randomID";
-import cloneClass from "../../components/shared/utils/cloneClass";
+import randomID from "../../../components/shared/utils/randomID";
+import cloneClass from "../../../components/shared/utils/cloneClass";
 
 export default function useExplorer(name, rootName, setAlert) {
     const [db, setDb] = useState()
@@ -100,7 +100,7 @@ export default function useExplorer(name, rootName, setAlert) {
         db.open()
         db.table('folder').update(folder.id, {name: newName}).then(res => {
             setItems(prev => {
-                const newItems = [...prev].map(item => {
+                return [...prev].map(item => {
                     if (item.id === folder.id) {
                         const clone = cloneClass(item)
                         clone.name = newName
@@ -108,7 +108,6 @@ export default function useExplorer(name, rootName, setAlert) {
                     }
                     return item
                 })
-                return newItems
             })
             setAlert({
                 type: 'success',
