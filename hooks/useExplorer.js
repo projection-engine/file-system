@@ -2,8 +2,8 @@ import React, {useEffect, useRef, useState} from "react";
 import Folder from "../templates/Folder";
 import {Dexie} from "dexie";
 import loadData from "../utils/loadData";
-import randomID from "../../shared/utils/randomID";
-import cloneClass from "../../shared/utils/cloneClass";
+import randomID from "../../components/shared/utils/randomID";
+import cloneClass from "../../components/shared/utils/cloneClass";
 
 export default function useExplorer(name, rootName, setAlert) {
     const [db, setDb] = useState()

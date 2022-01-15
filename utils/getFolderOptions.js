@@ -9,7 +9,6 @@ export default function getFolderOptions(hook) {
             icon: <span className={'material-icons-round'}>create_new_folder</span>,
             onClick: (node) => {
                 const newFolder = new Folder('New folder', node.getAttribute('data-folder'))
-                console.log(node, newFolder)
                 hook.pushFolder(newFolder)
             }
         },
