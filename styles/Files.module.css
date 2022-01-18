@@ -43,7 +43,7 @@
 
     display: grid;
     /*align-content: space-between;*/
-
+    outline: transparent 2px solid;
 
     cursor: pointer;
 
@@ -57,7 +57,7 @@
     box-shadow: rgba(0, 0, 0, .2) 2px 2px 4px 1px;
 }
 
-.file:active {
+.file:active, .file[data-focused = 'true'] {
     box-shadow: none;
     outline: #0095FF 2px solid !important;
 }
@@ -150,4 +150,11 @@
 }
 .hovered{
     border-color: #0095ff;
+}
+
+.toolTip{
+    box-shadow: rgba(0,0,0,.2) 2px 2px 2px 2px;
+    width: fit-content;
+    padding: 4px;
+
 }

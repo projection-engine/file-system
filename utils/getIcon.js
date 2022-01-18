@@ -2,6 +2,7 @@ import styles from "../styles/Files.module.css";
 
 export default function getIcon (type, file) {
     switch (type) {
+        case 'gltf':
         case 'obj': {
             return (
                 <div className={styles.icon} >
@@ -24,6 +25,15 @@ export default function getIcon (type, file) {
                     className={styles.icon}
                 >
                     <span className={'material-icons-round'} style={{fontSize: '2.5rem'}}>language</span>
+                </div>
+            )
+        }
+        case 'skybox': {
+            return (
+                <div
+                    className={styles.icon}
+                >
+                    <span className={'material-icons-round'} style={{fontSize: '2.5rem'}}>cloud</span>
                 </div>
             )
         }

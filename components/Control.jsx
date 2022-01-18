@@ -17,10 +17,11 @@ export default function Control(props) {
                 <h1 className={styles.header}>
                     {props.label}
                 </h1>
+
             </div>
             <div
                 className={styles.contentWrapper}
-                style={{width: '100%',  borderLeft: 'var(--fabric-border-primary) 1px solid'}}
+                style={{width: '100%',  borderLeft: 'var(--fabric-border-primary) 1px solid', paddingLeft: '8px'}}
             >
                 {props.path.map((p, i) => (
                     <React.Fragment key={p.id}>

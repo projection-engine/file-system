@@ -37,7 +37,7 @@ export default function Item(props) {
             draggable={!currentlyOnRename}
             onDoubleClick={() => {
                 if (props.type === 'File') {
-                    if (props.data.type === 'material')
+                    if (props.data.type === 'material' || props.data.type === 'skybox' || props.data.type === 'obj'|| props.data.type === 'gltf')
                         props.openEngineFile(props.data.id, currentLabel)
                     else
                         props.setSelected(props.data.id)
@@ -45,13 +45,14 @@ export default function Item(props) {
                     props.hook.setCurrentDirectory(props.data.id)
             }}
             className={styles.file}
-
+            data-focused={`${props.focusedElement=== props.data.id}`}
             onDragOver={e => {
                 if(props.type === 'Folder') {
                     e.preventDefault()
                     ref.current?.classList.add(styles.hovered)
                 }
             }}
+            onClick={() => props.setFocusedElement(props.data.id)}
             onDragLeave={e => {
                 if(props.type === 'Folder') {
                     e.preventDefault()
@@ -96,49 +97,53 @@ export default function Item(props) {
                     )
                 }
             </div>
-            <ToolTip align={"middle"} justify={'end'}>
-                <div className={styles.infoRow}>
-                    Name:
-                    <div className={styles.infoRowContent}>
-                        {currentLabel}
+            <ToolTip align={"middle"} justify={'end'} >
+                <div className={styles.toolTip}>
+                    <div className={styles.infoRow}>
+                        Name:
+                        <div className={styles.infoRowContent}>
+                            {currentLabel}
+                        </div>
                     </div>
-                </div>
-                <div className={styles.infoRow}>
-                    Creation date:
-                    <div className={styles.infoRowContent}>
-                        {props.data.creationDate?.toLocaleDateString()}
+                    <div className={styles.infoRow}>
+                        Creation date:
+                        <div className={styles.infoRowContent}>
+                            {props.data.creationDate?.toLocaleDateString()}
+                        </div>
                     </div>
+                    {props.type === 'File' ?
+                        <>
+                            <div className={styles.infoRow}>
+                                Type:
+                                <div className={styles.infoRowContent}>
+                                    {props.data.type}
+                                </div>
+                            </div>
+                            <div className={styles.infoRow}>
+                                Size:
+                                <div className={styles.infoRowContent}>
+                                    {props.data.size ? (props.data.size < 100000 ? (props.data.size / 1000).toFixed(2) + 'KB' : (props.data.size / (10 ** 6)).toFixed(2) + ' MB') : 'NaN'}
+                                </div>
+                            </div>
+                            <div className={styles.infoRow}>
+                                ID:
+                                <div className={styles.infoRowContent}>
+                                    {props.data.id}
+                                </div>
+                            </div>
+                        </>
+                        :
+                        null
+                    }
                 </div>
-                {props.type === 'File' ?
-                    <>
-                        <div className={styles.infoRow}>
-                            Type:
-                            <div className={styles.infoRowContent}>
-                                {props.data.type}
-                            </div>
-                        </div>
-                        <div className={styles.infoRow}>
-                            Size:
-                            <div className={styles.infoRowContent}>
-                                {props.data.size ? (props.data.size < 100000 ? (props.data.size / 1000).toFixed(2) + 'KB' : (props.data.size / (10 ** 6)).toFixed(2) + ' MB') : 'NaN'}
-                            </div>
-                        </div>
-                        <div className={styles.infoRow}>
-                            ID:
-                            <div className={styles.infoRowContent}>
-                                {props.data.id}
-                            </div>
-                        </div>
-                    </>
-                    :
-                    null
-                }
             </ToolTip>
         </div>
     )
 }
 
 Item.propTypes = {
+    setFocusedElement: PropTypes.func,
+    focusedElement: PropTypes.string,
     type: PropTypes.oneOf(['File', 'Folder']),
     data: PropTypes.object,
     selected: PropTypes.string,

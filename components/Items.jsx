@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Files.module.css'
-import React, {useMemo, useState} from "react";
+import React, {useMemo, useRef, useState} from "react";
 import Item from "./Item";
 import ContextMenu from "../../../components/context/ContextMenu";
 import handleImport from "../utils/handleImport";
@@ -10,13 +10,16 @@ import getFolderOptions from "../utils/getFolderOptions";
 
 export default function Items(props) {
     const [currentItem, setCurrentItem] = useState()
+    const [focusedElement, setFocusedElement] = useState()
+
     const filesToRender = useMemo(() => {
-
-        return props.hook.items.filter(file => file.parent === props.hook.currentDirectory )
+        return props.hook.items.filter(file => file.parent === props.hook.currentDirectory)
     }, [props.hook.items, props.hook.currentDirectory])
-
+    const ref = useRef()
     return (
         <div
+            ref={ref}
+
             style={{width: '100%'}}
             onDragOver={e => e.preventDefault()}
             onDrop={(e) => {
@@ -34,7 +37,14 @@ export default function Items(props) {
                 })
                 handleImport(files, props.hook)
             }}
-        data-folder-wrapper={props.hook.currentDirectory}
+            onMouseDown={e => {
+                const elements = document.elementsFromPoint(e.clientX, e.clientY)
+                const isChild = elements.find(e => e.getAttribute('data-file') !== null || elements.find(e => e.getAttribute('data-folder') !== null))
+
+                if(!isChild)
+                    setFocusedElement(undefined)
+            }}
+            data-folder-wrapper={props.hook.currentDirectory}
         >
             <ContextMenu
                 className={styles.wrapper}
@@ -79,14 +89,29 @@ export default function Items(props) {
                     },
                     {
                         requiredTrigger: 'data-folder-wrapper',
+                        label: 'New skybox',
+                        icon: <span className={'material-icons-round'}>cloud</span>,
+                        onClick: () => {
+                            const newFile = new FileObj('New skybox', 'skybox', 0, undefined, props.hook.currentDirectory)
+                            props.hook.pushFile(newFile, JSON.stringify({name: 'New Skybox'}))
+                        }
+                    },
+                    {
+                        requiredTrigger: 'data-folder-wrapper',
                         label: 'New directory',
                         icon: <span className={'material-icons-round'}>create_new_folder</span>,
                         onClick: () => {
                             const newFolder = new Folder('New directory', props.hook.currentDirectory)
                             props.hook.pushFolder(newFolder)
                         }
-                    }
+                    },
                 ]}
+                onContext={(node) => {
+                    if (node !== undefined && node !== null && (node.getAttribute('data-file') || node.getAttribute('data-folder'))) {
+                        const attr = node.getAttribute('data-file') ? node.getAttribute('data-file') : node.getAttribute('data-folder')
+                        setFocusedElement(attr)
+                    }
+                }}
                 triggers={[
                     'data-folder-wrapper',
                     'data-file',
@@ -97,6 +122,8 @@ export default function Items(props) {
                     filesToRender.map(child => (
                         <React.Fragment key={child.id}>
                             <Item
+                                setFocusedElement={setFocusedElement}
+                                focusedElement={focusedElement}
                                 type={child.constructor.name}
                                 data={child}
                                 selected={props.selected}
@@ -105,7 +132,7 @@ export default function Items(props) {
                                 hook={props.hook}
                                 onRename={currentItem}
                                 submitRename={newName => {
-                                    if(newName !== child.name) {
+                                    if (newName !== child.name) {
                                         if (child.constructor.name === 'File')
                                             props.hook.renameFile(child, newName)
                                         else

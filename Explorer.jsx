@@ -1,6 +1,6 @@
 import styles from './styles/Explorer.module.css'
 import PropTypes from "prop-types";
-import React, {useMemo, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import Directories from "./components/Directories";
 import Items from "./components/Items";
 import Control from "./components/Control";
@@ -10,6 +10,9 @@ import Folder from "./templates/Folder";
 export default function Explorer(props) {
     const [selected, setSelected] = useState()
     const [hidden, setHidden] = useState(true)
+    useEffect(() => {
+        setHidden(true)
+    }, [props.currentTab])
     const findParent = (searchFor, searchBase) => {
         let res = []
         const found = searchBase.find(n => n.id === searchFor)
@@ -45,6 +48,7 @@ export default function Explorer(props) {
 }
 
 Explorer.propTypes = {
+    currentTab: PropTypes.number,
     openEngineFile: PropTypes.func.isRequired,
     hook: PropTypes.object.isRequired,
     accept: PropTypes.array,
