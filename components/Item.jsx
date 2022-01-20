@@ -4,6 +4,7 @@ import React, {useEffect, useMemo, useRef, useState} from "react";
 import {ToolTip} from "@f-ui/core";
 import parseFileType from "../utils/parseFileType";
 import getIcon from "../utils/getIcon";
+import Folder from "../templates/Folder";
 
 export default function Item(props) {
     const [file, setFile] = useState()
@@ -37,32 +38,51 @@ export default function Item(props) {
             draggable={!currentlyOnRename}
             onDoubleClick={() => {
                 if (props.type === 'File') {
-                    if (props.data.type === 'material' || props.data.type === 'skybox' || props.data.type === 'obj'|| props.data.type === 'gltf')
+                    if (props.data.type === 'material' || props.data.type === 'skybox' || props.data.type === 'obj' || props.data.type === 'gltf')
                         props.openEngineFile(props.data.id, currentLabel)
                     else
                         props.setSelected(props.data.id)
-                } else if(props.type === 'Folder')
+                } else if (props.type === 'Folder')
                     props.hook.setCurrentDirectory(props.data.id)
             }}
             className={styles.file}
-            data-focused={`${props.focusedElement=== props.data.id}`}
+            data-focused={`${props.focusedElement === props.data.id}`}
             onDragOver={e => {
-                if(props.type === 'Folder') {
+                if (props.type === 'Folder') {
                     e.preventDefault()
                     ref.current?.classList.add(styles.hovered)
                 }
             }}
             onClick={() => props.setFocusedElement(props.data.id)}
             onDragLeave={e => {
-                if(props.type === 'Folder') {
+                if (props.type === 'Folder') {
                     e.preventDefault()
                     ref.current?.classList.remove(styles.hovered)
                 }
             }}
             onDrop={e => {
                 e.preventDefault()
-                if(e.dataTransfer.getData('text') !== props.data.id && e.dataTransfer.getData('text') !== props.data.parent)
-                    props.hook.moveFile(e.dataTransfer.getData('text'), props.data.id)
+
+                e.currentTarget.parentNode.classList.remove(styles.hovered)
+
+
+                const current = e.dataTransfer.getData('text')
+                const foundCurrent = props.hook.items.find(f => f.id === current)
+
+                if (props.type === 'Folder' && props.data.id !== e.dataTransfer.getData('text') && foundCurrent && props.data.parent !== event.dataTransfer.getData('text')) {
+                    if (foundCurrent instanceof Folder)
+                        props.hook.moveFolder(current, props.data.id)
+                    else
+                        props.hook.moveFile(current, props.data.id)
+                }
+
+                if (e.dataTransfer.getData('text') !== props.data.id && e.dataTransfer.getData('text') !== props.data.parent) {
+                    if (props.type === 'Folder')
+                        props.hook.moveFolder(e.dataTransfer.getData('text'), props.data.id)
+                    else
+                        props.hook.moveFile(e.dataTransfer.getData('text'), props.data.id)
+                }
+
             }}
         >
             {getIcon(props.data.type ? props.data.type : props.type, file)}
@@ -91,13 +111,13 @@ export default function Item(props) {
                                 </div>
                             </div>
                             :
-                            <div className={[styles.label, styles.overflow].join(' ')} style={{ textAlign: 'center'}}>
+                            <div className={[styles.label, styles.overflow].join(' ')} style={{textAlign: 'center'}}>
                                 {currentLabel}
                             </div>
                     )
                 }
             </div>
-            <ToolTip align={"middle"} justify={'end'} >
+            <ToolTip align={"middle"} justify={'end'}>
                 <div className={styles.toolTip}>
                     <div className={styles.infoRow}>
                         Name:

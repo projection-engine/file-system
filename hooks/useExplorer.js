@@ -12,30 +12,33 @@ export default function useExplorer(name, rootName, setAlert) {
     const uploadRef = useRef()
     const [onRename, setOnRename] = useState({})
     const [items, setItems] = useState([])
-    const [currentDirectory, setCurrentDirectory] = useState()
+    const [currentDirectory, setCurrentDirectory] = useState( null)
 
 
     useEffect(() => {
         const database = new Dexie(name);
 
         database.open().then(e => {
+
             loadData(e).then(res => {
-                const firstFolder = res.find(f => f instanceof Folder)
+                const firstFolder = res.find(f => f instanceof Folder && !f.parent)
+
                 if (!firstFolder) {
                     const newParent = randomID()
                     e.table('folder').add({
                         id: newParent,
-                        name: 'New folder',
+                        name: 'Project',
                         creationDate: (new Date()).toDateString(),
                         parentId: undefined
                     }).then(() => {
-                        console.log('AQUI')
-                        setItems([new Folder('New folder', undefined, newParent)])
-                        setCurrentDirectory(newParent)
+                        const n = new Folder('Project', undefined, newParent)
+
+                        setItems([n])
+                        setCurrentDirectory(n.id)
                     }).catch()
                 } else {
                     setItems(res)
-                    setCurrentDirectory(firstFolder)
+                    setCurrentDirectory(firstFolder?.id)
                 }
             })
         }).catch(e => {
@@ -44,7 +47,25 @@ export default function useExplorer(name, rootName, setAlert) {
                     file: 'id, name, creationDate, parentId, blob, type, mimetype, size',
                     folder: 'id, name, creationDate, parentId'
                 });
-                database.open()
+                database.open().then(r => {
+                    const newParent = randomID()
+                    r.table('folder').add({
+                        id: newParent,
+                        name: 'Project',
+                        creationDate: (new Date()).toDateString(),
+                        parentId: undefined
+                    }).then(() => {
+                        const n = new Folder('Project', undefined, newParent)
+
+                        setItems([n])
+                        setCurrentDirectory(n.id)
+                    }).catch()
+                }).catch(() => {
+                    setAlert({
+                        type: 'error',
+                        message: 'Could not load database.'
+                    })
+                })
             }
         })
 
@@ -122,9 +143,7 @@ export default function useExplorer(name, rootName, setAlert) {
             .then(r => {
                 if (updateState) {
                     setItems(prev => {
-                        let newItems = [...prev]
-                        newItems.splice(newItems.findIndex(f => f.id === file.id), 1)
-                        return newItems
+                        return [...prev].filter(f => f.id !== file.id)
                     })
 
                     setAlert({
@@ -143,7 +162,11 @@ export default function useExplorer(name, rootName, setAlert) {
             creationDate: folder.creationDate.toDateString(),
             parentId: folder.parent
         }).then(res => {
-            setItems([...items, folder])
+
+            setItems(prev => {
+                console.log('HERE ?')
+                return [...prev, folder]
+            })
             setAlert({
                 type: 'success',
                 message: 'Folder created'
@@ -157,32 +180,36 @@ export default function useExplorer(name, rootName, setAlert) {
 
     }
     const removeFolder = (folder) => {
+        const folders = items.filter(i => !i.parent && i instanceof Folder && i.id !== folder.id)
 
-        db.table('folder').delete(folder.id)
-            .then(r => {
-                setItems(prev => {
-                    let newItems = [...prev]
-                    newItems = newItems.map(item => {
-                        if (item.id === folder.id)
-                            return undefined
-                        else if (item.parent === folder.id) {
-                            removeFile(item, false)
-                            return undefined
-                        } else
-                            return item
-                    })
-                    console.log(newItems)
-                    return newItems.filter(f => f !== undefined)
-                })
-
-                if (currentDirectory === folder.id)
-                    setCurrentDirectory(items.find(el => el instanceof Folder))
-                setAlert({
-                    type: 'success',
-                    message: 'Folder deleted'
-                })
+        if(folders.length > 0 || (folder.parent !== undefined)){
+            const children = items.filter(i => i.parent === folder.id)
+            children.forEach(c => {
+                if(c instanceof Folder)
+                    removeFolder(c)
+                else
+                    removeFile(c)
             })
-            .catch()
+            db.table('folder').delete(folder.id)
+                .then(r => {
+                    setItems(prev => {
+                        return [...prev].filter(f => f.id !== folder.id)
+                    })
+
+                    if (currentDirectory === folder.id)
+                        setCurrentDirectory(items.find(el => el instanceof Folder && el.id !== currentDirectory)?.id)
+                    setAlert({
+                        type: 'success',
+                        message: 'Folder deleted'
+                    })
+                })
+                .catch(error => console.log(error))
+        }
+        else
+            setAlert({
+                type: 'info',
+                message: 'Can\'t delete root folder.'
+            })
     }
 
     const getFileBlob = async (fileID) => {
@@ -199,6 +226,22 @@ export default function useExplorer(name, rootName, setAlert) {
             file.id = randomID()
             pushFile(file, blob)
         })
+    }
+    const moveFolder = (folderID, targetDir) => {
+        db.open()
+        db.table('folder').update(folderID, {parentId: targetDir}).then(res => {
+            setItems(prev => {
+                return prev.map(item => {
+                    if (item.id === folderID)
+                        item.parent = targetDir
+                    return item
+                })
+            })
+            setAlert({
+                type: 'success',
+                message: 'Folder moved'
+            })
+        }).catch()
     }
     const moveFile = (fileID, targetDir) => {
         db.open()
@@ -219,6 +262,7 @@ export default function useExplorer(name, rootName, setAlert) {
 
     return {
         db,
+        moveFolder,
         moveFile,
         renameFolder,
         renameFile,

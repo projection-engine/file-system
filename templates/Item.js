@@ -9,7 +9,7 @@ export default class Item {
 
     constructor(name, parent, id, creationDate) {
         this.id = id !== undefined ? id : randomID()
-        this.name = name.replaceAll('/', '-')
+        this.name = name
         this.parent = parent
         this.creationDate = creationDate !== undefined ? creationDate : new Date()
     }

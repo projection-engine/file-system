@@ -3,7 +3,7 @@ import styles from '../styles/Files.module.css'
 import React, {useMemo, useRef, useState} from "react";
 import Item from "./Item";
 import ContextMenu from "../../../components/context/ContextMenu";
-import handleImport from "../utils/handleImport";
+import handleImportFile from "../utils/handleImportFile";
 import FileObj from '../templates/File'
 import Folder from "../templates/Folder";
 import getFolderOptions from "../utils/getFolderOptions";
@@ -24,18 +24,21 @@ export default function Items(props) {
             onDragOver={e => e.preventDefault()}
             onDrop={(e) => {
                 e.preventDefault()
+                console.log(e)
                 let files = Array.from(e.dataTransfer.items)
-                files = files.filter(f => f.kind === 'file')
-                files = files.map(f => f.getAsFile())
-                files = files.filter(f => {
-                    let valid = true
-                    const extension = f.name.split(/\.([a-zA-Z0-9]+)$/)
-                    props.accept.forEach(a => {
-                        valid = valid && extension.includes(a)
+                if(files.length > 0){
+                    files = files.filter(f => f.kind === 'file')
+                    files = files.map(f => f.getAsFile())
+                    files = files.filter(f => {
+                        let valid = true
+                        const extension = f.name.split(/\.([a-zA-Z0-9]+)$/)
+                        props.accept.forEach(a => {
+                            valid = valid && extension.includes(a)
+                        })
+                        return valid
                     })
-                    return valid
-                })
-                handleImport(files, props.hook)
+                    handleImportFile(files, props.hook)
+                }
             }}
             onMouseDown={e => {
                 const elements = document.elementsFromPoint(e.clientX, e.clientY)

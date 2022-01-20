@@ -16,21 +16,28 @@ export default function Directories(props) {
     }, [props.hook.items])
     const handleDragAction = (event) => {
         event.preventDefault()
-        switch (event.type){
-            case 'dragleave':{
+        switch (event.type) {
+            case 'dragleave': {
                 event.currentTarget.parentNode.classList.remove(styles.hovered)
                 break
             }
-            case 'dragover':{
+            case 'dragover': {
                 event.currentTarget.parentNode.classList.add(styles.hovered)
                 break
             }
-            case'drop':{
+            case'drop': {
                 event.currentTarget.parentNode.classList.remove(styles.hovered)
-                console.log(event.currentTarget.id)
+
                 const item = props.hook.items.find(f => f.id === event.currentTarget.id.replace('-node', ''))
-                if(item && item.id !== event.dataTransfer.getData('text') && item.parent !== event.dataTransfer.getData('text'))
-                    props.hook.moveFile(event.dataTransfer.getData('text'), item.id)
+                const current = event.dataTransfer.getData('text')
+                const foundCurrent = props.hook.items.find(f => f.id === current)
+
+                if (item && item.id !== event.dataTransfer.getData('text') && foundCurrent && item.parent !== event.dataTransfer.getData('text') && item instanceof Folder){
+                    if(foundCurrent instanceof Folder)
+                        props.hook.moveFolder(current, item.id)
+                    else
+                        props.hook.moveFile(current, item.id)
+                }
                 break
             }
             default:
@@ -39,8 +46,8 @@ export default function Directories(props) {
     }
     useEffect(() => {
         props.hook.items.forEach(node => {
-            const el = document.getElementById(node.id+'-node')
-            if(el) {
+            const el = document.getElementById(node.id + '-node')
+            if (el) {
                 el.addEventListener('dragleave', handleDragAction)
                 el.addEventListener('dragover', handleDragAction)
                 el.addEventListener('drop', handleDragAction)
@@ -48,15 +55,15 @@ export default function Directories(props) {
         })
         return () => {
             props.hook.items.forEach(node => {
-                const el = document.getElementById(node.id+'-node')
-                if(el) {
+                const el = document.getElementById(node.id + '-node')
+                if (el) {
                     el.removeEventListener('dragleave', handleDragAction)
                     el.removeEventListener('dragover', handleDragAction)
                     el.removeEventListener('drop', handleDragAction)
                 }
             })
         }
-    },[props.hook.items])
+    }, [props.hook.items])
     return (
         <div data-directories-wrapper={'true'} className={styles.wrapper}>
             <ContextMenu
@@ -66,9 +73,9 @@ export default function Directories(props) {
                         requiredTrigger: 'data-folder',
                         label: 'Rename',
                         icon: <span className={'material-icons-round'}>edit</span>,
-                        onClick: (node) =>{
+                        onClick: (node) => {
                             const target = document.getElementById(node.getAttribute('data-folder') + '-node')
-                            if(target) {
+                            if (target) {
                                 const event = new MouseEvent('dblclick', {
                                     'view': window,
                                     'bubbles': true,
@@ -97,8 +104,8 @@ export default function Directories(props) {
                     nodes={directoriesToRender}
                     handleRename={(folder, newName) => {
                         const folderObj = props.hook.items.find(f => f.id === folder.id)
-                        if(folderObj)
-                        props.hook.renameFolder(folderObj, newName)
+                        if (folderObj)
+                            props.hook.renameFolder(folderObj, newName)
                     }}
                 />
             </ContextMenu>
