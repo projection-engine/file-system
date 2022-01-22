@@ -21,16 +21,3 @@
     overflow: hidden;
 }
 
-.renameModal {
-    position: absolute;
-    background: var(--background-1) !important;
-    border-radius: 5px;
-    top: 50%;
-    left: 50%;
-    width: 500px;
-    height: fit-content;
-    padding: 8px;
-    transform: translate(-50%, -50%);
-    display: grid;
-    gap: 16px;
-}

@@ -17,18 +17,6 @@
     height: fit-content;
     display: grid;
 }
-.folderContent{
-    padding: 0 8px !important;
-    height: 30px;
-
-    color: var(--fabric-color-secondary);
-    font-size: .9rem !important;
-    transition: all 150ms linear, height 0ms !important;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 4px;
-}
 
 .overflow{
     text-overflow: ellipsis;
@@ -37,6 +25,3 @@
     max-width: 100%;
 }
 
-.hovered{
-    background-color: #0095ff;
-}

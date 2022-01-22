@@ -164,7 +164,7 @@ export default function useExplorer(name, rootName, setAlert) {
         }).then(res => {
 
             setItems(prev => {
-                console.log('HERE ?')
+
                 return [...prev, folder]
             })
             setAlert({
@@ -203,7 +203,7 @@ export default function useExplorer(name, rootName, setAlert) {
                         message: 'Folder deleted'
                     })
                 })
-                .catch(error => console.log(error))
+                .catch()
         }
         else
             setAlert({

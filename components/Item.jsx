@@ -69,7 +69,7 @@ export default function Item(props) {
                 const current = e.dataTransfer.getData('text')
                 const foundCurrent = props.hook.items.find(f => f.id === current)
 
-                if (props.type === 'Folder' && props.data.id !== e.dataTransfer.getData('text') && foundCurrent && props.data.parent !== event.dataTransfer.getData('text')) {
+                if (props.type === 'Folder' && props.data.id !== e.dataTransfer.getData('text') && foundCurrent && props.data.parent !== e.dataTransfer.getData('text')) {
                     if (foundCurrent instanceof Folder)
                         props.hook.moveFolder(current, props.data.id)
                     else

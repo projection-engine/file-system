@@ -3,6 +3,7 @@ import React from 'react'
 import {toDataURL} from "../../../core/utils/imageManipulation";
 import coreParser from "../../../core/utils/gltf/parser/coreParser";
 import Folder from "../templates/Folder";
+import loadObj from "../../../core/utils/loadObj";
 
 export default function handleImportFile(files, hook) {
     files.forEach(fi => processFile(fi, hook))
@@ -34,15 +35,14 @@ export function handleImportFolder(files, hook) {
             const folderNewName = f.name.split('/')[f.name.split('/').length - 1]
             if (split.length > 0) {
                 const directParent = usedNames.find(p => p.name === split[split.length - 1])
-                console.log(directParent, split[split.length - 1], usedNames)
+
                 if (directParent) {
                     f.parent = directParent.id
                     f.name = folderNewName
                 }
             }
-        }
-        else
-           f.parent = hook.currentDirectory
+        } else
+            f.parent = hook.currentDirectory
 
         return f
     }).forEach(f => hook.pushFolder(f))
@@ -61,24 +61,60 @@ export function handleImportFolder(files, hook) {
 function processFile(file, hook, attributedParent) {
     let reader = new FileReader();
     const split = file.name.split(/\.([a-zA-Z].+)$/)
-    const nFile = new FileClass(split[0], split[1], file.size, undefined, attributedParent ? file.parent : hook.currentDirectory)
-    if (split[1].includes('png') || split[1].includes('jpeg'))
-        toDataURL(URL.createObjectURL(file), base64 => {
-            hook.pushFile(nFile, base64)
-        })
-    else if (split[1].includes('gltf')) {
-        reader.addEventListener('load', event => {
-            const parsedData = coreParser(event.target.result)
 
-            hook.pushFile(nFile, event.target.result)
-        });
-        reader.readAsText(file)
+    switch (split[1]) {
+        case 'png':
+        case 'jpeg':
+        case 'jpg': {
+            const nFile = new FileClass(split[0], split[1], file.size, undefined, attributedParent ? file.parent : hook.currentDirectory)
+            toDataURL(URL.createObjectURL(file), base64 => {
+                hook.pushFile(nFile, base64)
+            })
+            break
+        }
+        case 'gltf': {
+            const newFolder = new Folder(split[0], hook.currentDirectory)
+            hook.pushFolder(newFolder)
 
-    } else {
-        reader.addEventListener('load', event => {
-            hook.pushFile(nFile, event.target.result)
-        });
-        reader.readAsText(file)
+            reader.addEventListener('load', event => {
+                const parsedData = coreParser(event.target.result)
+                const encodedMeshes = parsedData.nodes.map(m => {
+                    const str = JSON.stringify({
+                        ...parsedData.meshes[m.meshIndex],
+                        ...m
+                    })
+                    return encodeURI(str)
+                })
+                parsedData.nodes.forEach(n => {
+                    hook.pushFile(new FileClass(n.name, 'mesh', encodedMeshes[n.meshIndex].split(/%..|./).length - 1, undefined, newFolder.id), encodedMeshes[n.meshIndex])
+                })
+            });
+            reader.readAsText(file)
+            break
+        }
+        case'obj': {
+            reader.addEventListener('load', event => {
+                const parsedData = {
+                    ...loadObj(event.target.result),
+                    rotation: [0, 0, 0],
+                    translation: [0, 0, 0],
+                    scaling: [1, 1, 1]
+                }
+                const encodedMesh = encodeURI(JSON.stringify(parsedData))
+                hook.pushFile(new FileClass(split[0].name, 'mesh', encodedMesh.split(/%..|./).length - 1, undefined, hook.currentDirectory), encodedMesh)
+            });
+            reader.readAsText(file)
+            break
+        }
+        default: {
+            const nFile = new FileClass(split[0], split[1], file.size, undefined, attributedParent ? file.parent : hook.currentDirectory)
+            reader.addEventListener('load', event => {
+                hook.pushFile(nFile, event.target.result)
+            });
+            reader.readAsText(file)
+            break
+        }
+
     }
     return undefined
 }

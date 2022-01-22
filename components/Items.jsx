@@ -24,7 +24,7 @@ export default function Items(props) {
             onDragOver={e => e.preventDefault()}
             onDrop={(e) => {
                 e.preventDefault()
-                console.log(e)
+
                 let files = Array.from(e.dataTransfer.items)
                 if(files.length > 0){
                     files = files.filter(f => f.kind === 'file')

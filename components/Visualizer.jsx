@@ -23,7 +23,7 @@ export default function Visualizer(props) {
         if (props.selected)
             props.hook.getFile(props.selected).then(res => {
                 setFile(res)
-                console.log(res)
+
             })
     }, [props.selected])
     return (
