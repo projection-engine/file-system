@@ -6,64 +6,20 @@ import Folder from "../templates/Folder";
 import TreeView from "../../../components/tree/TreeView";
 import mapToView from "../utils/mapToView";
 import getFolderOptions from "../utils/getFolderOptions";
+import TreeNode from "../../tree/TreeNode";
+import {TYPES_ARRAY} from "../../scene/hierarchy/TYPES";
+import {ENTITY_ACTIONS} from "../../../core/ecs/utils/entityReducer";
 
 
 export default function Directories(props) {
     const directoriesToRender = useMemo(() => {
-        return props.hook.items.filter(item => item instanceof Folder && !item.parent).map(f => {
+        const toFilter = props.hook.items.filter(item => item instanceof Folder && !item.parent)
+
+        return toFilter.map(f => {
             return mapToView(f, props.hook)
         })
     }, [props.hook.items])
-    const handleDragAction = (event) => {
-        event.preventDefault()
-        switch (event.type) {
-            case 'dragleave': {
-                event.currentTarget.parentNode.classList.remove(styles.hovered)
-                break
-            }
-            case 'dragover': {
-                event.currentTarget.parentNode.classList.add(styles.hovered)
-                break
-            }
-            case'drop': {
-                event.currentTarget.parentNode.classList.remove(styles.hovered)
 
-                const item = props.hook.items.find(f => f.id === event.currentTarget.id.replace('-node', ''))
-                const current = event.dataTransfer.getData('text')
-                const foundCurrent = props.hook.items.find(f => f.id === current)
-
-                if (item && item.id !== event.dataTransfer.getData('text') && foundCurrent && item.parent !== event.dataTransfer.getData('text') && item instanceof Folder){
-                    if(foundCurrent instanceof Folder)
-                        props.hook.moveFolder(current, item.id)
-                    else
-                        props.hook.moveFile(current, item.id)
-                }
-                break
-            }
-            default:
-                break
-        }
-    }
-    useEffect(() => {
-        props.hook.items.forEach(node => {
-            const el = document.getElementById(node.id + '-node')
-            if (el) {
-                el.addEventListener('dragleave', handleDragAction)
-                el.addEventListener('dragover', handleDragAction)
-                el.addEventListener('drop', handleDragAction)
-            }
-        })
-        return () => {
-            props.hook.items.forEach(node => {
-                const el = document.getElementById(node.id + '-node')
-                if (el) {
-                    el.removeEventListener('dragleave', handleDragAction)
-                    el.removeEventListener('dragover', handleDragAction)
-                    el.removeEventListener('drop', handleDragAction)
-                }
-            })
-        }
-    }, [props.hook.items])
     return (
         <div data-directories-wrapper={'true'} className={styles.wrapper}>
             <ContextMenu
@@ -100,7 +56,29 @@ export default function Directories(props) {
                     'data-folder'
                 ]}>
                 <TreeView
-                    selected={{id: props.hook.currentDirectory}}
+                    draggable={true}
+                    onDrop={(event, target) => {
+                        event.currentTarget.parentNode.classList.remove(styles.hovered)
+                        const item = props.hook.items.find(f => f.id === target)
+                        const dropTarget = props.hook.items.find(f => f.id === event.dataTransfer.getData('text'))
+                        if (item && item.id !== event.dataTransfer.getData('text') && dropTarget && item.parent !== event.dataTransfer.getData('text') && item instanceof Folder){
+                            if(dropTarget instanceof Folder)
+                                props.hook.moveFolder(dropTarget.id, item.id)
+                            else
+                                props.hook.moveFile(dropTarget.id, item.id)
+                        }
+                    }}
+                    onDragLeave={(event, target) => {
+                        event.preventDefault()
+                        event.currentTarget.classList.remove(styles.hovered)
+                    }}
+                    onDragOver={(event, target) => {
+                        event.preventDefault()
+                        event.currentTarget.classList.add(styles.hovered)
+                    }}
+
+
+                    selected={props.hook.currentDirectory}
                     nodes={directoriesToRender}
                     handleRename={(folder, newName) => {
                         const folderObj = props.hook.items.find(f => f.id === folder.id)

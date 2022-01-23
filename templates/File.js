@@ -1,6 +1,6 @@
 import Item from "./Item";
 import React from 'react'
-import randomID from "../../../components/shared/utils/randomID";
+import randomID from "../../../utils/randomID";
 
 export default class File extends Item{
     size = 0

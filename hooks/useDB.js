@@ -2,12 +2,14 @@ import React, {useEffect, useRef, useState} from "react";
 import Folder from "../templates/Folder";
 import {Dexie} from "dexie";
 import loadData from "../utils/loadData";
-import randomID from "../../../components/shared/utils/randomID";
-import cloneClass from "../../../components/shared/utils/cloneClass";
+import randomID from "../../../utils/randomID";
+import cloneClass from "../../../utils/cloneClass";
 
-export default function useExplorer(name, rootName, setAlert) {
+export default function useDB(name, rootName, setAlert) {
     const [db, setDb] = useState()
     const [openModal, setOpenModal] = useState(false)
+    const [ready, setReady] = useState(false)
+
     const ref = useRef()
     const uploadRef = useRef()
     const [onRename, setOnRename] = useState({})
@@ -35,8 +37,10 @@ export default function useExplorer(name, rootName, setAlert) {
 
                         setItems([n])
                         setCurrentDirectory(n.id)
+                        setReady(true)
                     }).catch()
                 } else {
+                    setReady(true)
                     setItems(res)
                     setCurrentDirectory(firstFolder?.id)
                 }
@@ -44,6 +48,10 @@ export default function useExplorer(name, rootName, setAlert) {
         }).catch(e => {
             if (e.name === "NoSuchDatabaseError") {
                 database.version(1).stores({
+                    project: 'id, settings',
+                    entity: 'id, linkedTo, project, blob',
+
+
                     file: 'id, name, creationDate, parentId, blob, type, mimetype, size',
                     folder: 'id, name, creationDate, parentId'
                 });
@@ -59,6 +67,7 @@ export default function useExplorer(name, rootName, setAlert) {
 
                         setItems([n])
                         setCurrentDirectory(n.id)
+                        setReady(true)
                     }).catch()
                 }).catch(() => {
                     setAlert({
@@ -261,6 +270,7 @@ export default function useExplorer(name, rootName, setAlert) {
     }
 
     return {
+        ready,
         db,
         moveFolder,
         moveFile,
