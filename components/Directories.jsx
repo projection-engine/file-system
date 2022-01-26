@@ -1,14 +1,11 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Directories.module.css'
 import ContextMenu from "../../../components/context/ContextMenu";
-import React, {useEffect, useMemo} from "react";
+import React, {useMemo} from "react";
 import Folder from "../templates/Folder";
 import TreeView from "../../../components/tree/TreeView";
 import mapToView from "../utils/mapToView";
 import getFolderOptions from "../utils/getFolderOptions";
-import TreeNode from "../../tree/TreeNode";
-import {TYPES_ARRAY} from "../../scene/hierarchy/TYPES";
-import {ENTITY_ACTIONS} from "../../../core/ecs/utils/entityReducer";
 
 
 export default function Directories(props) {

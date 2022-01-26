@@ -14,72 +14,74 @@ export default function useDB(name, rootName, setAlert, projectID) {
     const uploadRef = useRef()
     const [onRename, setOnRename] = useState({})
     const [items, setItems] = useState([])
-    const [currentDirectory, setCurrentDirectory] = useState( null)
+    const [currentDirectory, setCurrentDirectory] = useState(null)
 
 
     useEffect(() => {
-        const database = new Dexie(name);
+        if (projectID !== undefined) {
+            const database = new Dexie(name);
 
-        database.open().then(e => {
+            database.open().then(e => {
+                loadData(e, projectID).then(res => {
+                    const firstFolder = res.find(f => f instanceof Folder && !f.parent)
 
-            loadData(e).then(res => {
-                const firstFolder = res.find(f => f instanceof Folder && !f.parent)
+                    if (!firstFolder) {
+                        const newParent = randomID()
+                        e.table('folder').add({
+                            id: newParent,
+                            name: 'Project',
+                            creationDate: (new Date()).toDateString(),
+                            parentId: undefined,
+                            project: projectID
+                        }).then(() => {
+                            const n = new Folder('Project', undefined, newParent)
 
-                if (!firstFolder) {
-                    const newParent = randomID()
-                    e.table('folder').add({
-                        id: newParent,
-                        name: 'Project',
-                        creationDate: (new Date()).toDateString(),
-                        parentId: undefined
-                    }).then(() => {
-                        const n = new Folder('Project', undefined, newParent)
-
-                        setItems([n])
-                        setCurrentDirectory(n.id)
+                            setItems([n])
+                            setCurrentDirectory(n.id)
+                            setReady(true)
+                        }).catch()
+                    } else {
                         setReady(true)
-                    }).catch()
-                } else {
-                    setReady(true)
-                    setItems(res)
-                    setCurrentDirectory(firstFolder?.id)
+                        setItems(res)
+                        setCurrentDirectory(firstFolder?.id)
+                    }
+                })
+            }).catch(e => {
+                if (e.name === "NoSuchDatabaseError") {
+                    database.version(1).stores({
+                        project: 'id, settings',
+                        entity: 'id, linkedTo, project, blob',
+
+
+                        file: 'id, project, name, creationDate, parentId, blob, type, mimetype, size',
+                        folder: 'id, project, name, creationDate, parentId'
+                    });
+                    database.open().then(r => {
+                        const newParent = randomID()
+                        r.table('folder').add({
+                            id: newParent,
+                            name: 'Project',
+                            creationDate: (new Date()).toDateString(),
+                            parentId: undefined
+                        }).then(() => {
+                            const n = new Folder('Project', undefined, newParent)
+
+                            setItems([n])
+                            setCurrentDirectory(n.id)
+                            setReady(true)
+                        }).catch()
+                    }).catch(() => {
+                        setAlert({
+                            type: 'error',
+                            message: 'Could not load database.'
+                        })
+                    })
                 }
             })
-        }).catch(e => {
-            if (e.name === "NoSuchDatabaseError") {
-                database.version(1).stores({
-                    project: 'id, settings',
-                    entity: 'id, linkedTo, project, blob',
 
-
-                    file: 'id, project, name, creationDate, parentId, blob, type, mimetype, size',
-                    folder: 'id, project, name, creationDate, parentId'
-                });
-                database.open().then(r => {
-                    const newParent = randomID()
-                    r.table('folder').add({
-                        id: newParent,
-                        name: 'Project',
-                        creationDate: (new Date()).toDateString(),
-                        parentId: undefined
-                    }).then(() => {
-                        const n = new Folder('Project', undefined, newParent)
-
-                        setItems([n])
-                        setCurrentDirectory(n.id)
-                        setReady(true)
-                    }).catch()
-                }).catch(() => {
-                    setAlert({
-                        type: 'error',
-                        message: 'Could not load database.'
-                    })
-                })
-            }
-        })
-
-        setDb(database)
-    }, [])
+            setDb(database)
+        }
+    }, [projectID])
 
     const pushFile = (file, blob) => {
         db.open()
@@ -93,7 +95,7 @@ export default function useDB(name, rootName, setAlert, projectID) {
             type: file.type,
             mimetype: file.mimetype,
             size: file.size,
-            project:projectID
+            project: projectID
         }).then(res => {
             setAlert({
                 type: 'success',
@@ -165,6 +167,7 @@ export default function useDB(name, rootName, setAlert, projectID) {
             .catch()
     }
     const pushFolder = (folder) => {
+        console.log('HERE')
         db.open()
         db.table('folder').add({
             id: folder.id,
@@ -193,10 +196,10 @@ export default function useDB(name, rootName, setAlert, projectID) {
     const removeFolder = (folder) => {
         const folders = items.filter(i => !i.parent && i instanceof Folder && i.id !== folder.id)
 
-        if(folders.length > 0 || (folder.parent !== undefined)){
+        if (folders.length > 0 || (folder.parent !== undefined)) {
             const children = items.filter(i => i.parent === folder.id)
             children.forEach(c => {
-                if(c instanceof Folder)
+                if (c instanceof Folder)
                     removeFolder(c)
                 else
                     removeFile(c)
@@ -215,8 +218,7 @@ export default function useDB(name, rootName, setAlert, projectID) {
                     })
                 })
                 .catch()
-        }
-        else
+        } else
             setAlert({
                 type: 'info',
                 message: 'Can\'t delete root folder.'

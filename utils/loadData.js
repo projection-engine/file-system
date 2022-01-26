@@ -2,10 +2,10 @@ import Folder from "../templates/Folder";
 import File from "../templates/File";
 import React from 'react'
 
-export default async function loadData(db) {
-    let folders = await db.table('folder').toArray()
-    let files = await db.table('file').toArray()
-
+export default async function loadData(db, id) {
+    let folders = await db.table('folder').where({project: id}).toArray()
+    let files = await db.table('file').where({project: id}).toArray()
+    console.log(folders)
     let parsedFolders = folders.map(f => {
             return new Folder(f.name, f.parentId, f.id, new Date(f.creationDate))
         }),
