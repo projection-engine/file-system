@@ -5,7 +5,7 @@ import loadData from "../utils/loadData";
 import randomID from "../../../utils/randomID";
 import cloneClass from "../../../utils/cloneClass";
 
-export default function useDB(name, rootName, setAlert) {
+export default function useDB(name, rootName, setAlert, projectID) {
     const [db, setDb] = useState()
     const [openModal, setOpenModal] = useState(false)
     const [ready, setReady] = useState(false)
@@ -52,8 +52,8 @@ export default function useDB(name, rootName, setAlert) {
                     entity: 'id, linkedTo, project, blob',
 
 
-                    file: 'id, name, creationDate, parentId, blob, type, mimetype, size',
-                    folder: 'id, name, creationDate, parentId'
+                    file: 'id, project, name, creationDate, parentId, blob, type, mimetype, size',
+                    folder: 'id, project, name, creationDate, parentId'
                 });
                 database.open().then(r => {
                     const newParent = randomID()
@@ -92,7 +92,8 @@ export default function useDB(name, rootName, setAlert) {
             blob: blob,
             type: file.type,
             mimetype: file.mimetype,
-            size: file.size
+            size: file.size,
+            project:projectID
         }).then(res => {
             setAlert({
                 type: 'success',
@@ -169,7 +170,8 @@ export default function useDB(name, rootName, setAlert) {
             id: folder.id,
             name: folder.name,
             creationDate: folder.creationDate.toDateString(),
-            parentId: folder.parent
+            parentId: folder.parent,
+            project: projectID
         }).then(res => {
 
             setItems(prev => {
