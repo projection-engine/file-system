@@ -13,14 +13,14 @@ export default function Items(props) {
     const [focusedElement, setFocusedElement] = useState()
 
     const filesToRender = useMemo(() => {
-        return props.hook.items.filter(file => file.parent === props.hook.currentDirectory)
-    }, [props.hook.items, props.hook.currentDirectory])
+        return props.hook.items.filter(file => file.parent === props.hook.currentDirectory && (props.searchString.length > 0 ? file.name.toLowerCase().includes(props.searchString) : true))
+    }, [props.hook.items, props.hook.currentDirectory, props.searchString])
     const ref = useRef()
     return (
         <div
             ref={ref}
 
-            style={{width: '100%'}}
+            style={{width: '100%', height: '100%'}}
             onDragOver={e => e.preventDefault()}
             onDrop={(e) => {
                 e.preventDefault()
@@ -160,6 +160,7 @@ export default function Items(props) {
 }
 
 Items.propTypes = {
+    searchString: PropTypes.string,
     selected: PropTypes.string,
     setSelected: PropTypes.func,
     openEngineFile: PropTypes.func.isRequired,
