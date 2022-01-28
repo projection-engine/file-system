@@ -4,6 +4,7 @@ import {Dexie} from "dexie";
 import loadData from "../utils/loadData";
 import randomID from "../../../utils/randomID";
 import cloneClass from "../../../utils/cloneClass";
+import initializeDatabase from "../utils/initializeDatabase";
 
 export default function useDB(name, rootName, setAlert, projectID) {
     const [db, setDb] = useState()
@@ -19,44 +20,72 @@ export default function useDB(name, rootName, setAlert, projectID) {
 
     useEffect(() => {
         if (projectID !== undefined) {
-            const database = new Dexie(name);
-
-            database.open().then(e => {
-                loadData(e, projectID).then(res => {
-                    const firstFolder = res.find(f => f instanceof Folder && !f.parent)
-
-                    if (!firstFolder) {
-                        const newParent = randomID()
-                        e.table('folder').add({
-                            id: newParent,
-                            name: 'Project',
-                            creationDate: (new Date()).toDateString(),
-                            parentId: undefined,
-                            project: projectID
-                        }).then(() => {
-                            const n = new Folder('Project', undefined, newParent)
-
-                            setItems([n])
-                            setCurrentDirectory(n.id)
-                            setReady(true)
-                        }).catch()
-                    } else {
-                        setReady(true)
-                        setItems(res)
-                        setCurrentDirectory(firstFolder?.id)
-                    }
-                })
-            }).catch(e => {
-                if (e.name === "NoSuchDatabaseError") {
-                    database.version(1).stores({
-                        project: 'id, settings',
-                        entity: 'id, linkedTo, project, blob',
-
-
-                        file: 'id, project, name, creationDate, parentId, blob, type, mimetype, size',
-                        folder: 'id, project, name, creationDate, parentId'
-                    });
-                    database.open().then(r => {
+            // const database = new Dexie(name);
+            //
+            // database.open().then(e => {
+            //     loadData(e, projectID).then(res => {
+            //         const firstFolder = res.find(f => f instanceof Folder && !f.parent)
+            //
+            //         if (!firstFolder) {
+            //             const newParent = randomID()
+            //             e.table('folder').add({
+            //                 id: newParent,
+            //                 name: 'Project',
+            //                 creationDate: (new Date()).toDateString(),
+            //                 parentId: undefined,
+            //                 project: projectID
+            //             }).then(() => {
+            //                 const n = new Folder('Project', undefined, newParent)
+            //
+            //                 setItems([n])
+            //                 setCurrentDirectory(n.id)
+            //                 setReady(true)
+            //             }).catch()
+            //         } else {
+            //             setReady(true)
+            //             setItems(res)
+            //             setCurrentDirectory(firstFolder?.id)
+            //         }
+            //     })
+            // }).catch(e => {
+            //     if (e.name === "NoSuchDatabaseError") {
+            //         database.version(1).stores({
+            //             project: 'id, settings',
+            //             entity: 'id, linkedTo, project, blob',
+            //
+            //
+            //             file: 'id, project, name, creationDate, parentId, blob, type, mimetype, size',
+            //             folder: 'id, project, name, creationDate, parentId'
+            //         });
+            //         database.open().then(r => {
+            //             const newParent = randomID()
+            //             r.table('folder').add({
+            //                 id: newParent,
+            //                 name: 'Project',
+            //                 creationDate: (new Date()).toDateString(),
+            //                 parentId: undefined
+            //             }).then(() => {
+            //                 const n = new Folder('Project', undefined, newParent)
+            //
+            //                 setItems([n])
+            //                 setCurrentDirectory(n.id)
+            //                 setReady(true)
+            //             }).catch()
+            //         }).catch(() => {
+            //             setAlert({
+            //                 type: 'error',
+            //                 message: 'Could not load database.'
+            //             })
+            //         })
+            //     }
+            // })
+            //
+            initializeDatabase(name).then(res => {
+                console.log(res)
+                res[0].open()
+                setDb(res[0])
+                if (!res[1]) {
+                    res[0].open().then(r => {
                         const newParent = randomID()
                         r.table('folder').add({
                             id: newParent,
@@ -76,10 +105,36 @@ export default function useDB(name, rootName, setAlert, projectID) {
                             message: 'Could not load database.'
                         })
                     })
+                } else {
+
+                    loadData(res[0], projectID).then(data => {
+                        const firstFolder = data.find(f => f instanceof Folder && !f.parent)
+
+                        if (!firstFolder) {
+                            const newParent = randomID()
+                            res[0].table('folder').add({
+                                id: newParent,
+                                name: 'Project',
+                                creationDate: (new Date()).toDateString(),
+                                parentId: undefined,
+                                project: projectID
+                            }).then(() => {
+                                const n = new Folder('Project', undefined, newParent)
+
+                                setItems([n])
+                                setCurrentDirectory(n.id)
+                                setReady(true)
+                            }).catch()
+                        } else {
+
+                            setReady(true)
+                            setItems(data)
+                            setCurrentDirectory(firstFolder.id)
+                        }
+                    })
                 }
             })
 
-            setDb(database)
         }
     }, [projectID])
 

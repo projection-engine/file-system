@@ -4,6 +4,7 @@ import {toDataURL} from "../../../core/utils/imageManipulation";
 import coreParser from "../../../core/utils/gltf/parser/coreParser";
 import Folder from "../templates/Folder";
 import loadObj from "../../../core/utils/loadObj";
+import computeBoundingBox from "./computeBoundingBox";
 
 export default function handleImportFile(files, hook) {
     files.forEach(fi => processFile(fi, hook))
@@ -79,9 +80,12 @@ function processFile(file, hook, attributedParent) {
             reader.addEventListener('load', event => {
                 const parsedData = coreParser(event.target.result)
                 const encodedMeshes = parsedData.nodes.map(m => {
+                    const [min, max] = computeBoundingBox(parsedData.meshes[m.meshIndex].vertices)
                     const str = JSON.stringify({
                         ...parsedData.meshes[m.meshIndex],
-                        ...m
+                        ...m,
+                        boundingBoxMax: max,
+                        boundingBoxMin: min,
                     })
                     return encodeURI(str)
                 })
@@ -94,15 +98,21 @@ function processFile(file, hook, attributedParent) {
         }
         case'obj': {
             reader.addEventListener('load', event => {
+                const mesh = loadObj(event.target.result)
+                const [min, max] = computeBoundingBox(mesh.vertices)
+
                 const parsedData = {
-                    ...loadObj(event.target.result),
+                    mesh,
                     rotation: [0, 0, 0],
                     translation: [0, 0, 0],
-                    scaling: [1, 1, 1]
+                    scaling: [1, 1, 1],
+                    boundingBoxMax:max ,
+                    boundingBoxMin: min,
                 }
                 const encodedMesh = encodeURI(JSON.stringify(parsedData))
                 hook.pushFile(new FileClass(split[0].name, 'mesh', encodedMesh.split(/%..|./).length - 1, undefined, hook.currentDirectory), encodedMesh)
             });
+
             reader.readAsText(file)
             break
         }
