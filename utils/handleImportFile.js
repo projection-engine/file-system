@@ -5,12 +5,14 @@ import coreParser from "../../../core/utils/gltf/parser/coreParser";
 import Folder from "../templates/Folder";
 import loadObj from "../../../core/utils/loadObj";
 import computeBoundingBox from "./computeBoundingBox";
+import resizeImageToPreview from "./resizeImageToPreview";
 
 export default function handleImportFile(files, hook) {
     files.forEach(fi => processFile(fi, hook))
 }
 
 export function handleImportFolder(files, hook) {
+
     let usedNames = []
     let folders = files
         .map(f => {
@@ -57,6 +59,7 @@ export function handleImportFolder(files, hook) {
         })
 
     parsedFiles.forEach(fi => processFile(fi, hook, true))
+
 }
 
 function processFile(file, hook, attributedParent) {
@@ -67,9 +70,13 @@ function processFile(file, hook, attributedParent) {
         case 'png':
         case 'jpeg':
         case 'jpg': {
-            const nFile = new FileClass(split[0], split[1], file.size, undefined, attributedParent ? file.parent : hook.currentDirectory)
+
+
             toDataURL(URL.createObjectURL(file), base64 => {
-                hook.pushFile(nFile, base64)
+                resizeImageToPreview(base64, (b) => {
+                    const nFile = new FileClass(split[0], split[1], file.size, undefined, attributedParent ? file.parent : hook.currentDirectory, undefined, b)
+                    hook.pushFile(nFile, base64)
+                })
             })
             break
         }
@@ -90,6 +97,7 @@ function processFile(file, hook, attributedParent) {
                     return encodeURI(str)
                 })
                 parsedData.nodes.forEach(n => {
+
                     hook.pushFile(new FileClass(n.name, 'mesh', encodedMeshes[n.meshIndex].split(/%..|./).length - 1, undefined, newFolder.id), encodedMeshes[n.meshIndex])
                 })
             });

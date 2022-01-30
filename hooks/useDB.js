@@ -1,16 +1,22 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import Folder from "../templates/Folder";
 import {Dexie} from "dexie";
 import loadData from "../utils/loadData";
 import randomID from "../../../utils/randomID";
 import cloneClass from "../../../utils/cloneClass";
 import initializeDatabase from "../utils/initializeDatabase";
+import DatabaseProvider from "../../db/DatabaseProvider";
+import LoadProvider from "../../../hook/LoadProvider";
+import EVENTS from "../../../utils/EVENTS";
 
-export default function useDB(name, rootName, setAlert, projectID) {
-    const [db, setDb] = useState()
+export const FILE_TYPES = {
+    FOLDER: 'FOLDER',
+    FILE: 'FILE'
+}
+export default function useDB(rootName, setAlert, projectID, database) {
     const [openModal, setOpenModal] = useState(false)
     const [ready, setReady] = useState(false)
-
+    const load = useContext(LoadProvider)
     const ref = useRef()
     const uploadRef = useRef()
     const [onRename, setOnRename] = useState({})
@@ -19,195 +25,131 @@ export default function useDB(name, rootName, setAlert, projectID) {
 
 
     useEffect(() => {
-        if (projectID !== undefined) {
-            // const database = new Dexie(name);
-            //
-            // database.open().then(e => {
-            //     loadData(e, projectID).then(res => {
-            //         const firstFolder = res.find(f => f instanceof Folder && !f.parent)
-            //
-            //         if (!firstFolder) {
-            //             const newParent = randomID()
-            //             e.table('folder').add({
-            //                 id: newParent,
-            //                 name: 'Project',
-            //                 creationDate: (new Date()).toDateString(),
-            //                 parentId: undefined,
-            //                 project: projectID
-            //             }).then(() => {
-            //                 const n = new Folder('Project', undefined, newParent)
-            //
-            //                 setItems([n])
-            //                 setCurrentDirectory(n.id)
-            //                 setReady(true)
-            //             }).catch()
-            //         } else {
-            //             setReady(true)
-            //             setItems(res)
-            //             setCurrentDirectory(firstFolder?.id)
-            //         }
-            //     })
-            // }).catch(e => {
-            //     if (e.name === "NoSuchDatabaseError") {
-            //         database.version(1).stores({
-            //             project: 'id, settings',
-            //             entity: 'id, linkedTo, project, blob',
-            //
-            //
-            //             file: 'id, project, name, creationDate, parentId, blob, type, mimetype, size',
-            //             folder: 'id, project, name, creationDate, parentId'
-            //         });
-            //         database.open().then(r => {
-            //             const newParent = randomID()
-            //             r.table('folder').add({
-            //                 id: newParent,
-            //                 name: 'Project',
-            //                 creationDate: (new Date()).toDateString(),
-            //                 parentId: undefined
-            //             }).then(() => {
-            //                 const n = new Folder('Project', undefined, newParent)
-            //
-            //                 setItems([n])
-            //                 setCurrentDirectory(n.id)
-            //                 setReady(true)
-            //             }).catch()
-            //         }).catch(() => {
-            //             setAlert({
-            //                 type: 'error',
-            //                 message: 'Could not load database.'
-            //             })
-            //         })
-            //     }
-            // })
-            //
-            initializeDatabase(name).then(res => {
-                console.log(res)
-                res[0].open()
-                setDb(res[0])
-                if (!res[1]) {
-                    res[0].open().then(r => {
-                        const newParent = randomID()
-                        r.table('folder').add({
-                            id: newParent,
-                            name: 'Project',
-                            creationDate: (new Date()).toDateString(),
-                            parentId: undefined
-                        }).then(() => {
-                            const n = new Folder('Project', undefined, newParent)
-
-                            setItems([n])
-                            setCurrentDirectory(n.id)
+        if (projectID !== undefined && database) {
+            load.pushEvent(EVENTS.PROJECT_FILES)
+            database.listFiles({project: projectID})
+                .then(r => {
+                    if (r.length > 0)
+                        loadData(r, projectID).then(data => {
+                            console.log(data)
+                            const firstFolder = data.find(f => f instanceof Folder && !f.parent)
                             setReady(true)
-                        }).catch()
-                    }).catch(() => {
-                        setAlert({
-                            type: 'error',
-                            message: 'Could not load database.'
+                            setItems(data)
+                            setCurrentDirectory(firstFolder.id)
+                            load.finishEvent(EVENTS.PROJECT_FILES)
                         })
-                    })
-                } else {
-
-                    loadData(res[0], projectID).then(data => {
-                        const firstFolder = data.find(f => f instanceof Folder && !f.parent)
-
-                        if (!firstFolder) {
-                            const newParent = randomID()
-                            res[0].table('folder').add({
-                                id: newParent,
-                                name: 'Project',
-                                creationDate: (new Date()).toDateString(),
-                                parentId: undefined,
-                                project: projectID
-                            }).then(() => {
+                    else {
+                        const newParent = randomID()
+                        database
+                            .postFile(
+                                {
+                                    id: newParent,
+                                    project: projectID,
+                                    name: 'Project',
+                                    creationDate: (new Date()).toDateString(),
+                                    parent: null,
+                                    instanceOf: FILE_TYPES.FOLDER,
+                                    type: FILE_TYPES.FOLDER,
+                                    size: 0
+                                }
+                            )
+                            .then(() => {
                                 const n = new Folder('Project', undefined, newParent)
 
                                 setItems([n])
                                 setCurrentDirectory(n.id)
                                 setReady(true)
+                                load.finishEvent(EVENTS.PROJECT_FILES)
                             }).catch()
-                        } else {
+                    }
+                })
 
-                            setReady(true)
-                            setItems(data)
-                            setCurrentDirectory(firstFolder.id)
-                        }
-                    })
-                }
-            })
 
         }
-    }, [projectID])
+    }, [projectID, database])
 
-    const pushFile = (file, blob) => {
-        db.open()
-        setItems(prev => [...prev, file])
-        db.table('file').add({
-            id: file.id,
-            name: file.name,
-            creationDate: file.creationDate.toDateString(),
-            parentId: file.parent,
-            blob: blob,
-            type: file.type,
-            mimetype: file.mimetype,
-            size: file.size,
-            project: projectID
-        }).then(res => {
-            setAlert({
-                type: 'success',
-                message: file.type === 'material' ? 'Material created' : 'Item uploaded'
-            })
-        }).catch(res => {
-            setAlert({
-                type: 'Error',
-                message: res.message
-            })
-        })
+    const pushItem = (item, blob) => {
+        load.pushEvent(EVENTS.IMPORT_FILE)
+        if (item instanceof Folder)
+            database
+                .postFile({
+                    id: item.id,
+                    name: item.name,
+                    creationDate: item.creationDate.toDateString(),
+                    parent: item.parent,
+                    instanceOf: FILE_TYPES.FOLDER,
+                    type: 'Folder',
+                    size: 0,
+                    project: projectID
+                })
+                .then(() => {
+                    load.finishEvent(EVENTS.IMPORT_FILE)
+                    setItems(prev => [...prev, item])
+                    setAlert({
+                        type: 'success',
+                        message: 'Folder added.'
+                    })
+
+                })
+                .catch(res => {
+                    load.finishEvent(EVENTS.IMPORT_FILE)
+                    setAlert({type: 'Error', message: res.message})
+                })
+        else
+            database
+                .postFileWithBlob({
+                    id: item.id,
+                    name: item.name,
+                    creationDate: item.creationDate.toDateString(),
+                    parent: item.parent,
+                    instanceOf: FILE_TYPES.FILE,
+                    type: item.type,
+                    size: item.size,
+                    project: projectID,
+                    previewImage: item.preview
+                }, blob)
+                .then(() => {
+                    load.finishEvent(EVENTS.IMPORT_FILE)
+                    setItems(prev => [...prev, item])
+                    setAlert({
+                        type: 'success',
+                        message: 'Item added.'
+                    })
+                })
+                .catch(res => {
+                    load.finishEvent(EVENTS.IMPORT_FILE)
+                    setAlert({type: 'Error', message: res.message})
+                })
+
     }
 
     const renameFile = (file, newName) => {
-        db.open()
-        db.table('file').update(file.id, {name: newName}).then(res => {
-            setItems(prev => {
-                return prev.map(item => {
-                    if (item.id === file.id) {
-                        const clone = cloneClass(item)
-                        clone.name = newName
-                        return clone
-                    }
-                    return item
+        database
+            .updateFile(file.id, {name: newName})
+            .then((() => {
+                setItems(prev => {
+                    return prev.map(item => {
+                        if (item.id === file.id) {
+                            const clone = cloneClass(item)
+                            clone.name = newName
+                            return clone
+                        }
+                        return item
+                    })
                 })
-            })
-            setAlert({
-                type: 'success',
-                message: 'Item renamed'
-            })
-        }).catch()
+                setAlert({
+                    type: 'success',
+                    message: 'Item renamed'
+                })
+            }))
+            .catch()
     }
 
-    const renameFolder = (folder, newName) => {
-        db.open()
-        db.table('folder').update(folder.id, {name: newName}).then(res => {
-            setItems(prev => {
-                return [...prev].map(item => {
-                    if (item.id === folder.id) {
-                        const clone = cloneClass(item)
-                        clone.name = newName
-                        return clone
-                    }
-                    return item
-                })
-            })
-            setAlert({
-                type: 'success',
-                message: 'Folder renamed'
-            })
-        }).catch()
-    }
 
     const removeFile = (file, updateState = true) => {
-
-        db.table('file').delete(file.id)
-            .then(r => {
+        database
+            .deleteFile(file.id)
+            .then(() => {
                 if (updateState) {
                     setItems(prev => {
                         return [...prev].filter(f => f.id !== file.id)
@@ -221,37 +163,13 @@ export default function useDB(name, rootName, setAlert, projectID) {
             })
             .catch()
     }
-    const pushFolder = (folder) => {
-        console.log('HERE')
-        db.open()
-        db.table('folder').add({
-            id: folder.id,
-            name: folder.name,
-            creationDate: folder.creationDate.toDateString(),
-            parentId: folder.parent,
-            project: projectID
-        }).then(res => {
 
-            setItems(prev => {
-
-                return [...prev, folder]
-            })
-            setAlert({
-                type: 'success',
-                message: 'Folder created'
-            })
-        }).catch(res => {
-            setAlert({
-                type: 'Error',
-                message: res.message
-            })
-        })
-
-    }
     const removeFolder = (folder) => {
+
         const folders = items.filter(i => !i.parent && i instanceof Folder && i.id !== folder.id)
 
         if (folders.length > 0 || (folder.parent !== undefined)) {
+            load.pushEvent(EVENTS.DELETE_FOLDER)
             const children = items.filter(i => i.parent === folder.id)
             children.forEach(c => {
                 if (c instanceof Folder)
@@ -259,7 +177,7 @@ export default function useDB(name, rootName, setAlert, projectID) {
                 else
                     removeFile(c)
             })
-            db.table('folder').delete(folder.id)
+            database.deleteFile(folder.id)
                 .then(r => {
                     setItems(prev => {
                         return [...prev].filter(f => f.id !== folder.id)
@@ -271,76 +189,54 @@ export default function useDB(name, rootName, setAlert, projectID) {
                         type: 'success',
                         message: 'Folder deleted'
                     })
+
+                    load.finishEvent(EVENTS.DELETE_FOLDER)
                 })
                 .catch()
-        } else
+        } else {
+
             setAlert({
                 type: 'info',
                 message: 'Can\'t delete root folder.'
             })
+        }
     }
 
-    const getFileBlob = async (fileID) => {
-        const f = await db.table('file').get(fileID)
-
-        return f.blob
-    }
     const getFile = async (file) => {
-        return await db.table('file').get(file)
+        return await database.getFileWithBlob(file.id)
     }
-    const duplicateFile = (fileID) => {
-        getFileBlob(fileID).then(blob => {
-            const file = items.find(i => i.id === fileID)
-            file.id = randomID()
-            pushFile(file, blob)
-        })
-    }
-    const moveFolder = (folderID, targetDir) => {
-        db.open()
-        db.table('folder').update(folderID, {parentId: targetDir}).then(res => {
-            setItems(prev => {
-                return prev.map(item => {
-                    if (item.id === folderID)
-                        item.parent = targetDir
-                    return item
+
+    const moveItem = (itemID, targetDir) => {
+        database.updateFile(itemID, {parent: targetDir})
+            .then(() => {
+                setItems(prev => {
+                    return prev.map(item => {
+                        if (item.id === itemID)
+                            item.parent = targetDir
+                        return item
+                    })
                 })
-            })
-            setAlert({
-                type: 'success',
-                message: 'Folder moved'
-            })
-        }).catch()
-    }
-    const moveFile = (fileID, targetDir) => {
-        db.open()
-        db.table('file').update(fileID, {parentId: targetDir}).then(res => {
-            setItems(prev => {
-                return prev.map(item => {
-                    if (item.id === fileID)
-                        item.parent = targetDir
-                    return item
+                setAlert({
+                    type: 'success',
+                    message: 'Item moved'
                 })
-            })
-            setAlert({
-                type: 'success',
-                message: 'Item moved'
-            })
-        }).catch()
+            }).catch()
     }
+
 
     return {
         ready,
-        db,
-        moveFolder,
-        moveFile,
-        renameFolder,
+        database,
+        moveFolder: moveItem,
+        moveFile: moveItem,
+        renameFolder: renameFile,
         renameFile,
-        getFileBlob,
+
         ref,
         currentDirectory,
         setCurrentDirectory,
-        pushFile,
-        pushFolder,
+        pushFile: pushItem,
+        pushFolder: pushItem,
         removeFile,
         removeFolder,
         items,
@@ -350,7 +246,6 @@ export default function useDB(name, rootName, setAlert, projectID) {
         onRename,
         setOnRename,
         rootName,
-        getFile,
-        duplicateFile
+        getFile
     }
 }

@@ -1,17 +1,15 @@
 import Folder from "../templates/Folder";
 import File from "../templates/File";
 import React from 'react'
+import {FILE_TYPES} from "../hooks/useDB";
 
-export default async function loadData(db, id) {
-    let folders = await db.table('folder').where({project: id}).toArray()
-    let files = await db.table('file').where({project: id}).toArray()
+export default async function loadData(data) {
 
-    let parsedFolders = folders.map(f => {
-            return new Folder(f.name, f.parentId, f.id, new Date(f.creationDate))
-        }),
-        parsedFiles = files.map(f => {
-            return new File(f.name, f.mimetype + '/' + f.type, f.size, f.id, f.parentId, new Date(f.creationDate))
-        })
-
-    return [...parsedFolders, ...parsedFiles]
+    return data.map(f => {
+        console.log(f)
+        if (f.instanceOf === FILE_TYPES.FOLDER)
+            return  new Folder(f.name, f.parent, f.id, new Date(f.creationDate))
+        else
+            return new File(f.name,  f.type, f.size, f.id, f.parent, new Date(f.creationDate), f.previewImage)
+    })
 }

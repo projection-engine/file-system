@@ -7,15 +7,6 @@ import getIcon from "../utils/getIcon";
 import Folder from "../templates/Folder";
 
 export default function Item(props) {
-    const [file, setFile] = useState()
-
-    useEffect(() => {
-        if (props.data.type === 'jpg' || props.data.type === 'jpeg' || props.data.type === 'png')
-            props.hook.getFile(props.data.id).then(res => {
-                setFile(res)
-            })
-    }, [])
-
     const ref = useRef()
     useEffect(() => {
         if (props.type === 'Folder')
@@ -28,9 +19,11 @@ export default function Item(props) {
         return props.onRename === props.data.id
     }, [props.onRename])
     const [currentLabel, setCurrentLabel] = useState(props.data.name)
+
     useEffect(() => {
         setCurrentLabel(props.data.name)
     }, [props.data.name])
+
     return (
         <div
             ref={ref}
@@ -85,7 +78,7 @@ export default function Item(props) {
 
             }}
         >
-            {getIcon(props.data.type ? props.data.type : props.type, file)}
+            {getIcon(props.data.type ? props.data.type : props.type, props.data)}
             <div className={styles.infoWrapper}>
                 {currentlyOnRename ?
                     <input
