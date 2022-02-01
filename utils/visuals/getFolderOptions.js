@@ -1,4 +1,4 @@
-import Folder from "../templates/Folder";
+import Folder from "../../templates/Folder";
 
 export default function getFolderOptions(hook) {
     return [

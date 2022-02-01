@@ -28,3 +28,17 @@
     color: var(--fabric-color-tertiary);
 
 }
+
+
+.settingsButton {
+    height: 25px;
+    padding: 0 2px !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.settingsButton > * {
+    font-size: 1.3rem !important;
+}

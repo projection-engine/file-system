@@ -1,18 +1,18 @@
-import FileClass from "../templates/File";
+import FileClass from "../../templates/File";
 import React from 'react'
-import {toDataURL} from "../../../core/utils/imageManipulation";
-import coreParser from "../../../core/utils/gltf/coreParser";
-import Folder from "../templates/Folder";
-import loadObj from "../../../core/utils/obj/loadObj";
-import computeBoundingBox from "./computeBoundingBox";
-import resizeImageToPreview from "./resizeImageToPreview";
+import {toDataURL} from "../../../../core/utils/imageManipulation";
+import coreParser from "../../../../core/utils/gltf/coreParser";
+import Folder from "../../templates/Folder";
+import loadObj from "../../../../core/utils/obj/loadObj";
+import computeBoundingBox from "../computeBoundingBox";
+import resizeImageToPreview from "../parsers/resizeImageToPreview";
 
 export default function handleImportFile(files, hook) {
     files.forEach(fi => processFile(fi, hook))
 }
 
 export function handleImportFolder(files, hook) {
-
+    console.log(files)
     let usedNames = []
     let folders = files
         .map(f => {

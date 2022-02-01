@@ -2,13 +2,14 @@ import styles from './styles/Explorer.module.css'
 import PropTypes from "prop-types";
 import React, {useContext, useEffect, useMemo, useState} from "react";
 import Directories from "./components/Directories";
-import Items from "./components/Items";
-import ImportOptions from "./components/ImportOptions";
+import Cards from "./components/card/Cards";
+import ControlBar from "./components/ControlBar";
 import Folder from "./templates/Folder";
 import ResizableBar from "../resizable/ResizableBar";
 import {Button} from "@f-ui/core";
 import useDB from "./hooks/useDB";
 import DatabaseProvider from "../db/DatabaseProvider";
+import ListItems from "./components/list/ListItems";
 
 export default function Explorer(props) {
     const [selected, setSelected] = useState()
@@ -69,7 +70,7 @@ export default function Explorer(props) {
                 <ResizableBar type={'width'} color={'var(--fabric-border-primary)'}/>
                 <div className={styles.content}>
                     <div className={styles.contentWrapper} style={{paddingLeft: '8px'}}>
-                        <ImportOptions
+                        <ControlBar
                             searchString={searchString}
                             visualizationType={visualizationType}
                             setVisualizationType={setVisualizationType}
@@ -81,14 +82,30 @@ export default function Explorer(props) {
                             hidden={hidden} hook={hook} setHidden={setHidden} {...props} path={path}
                         />
                     </div>
-                    {hidden ? null : <Items
 
-                        {...props} hook={hook}
-                        visualizationType={visualizationType}
-                        searchString={searchString}
-                        setSelected={setSelected}
-                        accept={props.accept ? props.accept : []}
-                    />}
+                        {visualizationType === 2 ?
+                            <ListItems
+                                {...props}
+                                hidden={hidden}
+                                hook={hook}
+                                visualizationType={visualizationType}
+                                searchString={searchString}
+                                setSelected={setSelected}
+                                selected={selected}
+                                accept={props.accept ? props.accept : []}
+                            />
+                        :
+                            <Cards
+                                {...props}
+                                hidden={hidden}
+                                hook={hook}
+                                visualizationType={visualizationType}
+                                searchString={searchString}
+                                setSelected={setSelected}
+                                selected={selected}
+                                accept={props.accept ? props.accept : []}
+                            />}
+
                 </div>
 
             </div>

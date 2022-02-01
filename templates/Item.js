@@ -1,5 +1,5 @@
 import React from 'react'
-import randomID from "../../../utils/randomID";
+import randomID from "../../../utils/misc/randomID";
 
 export default class Item {
     name = ''

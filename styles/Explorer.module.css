@@ -25,7 +25,7 @@
 .contentWrapper {
     top: 0;
     position: sticky;
-    z-index: 999;
+    z-index: 10;
     width: 100%;
 
     display: flex;

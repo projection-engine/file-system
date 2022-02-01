@@ -4,8 +4,8 @@ import ContextMenu from "../../../components/context/ContextMenu";
 import React, {useMemo} from "react";
 import Folder from "../templates/Folder";
 import TreeView from "../../../components/tree/TreeView";
-import mapToView from "../utils/mapToView";
-import getFolderOptions from "../utils/getFolderOptions";
+import mapToView from "../utils/parsers/mapToView";
+import getFolderOptions from "../utils/visuals/getFolderOptions";
 
 
 export default function Directories(props) {

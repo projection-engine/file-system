@@ -1,13 +1,10 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import Folder from "../templates/Folder";
-import {Dexie} from "dexie";
-import loadData from "../utils/loadData";
-import randomID from "../../../utils/randomID";
-import cloneClass from "../../../utils/cloneClass";
-import initializeDatabase from "../utils/initializeDatabase";
-import DatabaseProvider from "../../db/DatabaseProvider";
+import randomID from "../../../utils/misc/randomID";
+import cloneClass from "../../../utils/misc/cloneClass";
 import LoadProvider from "../../../hook/LoadProvider";
-import EVENTS from "../../../utils/EVENTS";
+import EVENTS from "../../../utils/misc/EVENTS";
+import File from "../templates/File";
 
 export const FILE_TYPES = {
     FOLDER: 'FOLDER',
@@ -29,15 +26,19 @@ export default function useDB(rootName, setAlert, projectID, database) {
             load.pushEvent(EVENTS.PROJECT_FILES)
             database.listFiles({project: projectID})
                 .then(r => {
-                    if (r.length > 0)
-                        loadData(r, projectID).then(data => {
-                            console.log(data)
-                            const firstFolder = data.find(f => f instanceof Folder && !f.parent)
-                            setReady(true)
-                            setItems(data)
-                            setCurrentDirectory(firstFolder.id)
-                            load.finishEvent(EVENTS.PROJECT_FILES)
+                    if (r.length > 0) {
+                        const data = r.map(f => {
+                            if (f.instanceOf === FILE_TYPES.FOLDER)
+                                return new Folder(f.name, f.parent, f.id, new Date(f.creationDate))
+                            else
+                                return new File(f.name, f.type, f.size, f.id, f.parent, new Date(f.creationDate), f.previewImage)
                         })
+                        const firstFolder = data.find(f => f instanceof Folder && !f.parent)
+                        setReady(true)
+                        setItems(data)
+                        setCurrentDirectory(firstFolder.id)
+                        load.finishEvent(EVENTS.PROJECT_FILES)
+                    }
                     else {
                         const newParent = randomID()
                         database
@@ -113,7 +114,7 @@ export default function useDB(rootName, setAlert, projectID, database) {
                     setItems(prev => [...prev, item])
                     setAlert({
                         type: 'success',
-                        message: 'Item added.'
+                        message: 'ItemCard added.'
                     })
                 })
                 .catch(res => {
@@ -139,7 +140,7 @@ export default function useDB(rootName, setAlert, projectID, database) {
                 })
                 setAlert({
                     type: 'success',
-                    message: 'Item renamed'
+                    message: 'ItemCard renamed'
                 })
             }))
             .catch()
@@ -157,7 +158,7 @@ export default function useDB(rootName, setAlert, projectID, database) {
 
                     setAlert({
                         type: 'success',
-                        message: 'Item deleted'
+                        message: 'ItemCard deleted'
                     })
                 }
             })
@@ -218,7 +219,7 @@ export default function useDB(rootName, setAlert, projectID, database) {
                 })
                 setAlert({
                     type: 'success',
-                    message: 'Item moved'
+                    message: 'ItemCard moved'
                 })
             }).catch()
     }
