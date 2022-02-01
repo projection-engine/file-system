@@ -7,62 +7,72 @@ import loadObj from "../../../../core/utils/obj/loadObj";
 import computeBoundingBox from "../computeBoundingBox";
 import resizeImageToPreview from "../parsers/resizeImageToPreview";
 
+
 export default function handleImportFile(files, hook) {
     files.forEach(fi => processFile(fi, hook))
 }
 
 export function handleImportFolder(files, hook) {
-    console.log(files)
+
+    const includesGLTF = files.findIndex(f => f.name.includes('.gltf')) > -1
+    const rootName = files.length > 0 ? files[0].name.split('/')[0] : undefined
+
     let usedNames = []
-    let folders = files
-        .map(f => {
-            const name = f.webkitRelativePath.replace(/\/(([a-zA-Z0-9_ ]|-)+)\.[a-zA-Z0-9]*$/, '')
-            if (!usedNames.find(dir => dir.name === name)) {
-                const newFolder = new Folder(name)
+    if(!includesGLTF) {
+        let folders = files
+            .map(f => {
+                const name = f.webkitRelativePath.replace(/\/(([a-zA-Z0-9_ ]|-)+)\.[a-zA-Z0-9]*$/, '')
+                if (!usedNames.find(dir => dir.name === name)) {
+                    const newFolder = new Folder(name)
 
-                usedNames.push({
-                    name,
-                    id: newFolder.id
-                })
-                return newFolder
-            } else
-                return undefined
-        }).filter(f => f !== undefined)
+                    usedNames.push({
+                        name,
+                        id: newFolder.id
+                    })
+                    return newFolder
+                } else
+                    return undefined
+            }).filter(f => f !== undefined)
 
 
-    folders.map(f => {
-        const split = f.name.split('/')
+        folders.map(f => {
+            const split = f.name.split('/')
 
-        if (split.length > 1) {
-            split.pop()
-            const folderNewName = f.name.split('/')[f.name.split('/').length - 1]
-            if (split.length > 0) {
-                const directParent = usedNames.find(p => p.name === split[split.length - 1])
+            if (split.length > 1) {
+                split.pop()
+                const folderNewName = f.name.split('/')[f.name.split('/').length - 1]
+                if (split.length > 0) {
+                    const directParent = usedNames.find(p => p.name === split[split.length - 1])
 
-                if (directParent) {
-                    f.parent = directParent.id
-                    f.name = folderNewName
+                    if (directParent) {
+                        f.parent = directParent.id
+                        f.name = folderNewName
+                    }
                 }
-            }
-        } else
-            f.parent = hook.currentDirectory
+            } else
+                f.parent = hook.currentDirectory
 
-        return f
-    }).forEach(f => hook.pushFolder(f))
-
-    const parsedFiles = files
-        .map(f => {
-            const folderName = f.webkitRelativePath.replace(/\/(([a-zA-Z0-9_ ]|-)+)\.[a-zA-Z0-9]*$/, '')
-            const folderRef = usedNames.find(dir => dir.name === folderName)
-            f.parent = folderRef.id
             return f
-        })
+        }).forEach(f => hook.pushFolder(f))
+        const parsedFiles = files
+            .map(f => {
+                const folderName = f.webkitRelativePath.replace(/\/(([a-zA-Z0-9_ ]|-)+)\.[a-zA-Z0-9]*$/, '')
+                const folderRef = usedNames.find(dir => dir.name === folderName)
+                f.parent = folderRef ? folderRef.id : hook.currentDirectory
+                return f
+            })
 
-    parsedFiles.forEach(fi => processFile(fi, hook, true))
+        parsedFiles.forEach(fi => processFile(fi, hook, true ))
+    }else{
+        const gltfFile = files.find(f => f.name.includes('.gltf'))
+        if(gltfFile)
+        processFile(gltfFile, hook, true, files, rootName)
+    }
+
 
 }
 
-function processFile(file, hook, attributedParent) {
+function processFile(file, hook, attributedParent, files, rootName) {
     let reader = new FileReader();
     const split = file.name.split(/\.([a-zA-Z].+)$/)
 
@@ -81,27 +91,27 @@ function processFile(file, hook, attributedParent) {
             break
         }
         case 'gltf': {
-            const newFolder = new Folder(split[0], hook.currentDirectory)
+            const newFolder = new Folder(rootName ? rootName: split[0] , hook.currentDirectory)
             hook.pushFolder(newFolder)
+            coreParser(file, files).then(parsedData => {
 
-            reader.addEventListener('load', event => {
-                const parsedData = coreParser(event.target.result)
-                const encodedMeshes = parsedData.nodes.map(m => {
-                    const [min, max] = computeBoundingBox(parsedData.meshes[m.meshIndex]?.vertices)
-                    const str = JSON.stringify({
-                        ...parsedData.meshes[m.meshIndex],
-                        ...m,
-                        boundingBoxMax: max,
-                        boundingBoxMin: min,
+                if (parsedData) {
+                    const encodedMeshes = parsedData.nodes.map(m => {
+                        const [min, max] = computeBoundingBox(parsedData.meshes[m.meshIndex]?.vertices)
+                        const str = JSON.stringify({
+                            ...parsedData.meshes[m.meshIndex],
+                            ...m,
+                            boundingBoxMax: max,
+                            boundingBoxMin: min,
+                        })
+                        return encodeURI(str)
                     })
-                    return encodeURI(str)
-                })
-                parsedData.nodes.forEach(n => {
-
-                    hook.pushFile(new FileClass(n.name, 'mesh', encodedMeshes[n.meshIndex].split(/%..|./).length - 1, undefined, newFolder.id), encodedMeshes[n.meshIndex])
-                })
-            });
-            reader.readAsText(file)
+                    parsedData.nodes.forEach(n => {
+                        hook.pushFile(new FileClass(n.name, 'mesh', encodedMeshes[n.meshIndex].split(/%..|./).length - 1, undefined, newFolder.id), encodedMeshes[n.meshIndex])
+                    })
+                }
+                console.log(parsedData)
+            })
             break
         }
         case'obj': {
@@ -114,7 +124,7 @@ function processFile(file, hook, attributedParent) {
                     rotation: [0, 0, 0],
                     translation: [0, 0, 0],
                     scaling: [1, 1, 1],
-                    boundingBoxMax:max ,
+                    boundingBoxMax: max,
                     boundingBoxMin: min,
                 }
                 const encodedMesh = encodeURI(JSON.stringify(parsedData))
