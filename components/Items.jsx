@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import styles from '../styles/Files.module.css'
+import styles from '../styles/Items.module.css'
 import React, {useMemo, useRef, useState} from "react";
 import Item from "./Item";
 import ContextMenu from "../../../components/context/ContextMenu";
@@ -20,13 +20,13 @@ export default function Items(props) {
         <div
             ref={ref}
 
-            style={{width: '100%', height: '100%'}}
+            style={{width: '100%', height: '100%', overflowY: 'auto',}}
             onDragOver={e => e.preventDefault()}
             onDrop={(e) => {
                 e.preventDefault()
 
                 let files = Array.from(e.dataTransfer.items)
-                if(files.length > 0){
+                if (files.length > 0) {
                     files = files.filter(f => f.kind === 'file')
                     files = files.map(f => f.getAsFile())
                     files = files.filter(f => {
@@ -44,13 +44,13 @@ export default function Items(props) {
                 const elements = document.elementsFromPoint(e.clientX, e.clientY)
                 const isChild = elements.find(e => e.getAttribute('data-file') !== null || elements.find(e => e.getAttribute('data-folder') !== null))
 
-                if(!isChild)
+                if (!isChild)
                     setFocusedElement(undefined)
             }}
             data-folder-wrapper={props.hook.currentDirectory}
         >
             <ContextMenu
-                className={styles.wrapper}
+
                 options={[
                     ...getFolderOptions(props.hook),
                     {
@@ -115,6 +115,8 @@ export default function Items(props) {
                         setFocusedElement(attr)
                     }
                 }}
+                className={styles.filesWrapper}
+
                 triggers={[
                     'data-folder-wrapper',
                     'data-file',
@@ -134,6 +136,7 @@ export default function Items(props) {
                                 openEngineFile={props.openEngineFile}
                                 hook={props.hook}
                                 onRename={currentItem}
+                                visualizationType={props.visualizationType}
                                 submitRename={newName => {
                                     if (newName !== child.name) {
                                         if (child.constructor.name === 'File')
@@ -146,6 +149,7 @@ export default function Items(props) {
                             />
                         </React.Fragment>
                     ))
+
                     :
                     <div className={styles.empty}>
                         <span className={'material-icons-round'} style={{fontSize: '100px'}}>folder</span>
@@ -160,6 +164,9 @@ export default function Items(props) {
 }
 
 Items.propTypes = {
+    visualizationType: PropTypes.number,
+
+
     searchString: PropTypes.string,
     selected: PropTypes.string,
     setSelected: PropTypes.func,

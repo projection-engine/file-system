@@ -1,10 +1,9 @@
 import styles from './styles/Explorer.module.css'
 import PropTypes from "prop-types";
-import React, {useContext, useEffect, useMemo, useRef, useState} from "react";
+import React, {useContext, useEffect, useMemo, useState} from "react";
 import Directories from "./components/Directories";
 import Items from "./components/Items";
 import ImportOptions from "./components/ImportOptions";
-import Visualizer from "./components/Visualizer";
 import Folder from "./templates/Folder";
 import ResizableBar from "../resizable/ResizableBar";
 import {Button} from "@f-ui/core";
@@ -16,8 +15,8 @@ export default function Explorer(props) {
     const [hidden, setHidden] = useState(true)
     const [searchString, setSearchString] = useState('')
     const database = useContext(DatabaseProvider)
-    const hook = useDB( 'Project', props.setAlert, props.id, database)
-
+    const hook = useDB('Project', props.setAlert, props.id, database)
+    const [visualizationType, setVisualizationType] = useState(0)
     useEffect(() => {
         setHidden(true)
     }, [props.currentTab])
@@ -37,7 +36,7 @@ export default function Explorer(props) {
     }, [hook.currentDirectory, hook.items])
 
     useEffect(() => {
-        if(hidden)
+        if (hidden)
             hook.ref.current.previousSibling.previousSibling.style.height = '100%'
     }, [hidden])
 
@@ -72,6 +71,8 @@ export default function Explorer(props) {
                     <div className={styles.contentWrapper} style={{paddingLeft: '8px'}}>
                         <ImportOptions
                             searchString={searchString}
+                            visualizationType={visualizationType}
+                            setVisualizationType={setVisualizationType}
                             setSearchString={v => {
                                 if (hidden)
                                     setHidden(false)
@@ -81,13 +82,15 @@ export default function Explorer(props) {
                         />
                     </div>
                     {hidden ? null : <Items
+
                         {...props} hook={hook}
+                        visualizationType={visualizationType}
                         searchString={searchString}
                         setSelected={setSelected}
                         accept={props.accept ? props.accept : []}
                     />}
                 </div>
-                <Visualizer setSelected={setSelected} selected={selected} hook={hook}/>
+
             </div>
         </>
     )

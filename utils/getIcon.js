@@ -1,6 +1,6 @@
-import styles from "../styles/Files.module.css";
+import styles from "../styles/Item.module.css";
 
-export default function getIcon(type, file) {
+export default function getIcon(type, file, className) {
     switch (type) {
         case 'jpg':
         case 'jpeg':
@@ -8,21 +8,21 @@ export default function getIcon(type, file) {
         case 'mesh':
         case 'png': {
             return (
-                <div className={styles.icon}>
+                <div className={className}>
                     <img src={file?.preview} alt={'image'} className={styles.image}/>
                 </div>
             )
         }
         case 'Folder': {
             return (
-                <div className={styles.icon}>
+                <div className={className}>
                     <span className={'material-icons-round'} style={{fontSize: '3.5rem'}}>folder</span>
                 </div>
             )
         }
         default:
             return (
-                <div className={styles.icon}>
+                <div className={className}>
                     <span className={'material-icons-round'} style={{fontSize: '2.5rem'}}>description</span>
                 </div>
             )

@@ -37,6 +37,16 @@ export default function ImportOptions(props) {
 
 
             <div style={{display: 'flex', alignItems: 'center', gap: '4px', width: '100%'}}>
+                <Button className={styles.button} onClick={() => props.setVisualizationType(0)} highlight={props.visualizationType === 0}>
+                    <span className={'material-icons-round'}>grid_view</span>
+                </Button>
+                <Button className={styles.button} onClick={() => props.setVisualizationType(1)} highlight={props.visualizationType === 1}>
+
+                    <span className={'material-icons-round'}>view_comfy</span>
+                </Button>
+                <Button className={styles.button} onClick={() => props.setVisualizationType(2)} highlight={props.visualizationType === 2}>
+                    <span className={'material-icons-round'}>view_list</span>
+                </Button>
                 <Search searchString={props.searchString} setSearchString={props.setSearchString}/>
                 {props.path.map((p, i) => (
                     <React.Fragment key={p.id}>
@@ -68,6 +78,10 @@ export default function ImportOptions(props) {
 }
 
 ImportOptions.propTypes = {
+    visualizationType: PropTypes.number,
+    setVisualizationType: PropTypes.func,
+
+
     searchString: PropTypes.string,
     setSearchString: PropTypes.func,
     path: PropTypes.arrayOf(PropTypes.object),

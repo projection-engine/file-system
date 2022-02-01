@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
-import styles from '../styles/Files.module.css'
+import styles from '../styles/Item.module.css'
 import React, {useEffect, useMemo, useRef, useState} from "react";
-import {ToolTip} from "@f-ui/core";
+import {ToolTip} from "../../../../fabric/src/index";
 import parseFileType from "../utils/parseFileType";
 import getIcon from "../utils/getIcon";
 import Folder from "../templates/Folder";
+import {DataRow} from "@f-ui/core";
 
 export default function Item(props) {
     const ref = useRef()
@@ -19,10 +20,33 @@ export default function Item(props) {
         return props.onRename === props.data.id
     }, [props.onRename])
     const [currentLabel, setCurrentLabel] = useState(props.data.name)
-
     useEffect(() => {
         setCurrentLabel(props.data.name)
     }, [props.data.name])
+    const className = useMemo(() => {
+        switch (props.visualizationType) {
+            case 0:
+                return {
+                    wrapper: styles.fileBig,
+                    label: styles.fileBigLabel,
+                    icon: styles.fileBigIcon
+                }
+            case 1:
+                return {
+                    wrapper: styles.fileSmall,
+                    label: styles.fileSmallLabel,
+                    icon: styles.fileSmallIcon
+                }
+
+            case 2:
+                return {
+                    wrapper: styles.listRow,
+                    label: styles.listRowLabel,
+                    icon: styles.listRowIcon
+                }
+
+        }
+    }, [props.visualizationType])
 
     return (
         <div
@@ -38,7 +62,7 @@ export default function Item(props) {
                 } else if (props.type === 'Folder')
                     props.hook.setCurrentDirectory(props.data.id)
             }}
-            className={styles.file}
+            className={[styles.file, className.wrapper].join(' ')}
             data-focused={`${props.focusedElement === props.data.id}`}
             onDragOver={e => {
                 if (props.type === 'Folder') {
@@ -55,10 +79,7 @@ export default function Item(props) {
             }}
             onDrop={e => {
                 e.preventDefault()
-
                 e.currentTarget.parentNode.classList.remove(styles.hovered)
-
-
                 const current = e.dataTransfer.getData('text')
                 const foundCurrent = props.hook.items.find(f => f.id === current)
 
@@ -78,8 +99,33 @@ export default function Item(props) {
 
             }}
         >
-            {getIcon(props.data.type ? props.data.type : props.type, props.data)}
-            <div className={styles.infoWrapper}>
+            {/*<DataRow*/}
+            {/*    selfContained={true}*/}
+            {/*    object={props.data}*/}
+            {/*    keys={[*/}
+            {/*        {*/}
+            {/*            label: 'Name',*/}
+            {/*            key: 'name',*/}
+            {/*            type: 'string'*/}
+            {/*        },*/}
+            {/*        {*/}
+            {/*            label: 'Type',*/}
+            {/*            key: 'type',*/}
+            {/*            type: 'string'*/}
+            {/*        },*/}
+            {/*        {*/}
+            {/*            label: 'Size',*/}
+            {/*            key: 'size',*/}
+            {/*            type: 'string'*/}
+            {/*        },*/}
+            {/*        {*/}
+            {/*            label: 'Creation date',*/}
+            {/*            key: 'creationDate',*/}
+            {/*            type: 'date'*/}
+            {/*        }*/}
+            {/*    ]}/>*/}
+            {getIcon(props.data.type ? props.data.type : props.type, props.data, className.icon)}
+            <div className={className.label}>
                 {currentlyOnRename ?
                     <input
                         className={styles.input}
@@ -95,16 +141,18 @@ export default function Item(props) {
                     />
                     :
                     (props.type === 'File' ?
-                            <div className={styles.contentWrapper}>
+                            <>
+
                                 <div className={[styles.label, styles.overflow].join(' ')}>
                                     {currentLabel}
                                 </div>
                                 <div className={[styles.type, styles.overflow].join(' ')}>
                                     {parseFileType(props.data.type)}
                                 </div>
-                            </div>
+                            </>
                             :
-                            <div className={[styles.label, styles.overflow].join(' ')} style={{textAlign: 'center'}}>
+                            <div className={[styles.label, styles.overflow].join(' ')}
+                                 style={{textAlign: 'center', padding: '8px 8px 16px 8px'}}>
                                 {currentLabel}
                             </div>
                     )
@@ -155,6 +203,8 @@ export default function Item(props) {
 }
 
 Item.propTypes = {
+    visualizationType: PropTypes.number,
+
     setFocusedElement: PropTypes.func,
     focusedElement: PropTypes.string,
     type: PropTypes.oneOf(['File', 'Folder']),
