@@ -1,9 +1,9 @@
 import FileClass from "../templates/File";
 import React from 'react'
 import {toDataURL} from "../../../core/utils/imageManipulation";
-import coreParser from "../../../core/utils/gltf/parser/coreParser";
+import coreParser from "../../../core/utils/gltf/coreParser";
 import Folder from "../templates/Folder";
-import loadObj from "../../../core/utils/loadObj";
+import loadObj from "../../../core/utils/obj/loadObj";
 import computeBoundingBox from "./computeBoundingBox";
 import resizeImageToPreview from "./resizeImageToPreview";
 
@@ -87,7 +87,7 @@ function processFile(file, hook, attributedParent) {
             reader.addEventListener('load', event => {
                 const parsedData = coreParser(event.target.result)
                 const encodedMeshes = parsedData.nodes.map(m => {
-                    const [min, max] = computeBoundingBox(parsedData.meshes[m.meshIndex].vertices)
+                    const [min, max] = computeBoundingBox(parsedData.meshes[m.meshIndex]?.vertices)
                     const str = JSON.stringify({
                         ...parsedData.meshes[m.meshIndex],
                         ...m,
@@ -132,7 +132,6 @@ function processFile(file, hook, attributedParent) {
             reader.readAsText(file)
             break
         }
-
     }
     return undefined
 }

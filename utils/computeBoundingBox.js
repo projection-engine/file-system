@@ -1,5 +1,6 @@
 import groupBy from "../../../utils/groupBy";
-import {groupInto} from "../../../core/utils/loadObj";
+import {groupInto} from "../../../core/utils/obj/loadObj";
+
 
 export default function computeBoundingBox(vertices) {
     const toVector = groupInto(3, vertices)
@@ -25,6 +26,6 @@ export default function computeBoundingBox(vertices) {
         if(!max[2] || current[2] >max[2])
             max[2] = current[2]
     }
-    console.log(min, max)
+    
     return [min, max]
 }
