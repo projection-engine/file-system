@@ -22,7 +22,7 @@ export default function useItem(props) {
 
     const onDoubleClick = () => {
         if (props.type === 'File') {
-            if (props.data.type === 'material' || props.data.type === 'skybox' || props.data.type === 'obj' || props.data.type === 'gltf')
+            if (props.data.type === 'mesh' || props.data.type === 'material')
                 props.openEngineFile(props.data.id, currentLabel)
             else
                 props.setSelected(props.data.id)

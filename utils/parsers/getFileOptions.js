@@ -37,15 +37,7 @@ export default function getFileOptions(props, setCurrentItem){
                 props.hook.pushFile(newFile, JSON.stringify({name: 'New Material'}))
             }
         },
-        {
-            requiredTrigger: 'data-folder-wrapper',
-            label: 'New skybox',
-            icon: <span className={'material-icons-round'}>cloud</span>,
-            onClick: () => {
-                const newFile = new FileObj('New skybox', 'skybox', 0, undefined, props.hook.currentDirectory)
-                props.hook.pushFile(newFile, JSON.stringify({name: 'New Skybox'}))
-            }
-        },
+
         {
             requiredTrigger: 'data-folder-wrapper',
             label: 'New directory',
