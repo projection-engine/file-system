@@ -70,7 +70,7 @@ export default function useDB(rootName, setAlert, projectID, database) {
     }, [projectID, database])
 
     const pushItem = (item, blob) => {
-        load.pushEvent(EVENTS.IMPORT_FILE)
+
         if (item instanceof Folder)
             database
                 .postFile({

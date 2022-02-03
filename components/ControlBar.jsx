@@ -1,13 +1,16 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Control.module.css'
 import {Button} from "@f-ui/core";
-import React, {useRef} from "react";
+import React, {useContext, useRef} from "react";
 import handleImportFile, {handleImportFolder} from "../utils/import/handleImportFile";
-import Search from "../../shared/Search";
+import Search from "../../search/Search";
+import EVENTS from "../../../utils/misc/EVENTS";
+import LoadProvider from "../../../hook/LoadProvider";
 
 export default function ControlBar(props) {
     const fileRef = useRef()
     const folderRef = useRef()
+    const load = useContext(LoadProvider)
 
     return (
         <>
@@ -17,6 +20,7 @@ export default function ControlBar(props) {
                 accept={['.obj', '.png', '.jpeg', '.jpg', '.hdr', '.gltf', '.glt', '.bin', '.material']}
                 multiple={true}
                 onChange={e => {
+                    load.pushEvent(EVENTS.IMPORT_FILE)
                     handleImportFile(Array.from(e.target.files), props.hook)
                     e.target.value = "";
                 }}
@@ -31,6 +35,7 @@ export default function ControlBar(props) {
                 webkitdirectory=""
                 multiple={true}
                 onChange={e => {
+                    load.pushEvent(EVENTS.IMPORT_FILE)
                     handleImportFolder(Array.from(e.target.files), props.hook)
                     e.target.value = "";
                 }}

@@ -1,5 +1,5 @@
 .hovered {
-    border-color: #0095ff;
+    border-color: var(--fabric-accent-color);
 }
 
 .input {
@@ -13,7 +13,7 @@
 }
 
 .input:focus {
-    border-color: #0095ff;
+    border-color: var(--fabric-accent-color);
 }
 
 
@@ -113,11 +113,11 @@
 }
 
 .file:hover {
-    border-color: #0095ff;
+    border-color: var(--fabric-accent-color);
 }
 
 .file:active, .file[data-focused = "true"] {
-    outline: #0095FF 2px solid !important;
+    outline: var(--fabric-accent-color) 2px solid !important;
 }
 
 .fileSmall {
