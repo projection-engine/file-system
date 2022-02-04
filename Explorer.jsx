@@ -5,11 +5,13 @@ import Directories from "./components/Directories";
 import Cards from "./components/card/Cards";
 import ControlBar from "./components/ControlBar";
 import Folder from "./templates/Folder";
-import ResizableBar from "../resizable/ResizableBar";
+
 import {Button} from "@f-ui/core";
 import useDB from "./hooks/useDB";
-import DatabaseProvider from "../db/DatabaseProvider";
+
 import ListItems from "./components/list/ListItems";
+import DatabaseProvider from "../../components/db/DatabaseProvider";
+import ResizableBar from "../../components/resizable/ResizableBar";
 
 export default function Explorer(props) {
     const [selected, setSelected] = useState()

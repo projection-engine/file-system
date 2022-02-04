@@ -1,13 +1,9 @@
 import PropTypes from "prop-types";
 import styles from '../../styles/Cards.module.css'
-import React, {useMemo, useRef, useState} from "react";
+import React from "react";
 import ItemCard from "./ItemCard";
-import ContextMenu from "../../../context/ContextMenu";
-import handleImportFile from "../../utils/import/handleImportFile";
-import FileObj from '../../templates/File'
-import Folder from "../../templates/Folder";
-import getFolderOptions from "../../utils/visuals/getFolderOptions";
 import useItems from "../../hooks/useItems";
+import ContextMenu from "../../../../components/context/ContextMenu";
 
 export default function Cards(props) {
     const {

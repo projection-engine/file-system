@@ -1,11 +1,12 @@
 import FileClass from "../../templates/File";
 import React from 'react'
-import {toDataURL} from "../../../../core/utils/imageManipulation";
-import coreParser from "../../../../core/utils/gltf/coreParser";
+
 import Folder from "../../templates/Folder";
-import loadObj from "../../../../core/utils/obj/loadObj";
 import computeBoundingBox from "../computeBoundingBox";
 import resizeImageToPreview from "../parsers/resizeImageToPreview";
+import {toDataURL} from "../../../../services/engine/utils/imageManipulation";
+import coreParser from "../../../../services/engine/utils/gltf/coreParser";
+import loadObj from "../../../../services/engine/utils/obj/loadObj";
 
 
 export default function handleImportFile(files, hook) {
@@ -110,7 +111,7 @@ function processFile(file, hook, attributedParent, files, rootName) {
                         hook.pushFile(new FileClass(n.name, 'mesh', encodedMeshes[n.meshIndex].split(/%..|./).length - 1, undefined, newFolder.id), encodedMeshes[n.meshIndex])
                     })
                 }
-                console.log(parsedData)
+
             })
             break
         }

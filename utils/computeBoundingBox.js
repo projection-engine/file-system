@@ -1,4 +1,4 @@
-import {groupInto} from "../../../core/utils/obj/loadObj";
+import {groupInto} from "../../../services/engine/utils/obj/loadObj";
 
 
 export default function computeBoundingBox(vertices) {

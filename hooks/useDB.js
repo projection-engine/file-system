@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import Folder from "../templates/Folder";
-import randomID from "../../../utils/misc/randomID";
-import cloneClass from "../../../utils/misc/cloneClass";
-import LoadProvider from "../../../hook/LoadProvider";
-import EVENTS from "../../../utils/misc/EVENTS";
+
 import File from "../templates/File";
+import EVENTS from "../../editor/utils/misc/EVENTS";
+import LoadProvider from "../../editor/hook/LoadProvider";
+import randomID from "../../editor/utils/misc/randomID";
 
 export const FILE_TYPES = {
     FOLDER: 'FOLDER',

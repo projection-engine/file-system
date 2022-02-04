@@ -3,9 +3,10 @@ import styles from '../styles/Control.module.css'
 import {Button} from "@f-ui/core";
 import React, {useContext, useRef} from "react";
 import handleImportFile, {handleImportFolder} from "../utils/import/handleImportFile";
-import Search from "../../search/Search";
-import EVENTS from "../../../utils/misc/EVENTS";
-import LoadProvider from "../../../hook/LoadProvider";
+import EVENTS from "../../editor/utils/misc/EVENTS";
+import LoadProvider from "../../editor/hook/LoadProvider";
+import Search from "../../../components/search/Search";
+
 
 export default function ControlBar(props) {
     const fileRef = useRef()

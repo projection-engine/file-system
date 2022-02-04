@@ -1,11 +1,9 @@
 import PropTypes from "prop-types";
 import styles from '../../styles/ItemCard.module.css'
-import React, {useEffect, useMemo, useRef, useState} from "react";
-import {ToolTip} from "@f-ui/core";
+import React, {useMemo} from "react";
 import parseFileType from "../../utils/parsers/parseFileType";
 import getIcon from "../../utils/visuals/getIcon";
 import Folder from "../../templates/Folder";
-import {DataRow} from "@f-ui/core";
 import useItem from "../../hooks/useItem";
 import ItemTooltip from "../ItemTooltip";
 
