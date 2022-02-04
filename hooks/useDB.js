@@ -5,6 +5,7 @@ import File from "../templates/File";
 import EVENTS from "../../editor/utils/misc/EVENTS";
 import LoadProvider from "../../editor/hook/LoadProvider";
 import randomID from "../../editor/utils/misc/randomID";
+import cloneClass from "../../editor/utils/misc/cloneClass";
 
 export const FILE_TYPES = {
     FOLDER: 'FOLDER',
