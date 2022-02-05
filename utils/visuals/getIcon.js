@@ -2,10 +2,7 @@ import styles from "../../styles/ItemCard.module.css";
 
 export default function getIcon(type, file, className, imageClass) {
     switch (type) {
-        case 'jpg':
-        case 'jpeg':
-        case 'hdr':
-        case 'png': {
+        case 'image': {
             if (file.preview)
                 return (
                     <div style={{position: 'relative'}} className={imageClass}>

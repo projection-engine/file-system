@@ -13,7 +13,7 @@ import ListItems from "./components/list/ListItems";
 import DatabaseProvider from "../../components/db/DatabaseProvider";
 import ResizableBar from "../../components/resizable/ResizableBar";
 
-export default function Explorer(props) {
+export default function FilesView(props) {
     const [selected, setSelected] = useState()
     const [hidden, setHidden] = useState(true)
     const [searchString, setSearchString] = useState('')
@@ -115,7 +115,7 @@ export default function Explorer(props) {
     )
 }
 
-Explorer.propTypes = {
+FilesView.propTypes = {
     id: PropTypes.string,
     currentTab: PropTypes.number,
     openEngineFile: PropTypes.func.isRequired,

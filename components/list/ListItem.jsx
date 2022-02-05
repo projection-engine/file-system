@@ -18,29 +18,7 @@ export default function ListItem(props) {
         currentLabel,
         setCurrentLabel
     } = useItem(props)
-    const keys = useMemo(() => {
-        return [
-            {
-                label: 'Name',
-                key: 'name',
-                type: 'string'
-            },
-            {
-                label: 'Type',
-                key: 'type',
-                type: 'string'
-            },
-            {
-                label: 'Size',
-                key: 'size',
-                type: 'string'
-            },
-            {
-                label: 'Creation date',
 
-            }
-        ]
-    }, [props.type])
     return (
         <div
             ref={ref}

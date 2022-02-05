@@ -3,12 +3,12 @@ import React from 'react'
 
 import Folder from "../../templates/Folder";
 import computeBoundingBox from "../computeBoundingBox";
-import resizeImageToPreview from "../parsers/resizeImageToPreview";
-import {toDataURL} from "../../../../services/engine/utils/imageManipulation";
+
 import coreParser from "../../../../services/engine/utils/gltf/coreParser";
 import loadObj from "../../../../services/engine/utils/obj/loadObj";
-import {WebWorker} from "../../../editor/utils/classes/Worker";
-import FileBlob from "../../../editor/utils/classes/FileBlob";
+import FileBlob from "../../../../services/workers/FileBlob";
+
+import ImageProcessor from "../../../../services/workers/ImageProcessor";
 
 
 export default function handleImportFile(files, hook) {
@@ -85,11 +85,11 @@ function processFile(file, hook, attributedParent, files, rootName) {
         case 'jpg': {
             // const worker = new WebWorker()
             FileBlob.loadAsString(file, false, true).then(res => {
-                resizeImageToPreview(res, (b) => {
-                    const nFile = new FileClass(split[0], split[1], file.size, undefined, attributedParent ? file.parent : hook.currentDirectory, undefined, b)
-
-                    hook.pushFile(nFile, res)
-                })
+                ImageProcessor.reduceImage(res, 256, 256)
+                    .then(r => {
+                        const nFile = new FileClass(split[0], 'image', file.size, undefined, attributedParent ? file.parent : hook.currentDirectory, undefined, r)
+                        hook.pushFile(nFile, res)
+                    })
             })
 
             break

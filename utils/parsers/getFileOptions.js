@@ -34,7 +34,7 @@ export default function getFileOptions(props, setCurrentItem){
             icon: <span className={'material-icons-round'}>public</span>,
             onClick: () => {
                 const newFile = new FileObj('New material', 'material', 0, undefined, props.hook.currentDirectory)
-                props.hook.pushFile(newFile, JSON.stringify({name: 'New Material'}))
+                props.hook.pushFile(newFile, JSON.stringify({name: 'New MaterialView'}))
             }
         },
 
