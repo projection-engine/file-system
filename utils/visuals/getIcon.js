@@ -8,8 +8,11 @@ export default function getIcon(type, file, className, imageClass) {
         case 'png': {
             if (file.preview)
                 return (
-                    <div className={imageClass}>
+                    <div style={{position: 'relative'}} className={imageClass}>
                     <img src={file?.preview}  draggable={false} alt={'image'} className={styles.image}/>
+                        <div className={styles.floatingIcon}>
+                            <span style={{fontSize: '1rem'}} className={'material-icons-round'}>image</span>
+                        </div>
                     </div>
                 )
             return (
@@ -18,11 +21,29 @@ export default function getIcon(type, file, className, imageClass) {
         }
 
         case 'material':
-        case 'mesh':
             if (file.preview)
                 return (
-                    <div className={imageClass}>
-                        <img src={file?.preview} alt={'image'} className={styles.image}/>
+                    <div style={{position: 'relative'}} className={imageClass}>
+                        <img src={file?.preview}  draggable={false} alt={'image'} className={styles.image}/>
+                        <div className={styles.floatingIcon}>
+                            <span style={{fontSize: '1rem'}} className={'material-icons-round'}>texture</span>
+                        </div>
+                    </div>
+                )
+            return (
+                <div className={[styles.icon, className].join(' ')}>
+                    <span className={'material-icons-round'}>texture</span>
+                </div>
+            )
+        case 'mesh':
+
+            if (file.preview)
+                return (
+                    <div style={{position: 'relative'}} className={imageClass}>
+                        <img src={file?.preview}  draggable={false} alt={'image'} className={styles.image}/>
+                        <div className={styles.floatingIcon}>
+                            <span style={{fontSize: '1rem'}} className={'material-icons-round'}>view_in_ar</span>
+                        </div>
                     </div>
                 )
             return (

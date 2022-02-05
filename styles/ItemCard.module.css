@@ -186,6 +186,15 @@
     gap: 8px;
 }
 
-.listRowIcon {
+.floatingIcon{
+    padding: 4px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    background-color: var(--background-1) !important;
+    color: var(--fabric-color-primary) !important;
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
 
 }
