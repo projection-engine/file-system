@@ -1,5 +1,5 @@
 export default function resizeImageToPreview(data, callback) {
-    let img = document.createElement("img");
+    let img = new Image();
     img.src = data
     img.onload = () => {
         let canvas = document.createElement("canvas");

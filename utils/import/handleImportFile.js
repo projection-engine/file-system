@@ -7,6 +7,8 @@ import resizeImageToPreview from "../parsers/resizeImageToPreview";
 import {toDataURL} from "../../../../services/engine/utils/imageManipulation";
 import coreParser from "../../../../services/engine/utils/gltf/coreParser";
 import loadObj from "../../../../services/engine/utils/obj/loadObj";
+import {WebWorker} from "../../../editor/utils/classes/Worker";
+import FileBlob from "../../../editor/utils/classes/FileBlob";
 
 
 export default function handleImportFile(files, hook) {
@@ -19,7 +21,7 @@ export function handleImportFolder(files, hook) {
     const rootName = files.length > 0 ? files[0].name.split('/')[0] : undefined
 
     let usedNames = []
-    if(!includesGLTF) {
+    if (!includesGLTF) {
         let folders = files
             .map(f => {
                 const name = f.webkitRelativePath.replace(/\/(([a-zA-Z0-9_ ]|-)+)\.[a-zA-Z0-9]*$/, '')
@@ -63,11 +65,11 @@ export function handleImportFolder(files, hook) {
                 return f
             })
 
-        parsedFiles.forEach(fi => processFile(fi, hook, true ))
-    }else{
+        parsedFiles.forEach(fi => processFile(fi, hook, true))
+    } else {
         const gltfFile = files.find(f => f.name.includes('.gltf'))
-        if(gltfFile)
-        processFile(gltfFile, hook, true, files, rootName)
+        if (gltfFile)
+            processFile(gltfFile, hook, true, files, rootName)
     }
 
 
@@ -81,18 +83,19 @@ function processFile(file, hook, attributedParent, files, rootName) {
         case 'png':
         case 'jpeg':
         case 'jpg': {
-
-
-            toDataURL(URL.createObjectURL(file), base64 => {
-                resizeImageToPreview(base64, (b) => {
+            // const worker = new WebWorker()
+            FileBlob.loadAsString(file, false, true).then(res => {
+                resizeImageToPreview(res, (b) => {
                     const nFile = new FileClass(split[0], split[1], file.size, undefined, attributedParent ? file.parent : hook.currentDirectory, undefined, b)
-                    hook.pushFile(nFile, base64)
+
+                    hook.pushFile(nFile, res)
                 })
             })
+
             break
         }
         case 'gltf': {
-            const newFolder = new Folder(rootName ? rootName: split[0] , hook.currentDirectory)
+            const newFolder = new Folder(rootName ? rootName : split[0], hook.currentDirectory)
             hook.pushFolder(newFolder)
             coreParser(file, files).then(parsedData => {
 
