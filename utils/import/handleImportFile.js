@@ -98,28 +98,39 @@ function processFile(file, hook, attributedParent, files, rootName) {
             const newFolder = new Folder(rootName ? rootName : split[0], hook.currentDirectory)
             hook.pushFolder(newFolder)
             coreParser(file, files).then(parsedData => {
-
+                const size = files.map(f => f.size).reduce((partialSum, a) => partialSum + a, 0);
                 if (parsedData) {
-                    const encodedMeshes = parsedData.nodes.map(m => {
-                        const [min, max] = computeBoundingBox(parsedData.meshes[m.meshIndex]?.vertices)
-                        const str = JSON.stringify({
-                            ...parsedData.meshes[m.meshIndex],
-                            ...m,
-                            boundingBoxMax: max,
-                            boundingBoxMin: min,
-                        })
-                        return encodeURI(str)
-                    })
-                    parsedData.nodes.forEach(n => {
-                        hook.pushFile(new FileClass(n.name, 'mesh', encodedMeshes[n.meshIndex].split(/%..|./).length - 1, undefined, newFolder.id), encodedMeshes[n.meshIndex])
+                    parsedData.nodes.forEach(m => {
+                        // const [min, max] = computeBoundingBox(parsedData.meshes[m.meshIndex]?.vertices)
+                        console.log(file)
+                        hook.pushFile(new FileClass(
+                                m.name,
+                                'mesh',
+                                size,
+                                undefined,
+                                newFolder.id),
+                            //
+                            JSON.stringify({
+                                ...m,
+                                indices: parsedData.meshes[m.meshIndex].indices,
+                                vertices: parsedData.meshes[m.meshIndex].vertices,
+                                tangents: parsedData.meshes[m.meshIndex].tangents,
+                                normals: parsedData.meshes[m.meshIndex].normals,
+                                uvs: parsedData.meshes[m.meshIndex].uvs,
+
+                                boundingBoxMax: [0, 0, 0],
+                                boundingBoxMin: [0, 0, 0],
+                            })
+                        )
+
                     })
                 }
-
             })
             break
         }
         case'obj': {
             reader.addEventListener('load', event => {
+
                 const mesh = loadObj(event.target.result)
                 const [min, max] = computeBoundingBox(mesh.vertices)
 

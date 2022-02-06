@@ -27,7 +27,7 @@ export default function useDB(rootName, setAlert, projectID, database) {
             load.pushEvent(EVENTS.PROJECT_FILES)
             database.listFiles({project: projectID})
                 .then(r => {
-                    console.trace(r)
+
                     if (r.length > 0) {
                         const data = r.map(f => {
                             if (f.instanceOf === FILE_TYPES.FOLDER)
