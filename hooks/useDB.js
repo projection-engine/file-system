@@ -6,66 +6,31 @@ import EVENTS from "../../editor/utils/misc/EVENTS";
 import LoadProvider from "../../editor/hook/LoadProvider";
 import randomID from "../../editor/utils/misc/randomID";
 import cloneClass from "../../editor/utils/misc/cloneClass";
+import QuickAccessProvider from "../../../components/db/QuickAccessProvider";
 
 export const FILE_TYPES = {
     FOLDER: 'FOLDER',
     FILE: 'FILE'
 }
-export default function useDB(rootName, setAlert, projectID, database) {
+export default function useDB(rootName, setAlert, projectID) {
     const [openModal, setOpenModal] = useState(false)
     const [ready, setReady] = useState(false)
     const load = useContext(LoadProvider)
     const ref = useRef()
     const uploadRef = useRef()
     const [onRename, setOnRename] = useState({})
-    const [items, setItems] = useState([])
+    const [items, setItems] = useState([new Folder('Assets', undefined, 'none')])
     const [currentDirectory, setCurrentDirectory] = useState(null)
-
+    const quickAccess = useContext(QuickAccessProvider)
+    const path = quickAccess.fileSystem.path + '/assets'
 
     useEffect(() => {
-        if (projectID !== undefined && database) {
+        if (projectID !== undefined) {
             load.pushEvent(EVENTS.PROJECT_FILES)
-            database.listFiles({project: projectID})
-                .then(r => {
 
-                    if (r.length > 0) {
-                        const data = r.map(f => {
-                            if (f.instanceOf === FILE_TYPES.FOLDER)
-                                return new Folder(f.name, f.parent, f.id, new Date(f.creationDate))
-                            else
-                                return new File(f.name, f.type, f.size, f.id, f.parent, new Date(f.creationDate), f.previewImage)
-                        })
-                        const firstFolder = data.find(f => f instanceof Folder && !f.parent)
-                        setReady(true)
-                        setItems(data)
-                        setCurrentDirectory(firstFolder.id)
-                        load.finishEvent(EVENTS.PROJECT_FILES)
-                    }
-                    else {
-                        const newParent = randomID()
-                        database
-                            .postFile(
-                                {
-                                    id: newParent,
-                                    project: projectID,
-                                    name: 'Project',
-                                    creationDate: (new Date()).toDateString(),
-                                    parent: null,
-                                    instanceOf: FILE_TYPES.FOLDER,
-                                    type: FILE_TYPES.FOLDER,
-                                    size: 0
-                                }
-                            )
-                            .then(() => {
-                                const n = new Folder('Project', undefined, newParent)
-
-                                setItems([n])
-                                setCurrentDirectory(n.id)
-                                setReady(true)
-                                load.finishEvent(EVENTS.PROJECT_FILES)
-                            }).catch()
-                    }
-                })
+            const files = quickAccess.fileSystem
+                .fromDirectory(path)
+            const directories = quickAccess.fileSystem.foldersFromDirectory(quickAccess.fileSystem.path + '/asset')
 
 
         }
@@ -74,6 +39,7 @@ export default function useDB(rootName, setAlert, projectID, database) {
     const pushItem = (item, blob) => {
 
         if (item instanceof Folder)
+
             database
                 .postFile({
                     id: item.id,
@@ -234,7 +200,7 @@ export default function useDB(rootName, setAlert, projectID, database) {
         moveFile: moveItem,
         renameFolder: renameFile,
         renameFile,
-
+        load,
         ref,
         currentDirectory,
         setCurrentDirectory,

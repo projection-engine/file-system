@@ -1,6 +1,6 @@
 import styles from './styles/Explorer.module.css'
 import PropTypes from "prop-types";
-import React, {useContext, useEffect, useMemo, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import Directories from "./components/Directories";
 import Cards from "./components/card/Cards";
 import ControlBar from "./components/ControlBar";
@@ -10,15 +10,15 @@ import {Button} from "@f-ui/core";
 import useDB from "./hooks/useDB";
 
 import ListItems from "./components/list/ListItems";
-import DatabaseProvider from "../../components/db/DatabaseProvider";
+
 import ResizableBar from "../../components/resizable/ResizableBar";
 
 export default function FilesView(props) {
     const [selected, setSelected] = useState()
     const [hidden, setHidden] = useState(true)
     const [searchString, setSearchString] = useState('')
-    const database = useContext(DatabaseProvider)
-    const hook = useDB('Project', props.setAlert, props.id, database)
+
+    const hook = useDB('Project', props.setAlert, props.id)
     const [visualizationType, setVisualizationType] = useState(0)
     useEffect(() => {
         setHidden(true)

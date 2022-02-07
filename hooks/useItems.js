@@ -1,8 +1,10 @@
 import {useEffect, useMemo, useRef, useState} from "react";
-import handleImportFile from "../utils/import/handleImportFile";
-import getFileOptions from "../utils/parsers/getFileOptions";
 
-export default function useItems(props){
+import getFileOptions from "../utils/parsers/getFileOptions";
+import FileSystem from "../../../components/db/FileSystem";
+import EVENTS from "../../editor/utils/misc/EVENTS";
+
+export default function useItems(props) {
     const [currentItem, setCurrentItem] = useState()
     const [focusedElement, setFocusedElement] = useState()
 
@@ -12,7 +14,7 @@ export default function useItems(props){
     const ref = useRef()
     const onDragOver = e => e.preventDefault()
 
-    const onMouseDown= e => {
+    const onMouseDown = e => {
         const elements = document.elementsFromPoint(e.clientX, e.clientY)
         const isChild = elements.find(e => e.getAttribute('data-file') !== null || elements.find(e => e.getAttribute('data-folder') !== null))
 
@@ -20,6 +22,7 @@ export default function useItems(props){
             setFocusedElement(undefined)
     }
     const onDrop = e => {
+        props.hook.load.pushEvent(EVENTS.LOAD_FILE)
         e.preventDefault()
 
         let files = Array.from(e.dataTransfer.items)
@@ -34,7 +37,14 @@ export default function useItems(props){
                 })
                 return valid
             })
-            handleImportFile(files, props.hook)
+            files = files.map(f => {
+                return FileSystem.importFile(f)
+            })
+
+            Promise.all(files)
+                .then(r => {
+                    props.hook.load.finishEvent(EVENTS.LOAD_FILE)
+                })
         }
     }
     useEffect(() => {
@@ -51,11 +61,11 @@ export default function useItems(props){
     const options = useMemo(() => {
         return getFileOptions(props, setCurrentItem)
     }, [props])
-    
+
     return {
         currentItem, setCurrentItem,
         focusedElement, setFocusedElement,
-        filesToRender,ref,
+        filesToRender, ref,
         options
     }
 }

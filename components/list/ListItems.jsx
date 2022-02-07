@@ -93,8 +93,6 @@ export default function ListItems(props) {
 
 ListItems.propTypes = {
     visualizationType: PropTypes.number,
-
-
     searchString: PropTypes.string,
     selected: PropTypes.string,
     setSelected: PropTypes.func,

@@ -1,9 +1,6 @@
 export default function parseFileType(type){
     switch (type){
-        case 'jpeg':
-        case 'jpg':
-        case 'hdr':
-        case 'pnj':{
+        case 'image': {
             return 'Image'
         }
         case 'skybox':{
