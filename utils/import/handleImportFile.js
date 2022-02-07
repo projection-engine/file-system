@@ -98,18 +98,18 @@ function processFile(file, hook, attributedParent, files, rootName) {
             const newFolder = new Folder(rootName ? rootName : split[0], hook.currentDirectory)
             hook.pushFolder(newFolder)
             coreParser(file, files).then(parsedData => {
-                const size = files.map(f => f.size).reduce((partialSum, a) => partialSum + a, 0);
+                const size = files && files.length > 0 ? files.map(f => f.size).reduce((partialSum, a) => partialSum + a, 0) : file.size
                 if (parsedData) {
                     parsedData.nodes.forEach(m => {
-                        // const [min, max] = computeBoundingBox(parsedData.meshes[m.meshIndex]?.vertices)
-                        console.log(file)
+                        const [min, max] = computeBoundingBox(parsedData.meshes[m.meshIndex]?.vertices)
+
                         hook.pushFile(new FileClass(
                                 m.name,
                                 'mesh',
                                 size,
                                 undefined,
                                 newFolder.id),
-                            //
+
                             JSON.stringify({
                                 ...m,
                                 indices: parsedData.meshes[m.meshIndex].indices,
@@ -118,8 +118,8 @@ function processFile(file, hook, attributedParent, files, rootName) {
                                 normals: parsedData.meshes[m.meshIndex].normals,
                                 uvs: parsedData.meshes[m.meshIndex].uvs,
 
-                                boundingBoxMax: [0, 0, 0],
-                                boundingBoxMin: [0, 0, 0],
+                                boundingBoxMax: max,
+                                boundingBoxMin: min,
                             })
                         )
 
