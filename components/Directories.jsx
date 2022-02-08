@@ -10,7 +10,7 @@ import getFolderOptions from "../utils/visuals/getFolderOptions";
 
 export default function Directories(props) {
     const directoriesToRender = useMemo(() => {
-        const toFilter = props.hook.items.filter(item => item instanceof Folder && !item.parent)
+        const toFilter = props.hook.items.filter(item => item.isFolder && item.id.split('/').length === 0)
 
         return toFilter.map(f => {
             return mapToView(f, props.hook)
@@ -43,8 +43,8 @@ export default function Directories(props) {
                         label: 'New directory',
                         icon: <span className={'material-icons-round'}>create_new_folder</span>,
                         onClick: () => {
-                            const newFolder = new Folder('New folder', undefined)
-                            props.hook.pushFolder(newFolder)
+
+                            // TODO - ADD FOLDER
                         }
                     }
                 ]}
@@ -59,10 +59,12 @@ export default function Directories(props) {
                         const item = props.hook.items.find(f => f.id === target)
                         const dropTarget = props.hook.items.find(f => f.id === event.dataTransfer.getData('text'))
                         if (item && item.id !== event.dataTransfer.getData('text') && dropTarget && item.parent !== event.dataTransfer.getData('text') && item instanceof Folder){
-                            if(dropTarget instanceof Folder)
-                                props.hook.moveFolder(dropTarget.id, item.id)
-                            else
-                                props.hook.moveFile(dropTarget.id, item.id)
+                            // if(dropTarget instanceof Folder)
+                                // TODO - MOVE FOLDER
+                                // props.hook.moveFolder(dropTarget.id, item.id)
+                            // else
+                                // TODO - MOVE FILE
+                                // props.hook.moveFile(dropTarget.id, item.id)
                         }
                     }}
                     onDragLeave={(event, target) => {
@@ -75,12 +77,13 @@ export default function Directories(props) {
                     }}
 
 
-                    selected={props.hook.currentDirectory}
+                    selected={props.hook.currentDirectory.id}
                     nodes={directoriesToRender}
                     handleRename={(folder, newName) => {
                         const folderObj = props.hook.items.find(f => f.id === folder.id)
-                        if (folderObj)
-                            props.hook.renameFolder(folderObj, newName)
+                        // if (folderObj)
+                            // TODO - RENAME FOLDER
+                            // props.hook.renameFolder(folderObj, newName)
                     }}
                 />
             </ContextMenu>

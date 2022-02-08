@@ -27,7 +27,7 @@ export default function useItem(props) {
             else
                 props.setSelected(props.data.id)
         } else if (props.type === 'Folder')
-            props.hook.setCurrentDirectory(props.data.id)
+            props.hook.setCurrentDirectory(props.data)
     }
 
     const onDragOver = e => {

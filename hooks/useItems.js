@@ -2,15 +2,15 @@ import {useEffect, useMemo, useRef, useState} from "react";
 
 import getFileOptions from "../utils/parsers/getFileOptions";
 import FileSystem from "../../../components/db/FileSystem";
-import EVENTS from "../../editor/utils/misc/EVENTS";
+import EVENTS from "../../../pages/project/utils/misc/EVENTS";
 
-export default function useItems(props) {
+export default function useItems({hook, accept, searchString}) {
     const [currentItem, setCurrentItem] = useState()
     const [focusedElement, setFocusedElement] = useState()
 
     const filesToRender = useMemo(() => {
-        return props.hook.items.filter(file => file.parent === props.hook.currentDirectory && (props.searchString.length > 0 ? file.name.toLowerCase().includes(props.searchString) : true))
-    }, [props.hook.items, props.hook.currentDirectory, props.searchString])
+        return hook.items.filter(file => file.parent === hook.currentDirectory.id && (searchString.length > 0 ? file.name.toLowerCase().includes(searchString) : true))
+    }, [hook.items, hook.currentDirectory.id, searchString])
     const ref = useRef()
     const onDragOver = e => e.preventDefault()
 
@@ -22,7 +22,7 @@ export default function useItems(props) {
             setFocusedElement(undefined)
     }
     const onDrop = e => {
-        props.hook.load.pushEvent(EVENTS.LOAD_FILE)
+        hook.load.pushEvent(EVENTS.LOAD_FILE)
         e.preventDefault()
 
         let files = Array.from(e.dataTransfer.items)
@@ -32,18 +32,18 @@ export default function useItems(props) {
             files = files.filter(f => {
                 let valid = true
                 const extension = f.name.split(/\.([a-zA-Z0-9]+)$/)
-                props.accept.forEach(a => {
+                accept.forEach(a => {
                     valid = valid && extension.includes(a)
                 })
                 return valid
             })
             files = files.map(f => {
-                return FileSystem.importFile(f)
+                return hook.fileSystem.importFile(f)
             })
 
             Promise.all(files)
                 .then(r => {
-                    props.hook.load.finishEvent(EVENTS.LOAD_FILE)
+                    hook.load.finishEvent(EVENTS.LOAD_FILE)
                 })
         }
     }
@@ -56,11 +56,11 @@ export default function useItems(props) {
             ref.current?.removeEventListener('mousedown', onMouseDown)
             ref.current?.removeEventListener('dragover', onDragOver)
         }
-    }, [ref, props])
+    }, [ref, hook, accept, searchString])
 
     const options = useMemo(() => {
-        return getFileOptions(props, setCurrentItem)
-    }, [props])
+        return getFileOptions(setCurrentItem)
+    }, [hook, accept, searchString])
 
     return {
         currentItem, setCurrentItem,

@@ -3,9 +3,10 @@ import styles from '../styles/Control.module.css'
 import {Button} from "@f-ui/core";
 import React, {useContext, useRef} from "react";
 
-import EVENTS from "../../editor/utils/misc/EVENTS";
-import LoadProvider from "../../editor/hook/LoadProvider";
 import Search from "../../../components/search/Search";
+import EVENTS from "../../../pages/project/utils/misc/EVENTS";
+import LoadProvider from "../../../pages/project/hook/LoadProvider";
+import FileBlob from "../../../services/workers/FileBlob";
 
 
 export default function ControlBar(props) {
@@ -18,11 +19,18 @@ export default function ControlBar(props) {
             <input
                 type={'file'}
                 ref={fileRef}
-                accept={['.obj', '.png', '.jpeg', '.jpg', '.hdr', '.gltf', '.glt', '.bin', '.material']}
+                accept={['.obj', '.png', '.jpeg', '.jpg', '.hdr', '.gltf', '.glt',  '.material']}
                 multiple={true}
                 onChange={e => {
                     load.pushEvent(EVENTS.IMPORT_FILE)
                     //TODO
+                    const f= e.target.files[0]
+
+                    props.hook.fileSystem
+                        .importFile(f)
+                        .then(res => {
+                            load.finishEvent(EVENTS.IMPORT_FILE)
+                        })
                     e.target.value = "";
                 }}
                 style={{display: 'none'}}
@@ -59,9 +67,9 @@ export default function ControlBar(props) {
                 {props.path.map((p, i) => (
                     <React.Fragment key={p.id}>
                         <Button className={styles.button}
-                                styles={{fontWeight: props.hook.currentDirectory === p.id ? 600 : undefined}}
-                                highlight={props.hook.currentDirectory === p.id}
-                                onClick={() => props.hook.setCurrentDirectory(p.id)}>
+                                styles={{fontWeight: props.hook.currentDirectory.id === p.id ? 600 : undefined}}
+                                highlight={props.hook.currentDirectory.id === p.id}
+                                onClick={() => props.hook.setCurrentDirectory(p)}>
                             {p.name}
                         </Button>
                         {i < props.path.length - 1 ?

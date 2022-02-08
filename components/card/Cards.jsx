@@ -19,7 +19,7 @@ export default function Cards(props) {
             ref={ref}
             className={styles.content}
             style={{display: props.hidden ? 'none' : undefined}}
-            data-folder-wrapper={props.hook.currentDirectory}
+            data-folder-wrapper={props.hook.currentDirectory.id}
         >
             <ContextMenu
                 options={options}
@@ -43,7 +43,7 @@ export default function Cards(props) {
                                 variant={props.visualizationType === 0 ? 'big' : 'small'}
                                 setFocusedElement={setFocusedElement}
                                 focusedElement={focusedElement}
-                                type={child.constructor.name}
+                                type={child.type}
                                 data={child}
                                 selected={props.selected}
                                 setSelected={props.setSelected}
@@ -53,10 +53,11 @@ export default function Cards(props) {
                                 visualizationType={props.visualizationType}
                                 submitRename={newName => {
                                     if (newName !== child.name) {
-                                        if (child.constructor.name === 'File')
-                                            props.hook.renameFile(child, newName)
-                                        else
-                                            props.hook.renameFolder(child, newName)
+                                        // TODO - RENAME FILE FOLDER
+                                        // if (child.constructor.name === 'File')
+                                        //     props.hook.renameFile(child, newName)
+                                        // else
+                                        //     props.hook.renameFolder(child, newName)
                                     }
                                     setCurrentItem(undefined)
                                 }}

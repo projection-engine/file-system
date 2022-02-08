@@ -26,15 +26,17 @@ export default function getFileOptions(props, setCurrentItem){
             requiredTrigger: 'data-file',
             label: 'Delete',
             icon: <span className={'material-icons-round'}>delete</span>,
-            onClick: (node) => props.hook.removeFile(props.hook.items.find(e => e.id === node.getAttribute('data-file')))
+            onClick: (node) =>{
+                // TODO - DELETE FILE
+            }
         },
         {
             requiredTrigger: 'data-folder-wrapper',
             label: 'New material',
             icon: <span className={'material-icons-round'}>public</span>,
             onClick: () => {
-                const newFile = new FileObj('New material', 'material', 0, undefined, props.hook.currentDirectory)
-                props.hook.pushFile(newFile, JSON.stringify({name: 'New MaterialView'}))
+                // TODO - CREATE MATERIAL
+                // props.hook.pushFile(newFile, JSON.stringify({name: 'New MaterialView'}))
             }
         },
 
@@ -43,8 +45,7 @@ export default function getFileOptions(props, setCurrentItem){
             label: 'New directory',
             icon: <span className={'material-icons-round'}>create_new_folder</span>,
             onClick: () => {
-                const newFolder = new Folder('New directory', props.hook.currentDirectory)
-                props.hook.pushFolder(newFolder)
+                // TODO - CREATE FOLDER
             }
         },
     ]
