@@ -25,7 +25,7 @@ export default function ItemCard(props) {
         }
     }, [props.visualizationType])
     const icon = useMemo(() => {
-        return getIcon(props.data.type ? props.data.type : 'folder', props.data, className.icon, styles.imageWrapper)
+        return getIcon(props.data.type ? props.data.type : 'folder', props.data, className.icon, styles.imageWrapper, props.childrenQuantity)
     }, [props.data, className])
 
     const {
@@ -78,14 +78,14 @@ export default function ItemCard(props) {
                     )
                 }
             </div>
-            <ItemTooltip data={props.data} currentLabel={currentLabel} type={props.type}/>
+            <ItemTooltip childrenQuantity={props.childrenQuantity} data={props.data} currentLabel={currentLabel} type={props.type}/>
         </div>
     )
 }
 
 ItemCard.propTypes = {
     variant: PropTypes.oneOf(['small', 'big']).isRequired,
-
+    childrenQuantity: PropTypes.number,
     setFocusedElement: PropTypes.func,
     focusedElement: PropTypes.string,
     type: PropTypes.oneOf([0, 1]),

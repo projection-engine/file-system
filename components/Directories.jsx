@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import styles from '../styles/Directories.module.css'
 import ContextMenu from "../../../components/context/ContextMenu";
 import React, {useContext, useMemo} from "react";
-import Folder from "../templates/Folder";
 import TreeView from "../../../components/tree/TreeView";
 import mapToView from "../utils/parsers/mapToView";
 import EVENTS from "../../../pages/project/utils/misc/EVENTS";
@@ -32,9 +31,7 @@ export default function Directories(props) {
                             load.pushEvent(EVENTS.DELETE_FOLDER)
                             fs.rm(id, {recursive: true, force: true}, (e) => {
                                 load.finishEvent(EVENTS.DELETE_FOLDER)
-                                props.hook.setItems(prev => {
-                                    return prev.filter(p => p.id !== id)
-                                })
+                                props.hook.refreshFiles()
                             })
                         }
                     },
@@ -68,16 +65,7 @@ export default function Directories(props) {
                                 id += ' - ' + index
                             fs.mkdir(id, (e) => {
                                 if (!e) {
-                                    props.hook.setItems(prev => {
-                                        return [...prev,
-                                            {
-                                                id: id,
-                                                name: index > 0 ? 'New folder ' + ' - ' + index : 'New folder',
-                                                isFolder: true,
-                                                creationDate: new Date().toDateString(),
-                                                parent: undefined
-                                            }]
-                                    })
+                                    props.hook.refreshFiles()
                                 }
                             })
                         }
@@ -96,18 +84,8 @@ export default function Directories(props) {
                             if (index > 0)
                                 id += ' - ' + index
                             fs.mkdir(id, (e) => {
-                                if (!e) {
-                                    props.hook.setItems(prev => {
-                                        return [...prev,
-                                            {
-                                                id: id,
-                                                name: index > 0 ? 'New folder ' + ' - ' + index : 'New folder',
-                                                isFolder: true,
-                                                creationDate: new Date().toDateString(),
-                                                parent
-                                            }]
-                                    })
-                                }
+                                if (!e)
+                                    props.hook.refreshFiles()
                             })
                         }
                     }
@@ -119,18 +97,30 @@ export default function Directories(props) {
                 <TreeView
                     draggable={true}
                     onDrop={(event, target) => {
-                        event.currentTarget.parentNode.classList.remove(styles.hovered)
+                        const from = event.dataTransfer.getData('text')
+                        const to = target + '\\' + from.split('\\').pop()
                         const item = props.hook.items.find(f => f.id === target)
                         const dropTarget = props.hook.items.find(f => f.id === event.dataTransfer.getData('text'))
-                        if (item && item.id !== event.dataTransfer.getData('text') && dropTarget && item.parent !== event.dataTransfer.getData('text') && item instanceof Folder) {
-                            // if(dropTarget instanceof Folder)
-                            // TODO - MOVE FOLDER
-                            // props.hook.moveFolder(dropTarget.id, item.id)
-                            // else
-                            // TODO - MOVE FILE
-                            // props.hook.moveFile(dropTarget.id, item.id)
+
+                        if (item && item.id !== event.dataTransfer.getData('text') && dropTarget && item.parent !== event.dataTransfer.getData('text') && item.isFolder) {
+                            props.hook.fileSystem
+                                .rename(event.dataTransfer.getData('text'), to)
+                                .then(error => {
+                                    if (from === props.hook.currentDirectory.id)
+                                        props.hook.setCurrentDirectory(prev => {
+                                            return {
+                                                ...prev,
+                                                id: to
+                                            }
+                                        })
+                                    props.hook.onItemRename(event.dataTransfer.getData('text'), to)
+                                        .then(() => {
+                                            props.hook.refreshFiles()
+                                        })
+                                })
                         }
                     }}
+
                     onDragLeave={(event, target) => {
                         event.preventDefault()
                         event.currentTarget.classList.remove(styles.hovered)
@@ -140,13 +130,27 @@ export default function Directories(props) {
                         event.currentTarget.classList.add(styles.hovered)
                     }}
 
-
+                    selected
                     selected={props.hook.currentDirectory.id}
                     nodes={directoriesToRender}
                     handleRename={(folder, newName) => {
-                        props.hook.fileSystem.rename(folder.id, (folder.parent ? (folder.parent + '/') : (props.hook.fileSystem.path + '/assets/')) + newName)
+                        const path = window.require('path')
+
+                        const newNamePath = (folder.parent ? (folder.parent + '\\') + newName : path.resolve(props.hook.fileSystem.path + '/assets/' + newName))
+                        props.hook.fileSystem.rename(folder.id, newNamePath)
                             .then(error => {
-                                console.log(error)
+                                if (folder.id === props.hook.currentDirectory.id)
+                                    props.hook.setCurrentDirectory(prev => {
+                                        return {
+                                            ...prev,
+                                            id: newNamePath
+                                        }
+                                    })
+
+                                props.hook.onItemRename(folder.id, newNamePath)
+                                    .then(() => {
+                                        props.hook.refreshFiles()
+                                    })
                             })
                     }}
                 />

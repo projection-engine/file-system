@@ -1,6 +1,6 @@
 import styles from "../../styles/ItemCard.module.css";
 
-export default function getIcon(type, file, className, imageClass) {
+export default function getIcon(type, file, className, imageClass, childrenQuantity) {
     switch (type) {
         case 'pimg': {
             if (file.preview)
@@ -52,7 +52,7 @@ export default function getIcon(type, file, className, imageClass) {
         case 'folder': {
             return (
                 <div className={[styles.icon, className].join(' ')}>
-                    <span className={'material-icons-round'}>folder</span>
+                    <span className={'material-icons-round'}>{childrenQuantity > 0 ? 'source' : 'folder'}</span>
                 </div>
             )
         }

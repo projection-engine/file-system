@@ -59,6 +59,7 @@ export default function ListItems(props) {
                                 focusedElement={focusedElement}
                                 type={child.isFolder ? 0 : 1}
                                 data={child}
+                                childrenQuantity={child.children}
                                 selected={props.selected}
                                 setSelected={props.setSelected}
                                 openEngineFile={props.openEngineFile}

@@ -12,7 +12,7 @@ export default function Cards(props) {
         filesToRender, ref,
         options
     } = useItems(props)
-    console.log(filesToRender)
+
     return (
         <div
             ref={ref}
@@ -44,6 +44,7 @@ export default function Cards(props) {
                                 focusedElement={focusedElement}
                                 type={child.isFolder ? 0 : 1}
                                 data={child}
+                                childrenQuantity={child.children}
                                 selected={props.selected}
                                 setSelected={props.setSelected}
                                 openEngineFile={props.openEngineFile}
@@ -52,11 +53,23 @@ export default function Cards(props) {
                                 visualizationType={props.visualizationType}
                                 submitRename={newName => {
                                     if (newName !== child.name) {
-                                        // TODO - RENAME FILE FOLDER
-                                        // if (child.constructor.name === 'File')
-                                        //     props.hook.renameFile(child, newName)
-                                        // else
-                                        //     props.hook.renameFolder(child, newName)
+                                        const path = window.require('path')
+                                        const newNamePath = (child.parent ? (child.parent + '\\') + newName + (child.isFolder ? '' : `.${child.type}`) : path.resolve(props.hook.fileSystem.path + '/assets/' + newName + (child.isFolder ? '' : `.${child.type}`)))
+
+                                        props.hook.fileSystem.rename(child.id, newNamePath)
+                                            .then(error => {
+                                                if (child.id === props.hook.currentDirectory.id)
+                                                    props.hook.setCurrentDirectory(prev => {
+                                                        return {
+                                                            ...prev,
+                                                            id: newNamePath
+                                                        }
+                                                    })
+                                                props.hook.onItemRename(child.id, newNamePath)
+                                                    .then(() => {
+                                                        props.hook.refreshFiles()
+                                                    })
+                                            })
                                     }
                                     setCurrentItem(undefined)
                                 }}

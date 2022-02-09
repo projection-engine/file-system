@@ -69,7 +69,7 @@ export default function ControlBar(props) {
                 {props.path.map((p, i) => (
                     <React.Fragment key={p.id}>
                         <Button className={styles.button}
-                                styles={{fontWeight: props.hook.currentDirectory.id === p ? 600 : undefined}}
+                                styles={{fontWeight: props.hook.currentDirectory.id === p.id ? 600 : undefined}}
                                 highlight={props.hook.currentDirectory.id === p.id}
                                 onClick={() => {
                                     const found = props.hook.items.find(i => i.id === p.id)

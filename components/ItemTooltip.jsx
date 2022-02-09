@@ -36,13 +36,20 @@ export default function ItemTooltip(props){
 
                     </>
                     :
-                    null
+                    <div className={styles.infoRow}>
+                        Items:
+                        <div className={styles.infoRowContent}>
+                            {props.childrenQuantity}
+                        </div>
+                    </div>
                 }
+
             </div>
         </ToolTip>
     )
 }
 ItemTooltip.propTypes={
+    childrenQuantity: PropTypes.number,
     type: PropTypes.oneOf([0, 1]),
     data: PropTypes.object,
     currentLabel: PropTypes.string

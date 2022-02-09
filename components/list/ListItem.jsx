@@ -9,7 +9,7 @@ import ItemTooltip from "../ItemTooltip";
 export default function ListItem(props) {
 
     const icon = useMemo(() => {
-        return getIcon(props.data.type ? props.data.type : props.type, props.data, styles.icon, styles.imageWrapper)
+        return getIcon(props.data.type ? props.data.type : props.type, props.data, styles.icon, styles.imageWrapper, props.childrenQuantity)
     }, [props.data])
 
     const {
@@ -57,7 +57,7 @@ export default function ListItem(props) {
                     </div>
                 </div>
             }
-            <ItemTooltip data={props.data} currentLabel={currentLabel} type={props.type}/>
+            <ItemTooltip childrenQuantity={props.childrenQuantity} data={props.data} currentLabel={currentLabel} type={props.type}/>
         </div>
     )
 }
@@ -73,5 +73,6 @@ ListItem.propTypes = {
     openEngineFile: PropTypes.func.isRequired,
     hook: PropTypes.object,
     onRename: PropTypes.string,
-    submitRename: PropTypes.func
+    submitRename: PropTypes.func,
+    childrenQuantity: PropTypes.number,
 }

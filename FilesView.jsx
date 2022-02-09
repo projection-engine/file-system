@@ -13,6 +13,7 @@ import ListItems from "./components/list/ListItems";
 import ResizableBar from "../../components/resizable/ResizableBar";
 
 export default function FilesView(props) {
+
     const [selected, setSelected] = useState()
     const [hidden, setHidden] = useState(true)
     const [searchString, setSearchString] = useState('')
@@ -37,17 +38,26 @@ export default function FilesView(props) {
 
         if (curr !== null && curr !== undefined && curr.id !== undefined) {
             const path = (`projects\\${props.id}\\assets`)
+            if(curr.id
+                .split(path)[1] !== undefined)
+            {
+                const allPath = curr.id
+                    .split(path)[0] + path
+                let split = curr.id
+                    .split(path)[1]
+                    .split('\\')
 
-            return curr.id
-                .split(path)[1]
-                .replaceAll('\\', '/')
-                .split('/')
-                .map(p => {
-                    return {
-                        id: undefined,
-                        name: p
+                return split.map(() => {
+                    const data = {
+                        id: allPath + split.join('\\'),
+                        name: split[split.length - 1]
                     }
-                })
+                    split.pop()
+                    return data
+                }).filter(s => s !== undefined).reverse()
+            }
+            else
+                return []
         }
         return []
     }, [hook.currentDirectory, hook.items])
@@ -57,7 +67,7 @@ export default function FilesView(props) {
             hook.ref.current.previousSibling.previousSibling.style.height = '100%'
     }, [hidden])
 
-    if (hook.currentDirectory !== null && hook.currentDirectory !== undefined && hook.currentDirectory.id)
+    if (hook.currentDirectory !== null && hook.currentDirectory !== undefined && hook.currentDirectory.id !== undefined)
         return (
             <>
                 <ResizableBar
