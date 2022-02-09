@@ -12,8 +12,7 @@ export default function Cards(props) {
         filesToRender, ref,
         options
     } = useItems(props)
-
-
+    console.log(filesToRender)
     return (
         <div
             ref={ref}
@@ -43,7 +42,7 @@ export default function Cards(props) {
                                 variant={props.visualizationType === 0 ? 'big' : 'small'}
                                 setFocusedElement={setFocusedElement}
                                 focusedElement={focusedElement}
-                                type={child.type}
+                                type={child.isFolder ? 0 : 1}
                                 data={child}
                                 selected={props.selected}
                                 setSelected={props.setSelected}

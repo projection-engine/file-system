@@ -19,15 +19,14 @@ export default function ControlBar(props) {
             <input
                 type={'file'}
                 ref={fileRef}
-                accept={['.obj', '.png', '.jpeg', '.jpg', '.hdr', '.gltf', '.glt',  '.material']}
+                accept={['.obj', '.png', '.jpeg', '.jpg', '.hdr', '.gltf', '.glt', '.material']}
                 multiple={true}
                 onChange={e => {
                     load.pushEvent(EVENTS.IMPORT_FILE)
                     //TODO
-                    const f= e.target.files[0]
-
+                    const f = e.target.files[0]
                     props.hook.fileSystem
-                        .importFile(f)
+                        .importFile(f, props.hook.currentDirectory.id)
                         .then(res => {
                             load.finishEvent(EVENTS.IMPORT_FILE)
                         })
@@ -53,23 +52,30 @@ export default function ControlBar(props) {
 
 
             <div style={{display: 'flex', alignItems: 'center', gap: '4px', width: '100%'}}>
-                <Button className={styles.settingsButton} onClick={() => props.setVisualizationType(0)} highlight={props.visualizationType === 0}>
+                <Button className={styles.settingsButton} onClick={() => props.setVisualizationType(0)}
+                        highlight={props.visualizationType === 0}>
                     <span className={'material-icons-round'}>grid_view</span>
                 </Button>
-                <Button className={styles.settingsButton} onClick={() => props.setVisualizationType(1)} highlight={props.visualizationType === 1}>
+                <Button className={styles.settingsButton} onClick={() => props.setVisualizationType(1)}
+                        highlight={props.visualizationType === 1}>
 
                     <span className={'material-icons-round'}>view_comfy</span>
                 </Button>
-                <Button className={styles.settingsButton} onClick={() => props.setVisualizationType(2)} highlight={props.visualizationType === 2}>
+                <Button className={styles.settingsButton} onClick={() => props.setVisualizationType(2)}
+                        highlight={props.visualizationType === 2}>
                     <span className={'material-icons-round'}>view_list</span>
                 </Button>
                 <Search searchString={props.searchString} setSearchString={props.setSearchString}/>
                 {props.path.map((p, i) => (
                     <React.Fragment key={p.id}>
                         <Button className={styles.button}
-                                styles={{fontWeight: props.hook.currentDirectory.id === p.id ? 600 : undefined}}
+                                styles={{fontWeight: props.hook.currentDirectory.id === p ? 600 : undefined}}
                                 highlight={props.hook.currentDirectory.id === p.id}
-                                onClick={() => props.hook.setCurrentDirectory(p)}>
+                                onClick={() => {
+                                    const found = props.hook.items.find(i => i.id === p.id)
+                                    if (found)
+                                        props.hook.setCurrentDirectory(found)
+                                }}>
                             {p.name}
                         </Button>
                         {i < props.path.length - 1 ?

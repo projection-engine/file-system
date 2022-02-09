@@ -2,7 +2,7 @@ import styles from "../../styles/ItemCard.module.css";
 
 export default function getIcon(type, file, className, imageClass) {
     switch (type) {
-        case 'image': {
+        case 'pimg': {
             if (file.preview)
                 return (
                     <div style={{position: 'relative'}} className={imageClass}>
@@ -13,7 +13,9 @@ export default function getIcon(type, file, className, imageClass) {
                     </div>
                 )
             return (
-                <span className={'material-icons-round'}>image</span>
+                <div className={[styles.icon, className].join(' ')}>
+                    <span className={'material-icons-round'}>image</span>
+                </div>
             )
         }
 
@@ -33,7 +35,6 @@ export default function getIcon(type, file, className, imageClass) {
                 </div>
             )
         case 'mesh':
-
             if (file.preview)
                 return (
                     <div style={{position: 'relative'}} className={imageClass}>
@@ -48,7 +49,7 @@ export default function getIcon(type, file, className, imageClass) {
                     <span className={'material-icons-round'}>view_in_ar</span>
                 </div>
             )
-        case 'Folder': {
+        case 'folder': {
             return (
                 <div className={[styles.icon, className].join(' ')}>
                     <span className={'material-icons-round'}>folder</span>

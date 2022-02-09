@@ -1,11 +1,40 @@
-import getFolderOptions from "../visuals/getFolderOptions";
-import FileObj from "../../templates/File";
-import Folder from "../../templates/Folder";
 import React from "react";
 
 export default function getFileOptions(props, setCurrentItem){
     return [
-        ...getFolderOptions(props.hook),
+        {
+            requiredTrigger: 'data-folder',
+            label: 'Delete',
+            icon: <span className={'material-icons-round'}>delete</span>,
+            onClick: (node) => {
+                // TODO
+            }
+        },
+        {
+            requiredTrigger: 'data-folder',
+            label: 'New sub-folder',
+            icon: <span className={'material-icons-round'}>create_new_folder</span>,
+            onClick: (node) => {
+                const parent = props.hook.path + '/' + node.getAttribute('data-folder')
+                const id = parent + '/New folder'
+                const fs = window.require('fs')
+                fs.mkdir(id, (e) => {
+
+                    if (!e) {
+                        props.hook.setItems(prev => {
+                            return [...prev,
+                                {
+                                    id: id,
+                                    name: 'New folder',
+                                    isFolder: true,
+                                    creationDate: new Date().toDateString(),
+                                    parent
+                                }]
+                        })
+                    }
+                })
+            }
+        },
         {
             requiredTrigger: 'data-folder',
             label: 'Rename',

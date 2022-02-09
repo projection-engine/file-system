@@ -33,8 +33,22 @@ export default function FilesView(props) {
         return res.flat()
     }
     const path = useMemo(() => {
-        if (hook.currentDirectory !== null && hook.currentDirectory !== undefined &&  hook.currentDirectory.id)
-            return hook.currentDirectory.id.split('/')
+        const curr = hook.currentDirectory
+
+        if (curr !== null && curr !== undefined && curr.id !== undefined) {
+            const path = (`projects\\${props.id}\\assets`)
+
+            return curr.id
+                .split(path)[1]
+                .replaceAll('\\', '/')
+                .split('/')
+                .map(p => {
+                    return {
+                        id: undefined,
+                        name: p
+                    }
+                })
+        }
         return []
     }, [hook.currentDirectory, hook.items])
 
@@ -43,7 +57,7 @@ export default function FilesView(props) {
             hook.ref.current.previousSibling.previousSibling.style.height = '100%'
     }, [hidden])
 
-    if (hook.currentDirectory !== null && hook.currentDirectory !== undefined &&  hook.currentDirectory.id)
+    if (hook.currentDirectory !== null && hook.currentDirectory !== undefined && hook.currentDirectory.id)
         return (
             <>
                 <ResizableBar

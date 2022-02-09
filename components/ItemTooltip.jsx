@@ -16,10 +16,10 @@ export default function ItemTooltip(props){
                 <div className={styles.infoRow}>
                     Creation date:
                     <div className={styles.infoRowContent}>
-                        {props.data.creationDate?.toLocaleDateString()}
+                        {props.data.creationDate}
                     </div>
                 </div>
-                {props.type === 'File' ?
+                {props.type === 1 ?
                     <>
                         <div className={styles.infoRow}>
                             Type:
@@ -33,12 +33,7 @@ export default function ItemTooltip(props){
                                 {props.data.size ? (props.data.size < 100000 ? (props.data.size / 1000).toFixed(2) + 'KB' : (props.data.size / (10 ** 6)).toFixed(2) + ' MB') : 'NaN'}
                             </div>
                         </div>
-                        <div className={styles.infoRow}>
-                            ID:
-                            <div className={styles.infoRowContent}>
-                                {props.data.id}
-                            </div>
-                        </div>
+
                     </>
                     :
                     null
@@ -48,7 +43,7 @@ export default function ItemTooltip(props){
     )
 }
 ItemTooltip.propTypes={
-    type: PropTypes.string,
+    type: PropTypes.oneOf([0, 1]),
     data: PropTypes.object,
     currentLabel: PropTypes.string
 }

@@ -47,7 +47,7 @@ export default function ListItem(props) {
                         {props.data.name}
                     </div>
                     <div className={styles.label}>
-                        {props.type === 'Folder' ? 'Folder' : props.data.type}
+                        {props.type === 0 ? 'Folder' :'File'}
                     </div>
                     <div className={styles.label}>
                         {props.data.size}
@@ -66,7 +66,7 @@ ListItem.propTypes = {
 
     setFocusedElement: PropTypes.func,
     focusedElement: PropTypes.string,
-    type: PropTypes.oneOf(['File', 'Folder']),
+    type: PropTypes.oneOf([0, 1]),
     data: PropTypes.object,
     selected: PropTypes.string,
     setSelected: PropTypes.func,

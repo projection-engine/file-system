@@ -13,7 +13,7 @@ export default function ListItems(props) {
         options
     } = useItems(props)
 
-
+    console.log(filesToRender)
     return (
         <div
             ref={ref}
@@ -57,7 +57,7 @@ export default function ListItems(props) {
                             <ListItem
                                 setFocusedElement={setFocusedElement}
                                 focusedElement={focusedElement}
-                                type={child.constructor.name}
+                                type={child.isFolder ? 0 : 1}
                                 data={child}
                                 selected={props.selected}
                                 setSelected={props.setSelected}

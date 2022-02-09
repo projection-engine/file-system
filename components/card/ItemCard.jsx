@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import styles from '../../styles/ItemCard.module.css'
 import React, {useMemo} from "react";
-import parseFileType from "../../utils/parsers/parseFileType";
+import parseFileType from "../../utils/visuals/parseFileType";
 import getIcon from "../../utils/visuals/getIcon";
 import Folder from "../../templates/Folder";
 import useItem from "../../hooks/useItem";
@@ -25,7 +25,7 @@ export default function ItemCard(props) {
         }
     }, [props.visualizationType])
     const icon = useMemo(() => {
-        return getIcon(props.data.type ? props.data.type : props.type, props.data, className.icon, styles.imageWrapper)
+        return getIcon(props.data.type ? props.data.type : 'folder', props.data, className.icon, styles.imageWrapper)
     }, [props.data, className])
 
     const {
@@ -59,7 +59,7 @@ export default function ItemCard(props) {
                         value={currentLabel}
                     />
                     :
-                    (props.type === 'File' ?
+                    (props.type === 1 ?
                             <>
 
                                 <div className={[styles.label, styles.overflow].join(' ')}>
@@ -88,7 +88,7 @@ ItemCard.propTypes = {
 
     setFocusedElement: PropTypes.func,
     focusedElement: PropTypes.string,
-    type: PropTypes.oneOf(['File', 'Folder']),
+    type: PropTypes.oneOf([0, 1]),
     data: PropTypes.object,
     selected: PropTypes.string,
     setSelected: PropTypes.func,
