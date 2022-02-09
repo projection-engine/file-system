@@ -29,6 +29,7 @@ export default function ControlBar(props) {
                         .importFile(f, props.hook.currentDirectory.id)
                         .then(res => {
                             load.finishEvent(EVENTS.IMPORT_FILE)
+                            props.hook.refreshFiles()
                         })
                     e.target.value = "";
                 }}
