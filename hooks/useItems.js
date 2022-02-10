@@ -44,6 +44,7 @@ export default function useItems({hook, accept, searchString}) {
                 })
                 return valid
             })
+
             files = files.map(f => {
                 return hook.fileSystem.importFile(f)
             })
@@ -69,10 +70,30 @@ export default function useItems({hook, accept, searchString}) {
         return getFileOptions(hook, setCurrentItem)
     }, [hook, accept, searchString])
 
+    const onRename = (newName, child) => {
+        const nameToApply = newName + (child.isFolder ? '' : '.' + child.type)
+
+        if (nameToApply !== child.name) {
+            const targetPath = hook.path + (child.parent ? child.parent +'\\' : '\\') + nameToApply
+            if(!hook.fs.existsSync(targetPath))
+                hook
+                    .fileSystem
+                    .rename(hook.path + child.id, targetPath)
+                    .then(error => {
+                        hook.refreshFiles()
+                    })
+            else
+                hook.setAlert({
+                    type: 'error',
+                    message: 'Item already exists.'
+                })
+        }
+        setCurrentItem(undefined)
+    }
     return {
         currentItem, setCurrentItem,
         focusedElement, setFocusedElement,
         filesToRender, ref,
-        options
+        options, onRename
     }
 }

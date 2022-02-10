@@ -33,7 +33,12 @@ export default function ItemTooltip(props){
                                 {props.data.size ? (props.data.size < 100000 ? (props.data.size / 1000).toFixed(2) + 'KB' : (props.data.size / (10 ** 6)).toFixed(2) + ' MB') : 'NaN'}
                             </div>
                         </div>
-
+                        <div className={styles.infoRow}>
+                            Registry ID:
+                            <div className={[styles.infoRowContent, styles.overflow].join(' ')} style={{maxWidth: '100px'}}>
+                                {props.data.registryID}
+                            </div>
+                        </div>
                     </>
                     :
                     <div className={styles.infoRow}>

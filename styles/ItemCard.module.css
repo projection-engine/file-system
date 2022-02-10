@@ -94,9 +94,10 @@
 
 .overflow {
 
-    overflow: hidden;
+    overflow: hidden !important;
     text-overflow: ellipsis;
     white-space: nowrap;
+    max-width: 100%;
 }
 
 .file {

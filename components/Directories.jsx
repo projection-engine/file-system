@@ -98,15 +98,34 @@ export default function Directories(props) {
                 ]}>
                 <TreeView
                     draggable={true}
-                    onDrop={(event, target) => {
-                        const from = event.dataTransfer.getData('text')
-                        const to = target + '\\' + from.split('\\').pop()
-                        const toItem = props.hook.items.find(f => f.id === target)
-                        const fromItem = props.hook.items.find(f => f.id === event.dataTransfer.getData('text'))
+                    onDrop={async (event, target) => {
+                        const textData = event.dataTransfer.getData('text')
+                        let from = textData
+                        if (!from.includes('\\')) {
 
+                            const reg = await props.hook.fileSystem.readRegistryFile(from)
+
+                            if (reg)
+                                from = reg.path
+                            else {
+                                props.setAlert({
+                                    type: 'error',
+                                    message: 'Could not find file.'
+                                })
+                                return
+                            }
+
+                        }
+                        const to = target + '\\' + from.split('\\').pop()
+
+                        const toItem = props.hook.items.find(f => f.id === target)
+                        const fromItem = props.hook.items.find(f => {
+
+                            return f.id === from || (f.registryID === textData && f.registryID !== undefined)
+                        })
                         if (from !== to && toItem && toItem.id !== from && fromItem && fromItem.parent !== to && toItem.isFolder) {
                             props.hook.fileSystem
-                                .rename(props.hook.path + event.dataTransfer.getData('text'), props.hook.path + to)
+                                .rename(props.hook.path + '\\' +  from, props.hook.path + to)
                                 .then(error => {
                                     if (from === props.hook.currentDirectory.id)
                                         props.hook.setCurrentDirectory(prev => {
@@ -144,8 +163,7 @@ export default function Directories(props) {
                                             id: newNamePath
                                         }
                                     })
-
-                                        props.hook.refreshFiles()
+                                props.hook.refreshFiles()
 
                             })
                     }}

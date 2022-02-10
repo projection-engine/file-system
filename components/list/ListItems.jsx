@@ -10,7 +10,7 @@ export default function ListItems(props) {
         currentItem, setCurrentItem,
         focusedElement, setFocusedElement,
         filesToRender, ref,
-        options
+        options, onRename
     } = useItems(props)
 
 
@@ -66,15 +66,7 @@ export default function ListItems(props) {
                                 hook={props.hook}
                                 onRename={currentItem}
                                 visualizationType={props.visualizationType}
-                                submitRename={newName => {
-                                    if (newName !== child.name) {
-                                        if (child.constructor.name === 'File')
-                                            props.hook.renameFile(child, newName)
-                                        else
-                                            props.hook.renameFolder(child, newName)
-                                    }
-                                    setCurrentItem(undefined)
-                                }}
+                                submitRename={name => onRename(name, child)}
                             />
                         </React.Fragment>
                     ))

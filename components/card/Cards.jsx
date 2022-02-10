@@ -10,7 +10,8 @@ export default function Cards(props) {
         currentItem, setCurrentItem,
         focusedElement, setFocusedElement,
         filesToRender, ref,
-        options
+        options,
+        onRename
     } = useItems(props)
 
     return (
@@ -51,26 +52,7 @@ export default function Cards(props) {
                                 hook={props.hook}
                                 onRename={currentItem}
                                 visualizationType={props.visualizationType}
-                                submitRename={newName => {
-                                    if (newName !== child.name) {
-                                        const path = window.require('path')
-                                        const newNamePath = (child.parent ? (child.parent + '\\') + newName + (child.isFolder ? '' : `.${child.type}`) : path.resolve(props.hook.fileSystem.path + '/assets/' + newName + (child.isFolder ? '' : `.${child.type}`)))
-
-                                        props.hook.fileSystem.rename(child.id, newNamePath)
-                                            .then(error => {
-                                                if (child.id === props.hook.currentDirectory.id)
-                                                    props.hook.setCurrentDirectory(prev => {
-                                                        return {
-                                                            ...prev,
-                                                            id: newNamePath
-                                                        }
-                                                    })
-                                                props.hook.refreshFiles()
-
-                                            })
-                                    }
-                                    setCurrentItem(undefined)
-                                }}
+                                submitRename={name => onRename(name, child)}
                             />
                         </React.Fragment>
                     ))

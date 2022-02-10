@@ -21,9 +21,11 @@ export default function useItem(props) {
 
 
     const onDoubleClick = () => {
+        console.log(props.type, props.data)
         if (props.type === 1) {
+
             if (props.data.type === 'mesh' || props.data.type === 'material' || props.data.type === 'image')
-                props.openEngineFile(props.data.id, currentLabel, props.data.type)
+                props.openEngineFile(props.data.registryID, currentLabel)
             else
                 props.setSelected(props.data.id)
         } else

@@ -35,11 +35,11 @@ export default function ItemCard(props) {
         currentLabel,
         setCurrentLabel
     } = useItem(props)
-
+    console.log(props.data.registryID)
     return (
         <div
             ref={ref}
-            onDragStart={e => e.dataTransfer.setData('text', props.data.registryID)}
+            onDragStart={e => e.dataTransfer.setData('text', props.type === 1 ? props.data.registryID : props.data.id)}
             draggable={!currentlyOnRename}
             data-focused={`${props.focusedElement === props.data.id}`}
             className={[styles.file, className.wrapper].join(' ')}

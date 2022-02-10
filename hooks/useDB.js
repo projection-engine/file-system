@@ -1,13 +1,13 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import Folder from "../templates/Folder";
 
-import QuickAccessProvider from "../../../components/db/QuickAccessProvider";
+import QuickAccessProvider from "../../../pages/project/hook/QuickAccessProvider";
 import LoadProvider from "../../../pages/project/hook/LoadProvider";
 import EVENTS from "../../../pages/project/utils/misc/EVENTS";
-import ProjectLoader from "../../../services/workers/ProjectLoader";
 
 const fs = window.require('fs')
-export default function useDB() {
+const pathRequire = window.require('path')
+export default function useDB(setAlert) {
     const [openModal, setOpenModal] = useState(false)
     const load = useContext(LoadProvider)
     const ref = useRef()
@@ -30,7 +30,7 @@ export default function useDB() {
         }
     }, [])
 
-    const parsePath = (p,registryData) => {
+    const parsePath = (p, registryData) => {
         return new Promise(resolve => {
             fs.lstat(p, (e, stat) => {
                 const split = p.split('\\')
@@ -45,23 +45,37 @@ export default function useDB() {
                             isFolder: true,
                             name: [...split].pop(),
                             creationDate: new Date(stat.birthtime).toDateString(),
-                            id:currentPath,
+                            id: currentPath,
 
                             parent: split[split.length - 2] === 'assets' ? undefined : parent
                         }
                     )
                 else {
 
+                    const parsedPath = pathRequire.resolve(path + currentPath).replace(path + '\\', '')
+                    if(!registryData.find(reg => {
+                        return  reg.path === parsedPath || reg.path === currentPath
+                    })?.id)
+                        registryData.forEach(reg => {
+                            console.log({
+                                reg: reg.path,
+                                p:parsedPath ,
+                                curr:  currentPath,
+                                comp:  reg.path === parsedPath,
+                                compB:  reg.path === currentPath
+                            })
+
+
+                        })
                     resolve({
                         isFolder: false,
                         name: [...split].pop().split(/\.([a-zA-Z0-9]+)$/)[0],
                         type: p.split('.').pop(),
                         creationDate: new Date(stat.birthtime).toDateString(),
-                        id:currentPath,
+                        id: currentPath,
                         size: stat.size,
                         registryID: registryData.find(reg => {
-
-                            return reg.path.replaceAll(/\\\\/g, '\\') === currentPath.replace('\\', '')
+                            return reg.path === parsedPath || reg.path === currentPath
                         })?.id,
                         parent: split[split.length - 2] === 'assets' ? undefined : parent
                     })
@@ -93,7 +107,7 @@ export default function useDB() {
 
         Promise.all(creationPromises)
             .then(registryData => {
-                const rD =registryData.flat().filter(reg => reg !== undefined)
+                const rD = registryData.flat().filter(reg => reg !== undefined)
                 quickAccess.fileSystem.dirStructure(path, (res) => {
                     res.forEach(f => {
                         promises.push(parsePath(f, rD))
@@ -132,6 +146,7 @@ export default function useDB() {
         setOpenModal,
         uploadRef,
         onRename,
-        setOnRename
+        setOnRename, setAlert,
+        fs
     }
 }
