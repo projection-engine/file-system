@@ -65,10 +65,8 @@ export default function Cards(props) {
                                                             id: newNamePath
                                                         }
                                                     })
-                                                props.hook.onItemRename(child.id, newNamePath)
-                                                    .then(() => {
-                                                        props.hook.refreshFiles()
-                                                    })
+                                                props.hook.refreshFiles()
+
                                             })
                                     }
                                     setCurrentItem(undefined)

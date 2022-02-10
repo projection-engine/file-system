@@ -48,7 +48,7 @@ export default function useItem(props) {
         e.currentTarget.parentNode.classList.remove(styles.hovered)
         const current = e.dataTransfer.getData('text')
         const foundCurrent = props.hook.items.find(f => f.id === current)
-
+         // TODO - MOVE
         if (props.type === 0 && props.data.id !== e.dataTransfer.getData('text') && foundCurrent && props.data.parent !== e.dataTransfer.getData('text')) {
             if (foundCurrent instanceof Folder)
                 props.hook.moveFolder(current, props.data.id)

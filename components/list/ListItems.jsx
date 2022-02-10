@@ -13,7 +13,7 @@ export default function ListItems(props) {
         options
     } = useItems(props)
 
-    console.log(filesToRender)
+
     return (
         <div
             ref={ref}

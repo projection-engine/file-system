@@ -24,6 +24,7 @@ export default function ItemCard(props) {
                 }
         }
     }, [props.visualizationType])
+
     const icon = useMemo(() => {
         return getIcon(props.data.type ? props.data.type : 'folder', props.data, className.icon, styles.imageWrapper, props.childrenQuantity)
     }, [props.data, className])
@@ -38,7 +39,7 @@ export default function ItemCard(props) {
     return (
         <div
             ref={ref}
-            onDragStart={e => e.dataTransfer.setData('text', props.data.id)}
+            onDragStart={e => e.dataTransfer.setData('text', props.data.registryID)}
             draggable={!currentlyOnRename}
             data-focused={`${props.focusedElement === props.data.id}`}
             className={[styles.file, className.wrapper].join(' ')}

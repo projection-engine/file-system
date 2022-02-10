@@ -29,7 +29,7 @@ export default function Directories(props) {
                             // TODO - CONFIRM MODAL IF HAS CHILDREN
                             const id = node.getAttribute('data-folder')
                             load.pushEvent(EVENTS.DELETE_FOLDER)
-                            fs.rm(id, {recursive: true, force: true}, (e) => {
+                            fs.rm(props.hook.path + '\\' + id, {recursive: true, force: true}, (e) => {
                                 load.finishEvent(EVENTS.DELETE_FOLDER)
                                 props.hook.refreshFiles()
                             })
@@ -56,7 +56,8 @@ export default function Directories(props) {
                         label: 'New folder',
                         icon: <span className={'material-icons-round'}>create_new_folder</span>,
                         onClick: () => {
-                            let id = props.hook.fileSystem.path + '/assets/New folder'
+
+                            let id = props.hook.path + '\\New folder'
                             const directories = props.hook.fileSystem.foldersFromDirectory(props.hook.fileSystem.path + '/assets')
                             const index = directories.filter(d => {
                                 return d.split('\\')[d.split('\\').length - 1].includes('New folder')
@@ -76,14 +77,15 @@ export default function Directories(props) {
                         icon: <span className={'material-icons-round'}>create_new_folder</span>,
                         onClick: (node) => {
                             const parent = node.getAttribute('data-folder')
-                            let id = parent + '/New folder'
-                            const directories = props.hook.fileSystem.foldersFromDirectory(parent)
+
+                            let id = parent + '\\New folder'
+                            const directories = props.hook.fileSystem.foldersFromDirectory(props.hook.path + parent)
                             const index = directories.filter(d => {
                                 return d.split('\\')[d.split('\\').length - 1].includes('New folder')
                             }).length
                             if (index > 0)
                                 id += ' - ' + index
-                            fs.mkdir(id, (e) => {
+                            fs.mkdir(props.hook.path + id, (e) => {
                                 if (!e)
                                     props.hook.refreshFiles()
                             })
@@ -99,12 +101,12 @@ export default function Directories(props) {
                     onDrop={(event, target) => {
                         const from = event.dataTransfer.getData('text')
                         const to = target + '\\' + from.split('\\').pop()
-                        const item = props.hook.items.find(f => f.id === target)
-                        const dropTarget = props.hook.items.find(f => f.id === event.dataTransfer.getData('text'))
+                        const toItem = props.hook.items.find(f => f.id === target)
+                        const fromItem = props.hook.items.find(f => f.id === event.dataTransfer.getData('text'))
 
-                        if (item && item.id !== event.dataTransfer.getData('text') && dropTarget && item.parent !== event.dataTransfer.getData('text') && item.isFolder) {
+                        if (from !== to && toItem && toItem.id !== from && fromItem && fromItem.parent !== to && toItem.isFolder) {
                             props.hook.fileSystem
-                                .rename(event.dataTransfer.getData('text'), to)
+                                .rename(props.hook.path + event.dataTransfer.getData('text'), props.hook.path + to)
                                 .then(error => {
                                     if (from === props.hook.currentDirectory.id)
                                         props.hook.setCurrentDirectory(prev => {
@@ -113,10 +115,8 @@ export default function Directories(props) {
                                                 id: to
                                             }
                                         })
-                                    props.hook.onItemRename(event.dataTransfer.getData('text'), to)
-                                        .then(() => {
-                                            props.hook.refreshFiles()
-                                        })
+
+                                    props.hook.refreshFiles()
                                 })
                         }
                     }}
@@ -130,14 +130,12 @@ export default function Directories(props) {
                         event.currentTarget.classList.add(styles.hovered)
                     }}
 
-                    selected
                     selected={props.hook.currentDirectory.id}
                     nodes={directoriesToRender}
                     handleRename={(folder, newName) => {
-                        const path = window.require('path')
-
-                        const newNamePath = (folder.parent ? (folder.parent + '\\') + newName : path.resolve(props.hook.fileSystem.path + '/assets/' + newName))
-                        props.hook.fileSystem.rename(folder.id, newNamePath)
+                        const newNamePath = (folder.parent ? folder.parent + '\\' + newName : '\\' + newName)
+                        props.hook.fileSystem
+                            .rename(props.hook.path + folder.id, props.hook.path + newNamePath)
                             .then(error => {
                                 if (folder.id === props.hook.currentDirectory.id)
                                     props.hook.setCurrentDirectory(prev => {
@@ -147,10 +145,8 @@ export default function Directories(props) {
                                         }
                                     })
 
-                                props.hook.onItemRename(folder.id, newNamePath)
-                                    .then(() => {
                                         props.hook.refreshFiles()
-                                    })
+
                             })
                     }}
                 />

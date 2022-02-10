@@ -61,7 +61,7 @@ export default function getFileOptions(hook, setCurrentItem){
                 hook.load.pushEvent(EVENTS.DELETE_FILE)
                 hook.fileSystem.deleteFile(node.getAttribute('data-file'), true)
                     .then((e) => {
-                        console.log(e)
+
                         hook.refreshFiles()
                         hook.load.finishEvent(EVENTS.DELETE_FILE)
                     })

@@ -18,7 +18,7 @@ export default function FilesView(props) {
     const [hidden, setHidden] = useState(true)
     const [searchString, setSearchString] = useState('')
 
-    const hook = useDB(props.setAlert, props.id)
+    const hook = useDB()
     const [visualizationType, setVisualizationType] = useState(0)
     useEffect(() => {
         setHidden(true)

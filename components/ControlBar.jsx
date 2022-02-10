@@ -23,10 +23,9 @@ export default function ControlBar(props) {
                 multiple={true}
                 onChange={e => {
                     load.pushEvent(EVENTS.IMPORT_FILE)
-                    //TODO
                     const f = e.target.files[0]
                     props.hook.fileSystem
-                        .importFile(f, props.hook.currentDirectory.id)
+                        .importFile(f, props.hook.path + props.hook.currentDirectory.id)
                         .then(res => {
                             load.finishEvent(EVENTS.IMPORT_FILE)
                             props.hook.refreshFiles()
@@ -39,7 +38,7 @@ export default function ControlBar(props) {
                 type={'file'}
                 ref={folderRef}
                 accept={['.obj', '.png', '.jpeg', '.jpg', '.hdr', '.gltf', '.glt', '.bin', '.material']}
-
+                disabled={true}
                 directory=""
                 webkitdirectory=""
                 multiple={true}
