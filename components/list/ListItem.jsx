@@ -2,14 +2,17 @@ import PropTypes from "prop-types";
 import styles from '../../styles/ListItem.module.css'
 import React, {useMemo} from "react";
 import getIcon from "../../utils/visuals/getIcon";
-import Folder from "../../templates/Folder";
+
 import useItem from "../../hooks/useItem";
 import ItemTooltip from "../ItemTooltip";
 
 export default function ListItem(props) {
 
     const icon = useMemo(() => {
-        return getIcon(props.data.type ? props.data.type : props.type, props.data, styles.icon, styles.imageWrapper, props.childrenQuantity)
+        return getIcon(props.data.type ? props.data.type : 'folder', props.data, styles.icon, styles.imageWrapper, props.childrenQuantity)
+    }, [props.data])
+    const size = useMemo(() => {
+        return props.data.size ? (props.data.size < 100000 ? (props.data.size / 1000).toFixed(2) + 'KB' : (props.data.size / (10 ** 6)).toFixed(2) + ' MB') : 'NaN'
     }, [props.data])
 
     const {
@@ -43,14 +46,14 @@ export default function ListItem(props) {
                 />
                 :
                 <div className={styles.labels}>
-                    <div className={styles.label}>
+                    <div className={styles.label} style={{fontWeight: 550}}>
                         {props.data.name}
                     </div>
                     <div className={styles.label}>
                         {props.type === 0 ? 'Folder' :'File'}
                     </div>
                     <div className={styles.label}>
-                        {props.data.size}
+                        {size}
                     </div>
                     <div className={styles.label}>
                         {new Date(props.data.creationDate).toLocaleDateString()}

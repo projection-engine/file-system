@@ -41,8 +41,8 @@
     padding: 4px;
 
 
-    background: var(--background-2);
-    min-height: 100%;
+
+    height: fit-content;
     position: relative;
 
     display: flex;
@@ -55,6 +55,10 @@
     height: 100%;
     overflow-y: auto;
     max-height: calc(100% - 35px);
+    display: flex;
+    flex-flow: column;
+    background: var(--background-2);
+
 }
 
 .types {

@@ -1,9 +1,12 @@
 import {ToolTip} from "@f-ui/core";
 import styles from "../styles/ItemCard.module.css";
-import React from "react";
+import React, {useMemo} from "react";
 import PropTypes from "prop-types";
 
 export default function ItemTooltip(props){
+    const size = useMemo(() => {
+        return props.data.size ? (props.data.size < 100000 ? (props.data.size / 1000).toFixed(2) + 'KB' : (props.data.size / (10 ** 6)).toFixed(2) + ' MB') : 'NaN'
+    }, [props.data])
     return (
         <ToolTip align={"middle"} justify={'end'}>
             <div className={styles.toolTip}>
@@ -30,7 +33,7 @@ export default function ItemTooltip(props){
                         <div className={styles.infoRow}>
                             Size:
                             <div className={styles.infoRowContent}>
-                                {props.data.size ? (props.data.size < 100000 ? (props.data.size / 1000).toFixed(2) + 'KB' : (props.data.size / (10 ** 6)).toFixed(2) + ' MB') : 'NaN'}
+                                {size}
                             </div>
                         </div>
                         <div className={styles.infoRow}>

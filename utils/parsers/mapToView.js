@@ -14,9 +14,10 @@ export default function mapToView(folder, hook) {
         children,
 
         icon: <span style={{fontSize: '1rem'}}
-                    className={'material-icons-round'}>{childrenQuantity === 0 ? 'folder' : 'source'}</span>,
+                    className={'material-icons-round'}>{childrenQuantity === 0 ? 'folder_open' : 'source'}</span>,
         attributes: {'data-folder': folder.id},
-        parent: folder.parent
+        parent: folder.parent,
+        isFolder: true
     }
 
 }

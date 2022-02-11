@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
-import Folder from "../templates/Folder";
 
 import QuickAccessProvider from "../../../pages/project/hook/QuickAccessProvider";
 import LoadProvider from "../../../pages/project/hook/LoadProvider";
@@ -14,8 +13,10 @@ export default function useDB(setAlert) {
     const uploadRef = useRef()
     const [onRename, setOnRename] = useState({})
     const [initialized, setInitialized] = useState(false)
-    const [items, setItems] = useState([new Folder('Assets', undefined, 'none')])
-    const [currentDirectory, setCurrentDirectory] = useState()
+    const [items, setItems] = useState([])
+    const [currentDirectory, setCurrentDirectory] = useState({
+        id: '\\'
+    })
     const quickAccess = useContext(QuickAccessProvider)
     const path = (quickAccess.fileSystem.path + '\\assets')
 
@@ -53,20 +54,7 @@ export default function useDB(setAlert) {
                 else {
 
                     const parsedPath = pathRequire.resolve(path + currentPath).replace(path + '\\', '')
-                    if(!registryData.find(reg => {
-                        return  reg.path === parsedPath || reg.path === currentPath
-                    })?.id)
-                        registryData.forEach(reg => {
-                            console.log({
-                                reg: reg.path,
-                                p:parsedPath ,
-                                curr:  currentPath,
-                                comp:  reg.path === parsedPath,
-                                compB:  reg.path === currentPath
-                            })
 
-
-                        })
                     resolve({
                         isFolder: false,
                         name: [...split].pop().split(/\.([a-zA-Z0-9]+)$/)[0],
@@ -117,8 +105,6 @@ export default function useDB(setAlert) {
 
                             load.finishEvent(EVENTS.LOAD_FILES)
 
-                            if (promiseRes.length > 0 && !initialized)
-                                setCurrentDirectory(promiseRes[0])
                             if (!initialized)
                                 setInitialized(true)
                             setItems(promiseRes.sort(function (a, b) {

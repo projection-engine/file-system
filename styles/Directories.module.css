@@ -4,10 +4,12 @@
     background-color: var(--background-1);
 
     display: grid;
-    align-items: flex-start;
-    align-content: flex-start;
+
+
     gap: 4px;
-    padding: 4px;
+
+    height: 100%;
+    ;
     overflow-y: auto;
 
 }

@@ -1,6 +1,6 @@
 import {useEffect, useMemo, useRef, useState} from "react";
 import styles from "../styles/ItemCard.module.css";
-import Folder from "../templates/Folder";
+import handleDropFolder from "../utils/handleDropFolder";
 
 export default function useItem(props) {
     const ref = useRef()
@@ -21,7 +21,7 @@ export default function useItem(props) {
 
 
     const onDoubleClick = () => {
-        console.log(props.type, props.data)
+
         if (props.type === 1) {
 
             if (props.data.type === 'mesh' || props.data.type === 'material' || props.data.type === 'image')
@@ -48,22 +48,7 @@ export default function useItem(props) {
     const onDrop = e => {
         e.preventDefault()
         e.currentTarget.parentNode.classList.remove(styles.hovered)
-        const current = e.dataTransfer.getData('text')
-        const foundCurrent = props.hook.items.find(f => f.id === current)
-         // TODO - MOVE
-        if (props.type === 0 && props.data.id !== e.dataTransfer.getData('text') && foundCurrent && props.data.parent !== e.dataTransfer.getData('text')) {
-            if (foundCurrent instanceof Folder)
-                props.hook.moveFolder(current, props.data.id)
-            else
-                props.hook.moveFile(current, props.data.id)
-        }
-
-        if (e.dataTransfer.getData('text') !== props.data.id && e.dataTransfer.getData('text') !== props.data.parent) {
-            if (props.type === 0)
-                props.hook.moveFolder(e.dataTransfer.getData('text'), props.data.id)
-            else
-                props.hook.moveFile(e.dataTransfer.getData('text'), props.data.id)
-        }
+        handleDropFolder( e, props.data.id, () => null, props.hook)
     }
 
     useEffect(() => {

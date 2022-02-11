@@ -8,16 +8,27 @@ export default function useItems({hook, accept, searchString}) {
     const [focusedElement, setFocusedElement] = useState()
 
     const filesToRender = useMemo(() => {
-        return hook.items
-            .filter(file => file.parent === hook.currentDirectory.id && (searchString.length > 0 ? file.name.toLowerCase().includes(searchString) : true))
-            .map(e => {
-                return {
-                    ...e, children: e.isFolder ? hook.items.filter(i => {
-                        return typeof i.parent === 'string' && i.parent === e.id
-                    }).length : 0
-                }
-            })
-    }, [hook.items, hook.currentDirectory.id, searchString])
+        if(hook.currentDirectory.id !== '\\')
+            return hook.items
+                .filter(file => file.parent === hook.currentDirectory.id && (searchString.length > 0 ? file.name.toLowerCase().includes(searchString) : true))
+                .map(e => {
+                    return {
+                        ...e, children: e.isFolder ? hook.items.filter(i => {
+                            return typeof i.parent === 'string' && i.parent === e.id
+                        }).length : 0
+                    }
+                })
+        else
+            return hook.items
+                .filter(file => !file.parent && (searchString.length > 0 ? file.name.toLowerCase().includes(searchString) : true))
+                .map(e => {
+                    return {
+                        ...e, children: e.isFolder ? hook.items.filter(i => {
+                            return typeof i.parent === 'string' && i.parent === e.id
+                        }).length : 0
+                    }
+                })
+    }, [hook.items, hook.currentDirectory, searchString])
     const ref = useRef()
     const onDragOver = e => e.preventDefault()
 

@@ -1,5 +1,7 @@
 import React from "react";
 import EVENTS from "../../../../pages/project/utils/misc/EVENTS";
+import {onCreate} from "../visuals/getDirectoryOptions";
+import handleDelete from "../handleDelete";
 
 export default function getFileOptions(hook, setCurrentItem) {
     return [
@@ -7,41 +9,13 @@ export default function getFileOptions(hook, setCurrentItem) {
             requiredTrigger: 'data-folder',
             label: 'Delete',
             icon: <span className={'material-icons-round'}>delete</span>,
-            onClick: (node) => {
-                // TODO - CONFIRM MODAL IF HAS CHILDREN
-
-                const id = node.getAttribute('data-folder')
-                hook.load.pushEvent(EVENTS.DELETE_FOLDER)
-                hook.fs.rm(hook.path + '\\' + id, {recursive: true, force: true}, (e) => {
-                    hook.load.finishEvent(EVENTS.DELETE_FOLDER)
-                    hook.refreshFiles()
-                })
-            }
+            onClick: (node) => handleDelete(node.getAttribute('data-folder'), hook)
         },
         {
             requiredTrigger: 'data-folder',
             label: 'New sub-folder',
             icon: <span className={'material-icons-round'}>create_new_folder</span>,
-            onClick: (node) => {
-                const parent = hook.path + '/' + node.getAttribute('data-folder')
-                const id = parent + '/New folder'
-                const fs = window.require('fs')
-                fs.mkdir(id, (e) => {
-
-                    if (!e) {
-                        hook.setItems(prev => {
-                            return [...prev,
-                                {
-                                    id: id,
-                                    name: 'New folder',
-                                    isFolder: true,
-                                    creationDate: new Date().toDateString(),
-                                    parent
-                                }]
-                        })
-                    }
-                })
-            }
+            onClick: (node) => onCreate( node.getAttribute('data-folder') , hook)
         },
         {
             requiredTrigger: 'data-folder',
@@ -63,15 +37,7 @@ export default function getFileOptions(hook, setCurrentItem) {
             requiredTrigger: 'data-file',
             label: 'Delete',
             icon: <span className={'material-icons-round'}>delete</span>,
-            onClick: (node) => {
-                // TODO - ALERT IF ENTITY USES FILE. DELETE IF OK
-                hook.load.pushEvent(EVENTS.DELETE_FILE)
-                hook.fileSystem.deleteFile(hook.path + node.getAttribute('data-file'), true)
-                    .then(() => {
-                        hook.refreshFiles()
-                        hook.load.finishEvent(EVENTS.DELETE_FILE)
-                    })
-            }
+            onClick: (node) => handleDelete(node.getAttribute('data-file'), hook)
         },
         {
             requiredTrigger: 'data-folder-wrapper',

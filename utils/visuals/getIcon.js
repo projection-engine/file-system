@@ -52,7 +52,7 @@ export default function getIcon(type, file, className, imageClass, childrenQuant
         case 'folder': {
             return (
                 <div className={[styles.icon, className].join(' ')}>
-                    <span className={'material-icons-round'}>{childrenQuantity > 0 ? 'source' : 'folder'}</span>
+                    <span className={'material-icons-round'}>{childrenQuantity > 0 ? 'source' : 'folder_open'}</span>
                 </div>
             )
         }

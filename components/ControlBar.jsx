@@ -6,9 +6,8 @@ import React, {useContext, useRef} from "react";
 import Search from "../../../components/search/Search";
 import EVENTS from "../../../pages/project/utils/misc/EVENTS";
 import LoadProvider from "../../../pages/project/hook/LoadProvider";
-import FileBlob from "../../../services/workers/FileBlob";
 
-
+const pathRequire = window.require('path')
 export default function ControlBar(props) {
     const fileRef = useRef()
     const folderRef = useRef()
@@ -38,13 +37,39 @@ export default function ControlBar(props) {
                 type={'file'}
                 ref={folderRef}
                 accept={['.obj', '.png', '.jpeg', '.jpg', '.hdr', '.gltf', '.glt', '.bin', '.material']}
-                disabled={true}
+
                 directory=""
                 webkitdirectory=""
                 multiple={true}
                 onChange={e => {
+                    const f = Array.from(e.target.files)
                     load.pushEvent(EVENTS.IMPORT_FILE)
-                    //TODO
+
+                    Promise
+                        .all(
+                            f.map(file => {
+                                return new Promise(resolve => {
+                                    const folder = pathRequire.resolve(props.hook.path+ '\\'  + file.webkitRelativePath.replace(file.name, ''))
+                                    if (!props.hook.fs.existsSync(folder))
+                                        props.hook.fs.mkdir(folder, {}, () => {
+                                            props.hook.fileSystem.importFile(file, folder)
+                                                .then(() => {
+                                                    resolve()
+                                                })
+                                        })
+                                    else
+                                        props.hook.fileSystem.importFile(file, folder)
+                                            .then(() => {
+                                                resolve()
+                                            })
+                                })
+
+                            })
+                        )
+                        .then(() => {
+                            props.hook.refreshFiles()
+                            load.finishEvent(EVENTS.IMPORT_FILE)
+                        })
                     e.target.value = "";
                 }}
                 style={{display: 'none'}}

@@ -3,7 +3,6 @@ import styles from '../../styles/ItemCard.module.css'
 import React, {useMemo} from "react";
 import parseFileType from "../../utils/visuals/parseFileType";
 import getIcon from "../../utils/visuals/getIcon";
-import Folder from "../../templates/Folder";
 import useItem from "../../hooks/useItem";
 import ItemTooltip from "../ItemTooltip";
 
@@ -35,7 +34,7 @@ export default function ItemCard(props) {
         currentLabel,
         setCurrentLabel
     } = useItem(props)
-    console.log(props.data.registryID)
+
     return (
         <div
             ref={ref}

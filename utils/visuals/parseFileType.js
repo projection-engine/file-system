@@ -10,7 +10,6 @@ export default function parseFileType(type){
         case 'mesh':{
             return 'Mesh'
         }
-
         default:
             return type
     }

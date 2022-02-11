@@ -6,167 +6,54 @@ import TreeView from "../../../components/tree/TreeView";
 import mapToView from "../utils/parsers/mapToView";
 import EVENTS from "../../../pages/project/utils/misc/EVENTS";
 import LoadProvider from "../../../pages/project/hook/LoadProvider";
+import ThemeProvider from "../../../pages/project/hook/ThemeProvider";
+import getDirectoryOptions from "../utils/visuals/getDirectoryOptions";
+import handleDropFolder from "../utils/handleDropFolder";
+import handleRename from "../utils/handleRename";
 
-const fs = window.require('fs')
+
 export default function Directories(props) {
     const directoriesToRender = useMemo(() => {
         const toFilter = props.hook.items.filter(item => item.isFolder && !item.parent)
+        return [{
+            id: '\\',
+            label: 'Assets',
+            phantomNode: true,
+            onClick: () => {
+              props.hook.setCurrentDirectory('\\')
+            },
+            children: toFilter.map(f => {
+                return mapToView(f, props.hook)
+            }),
 
-        return toFilter.map(f => {
-            return mapToView(f, props.hook)
-        })
+            icon: <span style={{fontSize: '1rem'}}
+                        className={'material-icons-round'}>inventory_2</span>,
+            attributes: {'data-root': 'root'},
+            parent: undefined
+        }]
     }, [props.hook.items])
     const load = useContext(LoadProvider)
+    const theme = useContext(ThemeProvider)
+    const options = useMemo(() => {
+        return getDirectoryOptions(props, load)
+    }, [props, load])
     return (
         <div data-directories-wrapper={'true'} className={styles.wrapper}>
             <ContextMenu
-                options={[
-                    {
-                        requiredTrigger: 'data-folder',
-                        label: 'Delete',
-                        icon: <span className={'material-icons-round'}>delete</span>,
-                        onClick: (node) => {
-                            // TODO - CONFIRM MODAL IF HAS CHILDREN
-                            const id = node.getAttribute('data-folder')
-                            load.pushEvent(EVENTS.DELETE_FOLDER)
-                            fs.rm(props.hook.path + '\\' + id, {recursive: true, force: true}, (e) => {
-                                load.finishEvent(EVENTS.DELETE_FOLDER)
-                                props.hook.refreshFiles()
-                            })
-                        }
-                    },
-                    {
-                        requiredTrigger: 'data-folder',
-                        label: 'Rename',
-                        icon: <span className={'material-icons-round'}>edit</span>,
-                        onClick: (node) => {
-                            const target = document.getElementById(node.getAttribute('data-folder') + '-node')
-                            if (target) {
-                                const event = new MouseEvent('dblclick', {
-                                    'view': window,
-                                    'bubbles': true,
-                                    'cancelable': true
-                                });
-                                target.dispatchEvent(event);
-                            }
-                        }
-                    },
-                    {
-                        requiredTrigger: 'data-directories-wrapper',
-                        label: 'New folder',
-                        icon: <span className={'material-icons-round'}>create_new_folder</span>,
-                        onClick: () => {
-
-                            let id = props.hook.path + '\\New folder'
-                            const directories = props.hook.fileSystem.foldersFromDirectory(props.hook.fileSystem.path + '/assets')
-                            const index = directories.filter(d => {
-                                return d.split('\\')[d.split('\\').length - 1].includes('New folder')
-                            }).length
-                            if (index > 0)
-                                id += ' - ' + index
-                            fs.mkdir(id, (e) => {
-                                if (!e) {
-                                    props.hook.refreshFiles()
-                                }
-                            })
-                        }
-                    },
-                    {
-                        requiredTrigger: 'data-folder',
-                        label: 'New sub-folder',
-                        icon: <span className={'material-icons-round'}>create_new_folder</span>,
-                        onClick: (node) => {
-                            const parent = node.getAttribute('data-folder')
-
-                            let id = parent + '\\New folder'
-                            const directories = props.hook.fileSystem.foldersFromDirectory(props.hook.path + parent)
-                            const index = directories.filter(d => {
-                                return d.split('\\')[d.split('\\').length - 1].includes('New folder')
-                            }).length
-                            if (index > 0)
-                                id += ' - ' + index
-                            fs.mkdir(props.hook.path + id, (e) => {
-                                if (!e)
-                                    props.hook.refreshFiles()
-                            })
-                        }
-                    }
-                ]}
+                options={options}
                 triggers={[
                     'data-directories-wrapper',
-                    'data-folder'
-                ]}>
+                    'data-folder',
+                    'data-root'
+                ]} className={theme.backgroundStripesClass} styles={{paddingRight: '8px'}}>
                 <TreeView
                     draggable={true}
-                    onDrop={async (event, target) => {
-                        const textData = event.dataTransfer.getData('text')
-                        let from = textData
-                        if (!from.includes('\\')) {
-
-                            const reg = await props.hook.fileSystem.readRegistryFile(from)
-
-                            if (reg)
-                                from = reg.path
-                            else {
-                                props.setAlert({
-                                    type: 'error',
-                                    message: 'Could not find file.'
-                                })
-                                return
-                            }
-
-                        }
-                        const to = target + '\\' + from.split('\\').pop()
-
-                        const toItem = props.hook.items.find(f => f.id === target)
-                        const fromItem = props.hook.items.find(f => {
-
-                            return f.id === from || (f.registryID === textData && f.registryID !== undefined)
-                        })
-                        if (from !== to && toItem && toItem.id !== from && fromItem && fromItem.parent !== to && toItem.isFolder) {
-                            props.hook.fileSystem
-                                .rename(props.hook.path + '\\' +  from, props.hook.path + to)
-                                .then(error => {
-                                    if (from === props.hook.currentDirectory.id)
-                                        props.hook.setCurrentDirectory(prev => {
-                                            return {
-                                                ...prev,
-                                                id: to
-                                            }
-                                        })
-
-                                    props.hook.refreshFiles()
-                                })
-                        }
-                    }}
-
-                    onDragLeave={(event, target) => {
-                        event.preventDefault()
-                        event.currentTarget.classList.remove(styles.hovered)
-                    }}
-                    onDragOver={(event, target) => {
-                        event.preventDefault()
-                        event.currentTarget.classList.add(styles.hovered)
-                    }}
-
+                    onDrop={(event, target) => handleDropFolder(event, target, props.setAlert, props.hook)}
+                    onDragLeave={(event) => event.preventDefault()}
+                    onDragOver={(event) => event.preventDefault()}
                     selected={props.hook.currentDirectory.id}
                     nodes={directoriesToRender}
-                    handleRename={(folder, newName) => {
-                        const newNamePath = (folder.parent ? folder.parent + '\\' + newName : '\\' + newName)
-                        props.hook.fileSystem
-                            .rename(props.hook.path + folder.id, props.hook.path + newNamePath)
-                            .then(error => {
-                                if (folder.id === props.hook.currentDirectory.id)
-                                    props.hook.setCurrentDirectory(prev => {
-                                        return {
-                                            ...prev,
-                                            id: newNamePath
-                                        }
-                                    })
-                                props.hook.refreshFiles()
-
-                            })
-                    }}
+                    handleRename={(folder, newName) =>handleRename(folder, newName, props.hook)}
                 />
             </ContextMenu>
         </div>
