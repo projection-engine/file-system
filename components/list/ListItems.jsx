@@ -55,17 +55,13 @@ export default function ListItems(props) {
                     filesToRender.map(child => (
                         <React.Fragment key={child.id}>
                             <ListItem
+                                {...props}
                                 setFocusedElement={setFocusedElement}
                                 focusedElement={focusedElement}
                                 type={child.isFolder ? 0 : 1}
                                 data={child}
                                 childrenQuantity={child.children}
-                                selected={props.selected}
-                                setSelected={props.setSelected}
-                                openEngineFile={props.openEngineFile}
-                                hook={props.hook}
                                 onRename={currentItem}
-                                visualizationType={props.visualizationType}
                                 submitRename={name => onRename(name, child)}
                             />
                         </React.Fragment>

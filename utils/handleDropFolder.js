@@ -44,7 +44,7 @@ export default async function handleDropFolder(event, target, setAlert, hook) {
     } else if (textData.includes('\\')) {
 
         const newPath = hook.path + '\\' + textData.split('\\').pop()
-        console.trace(newPath, newPath.replace(hook.path, ''))
+
         if (!hook.fs.existsSync(newPath))
             hook.fileSystem
                 .rename(hook.path + '\\' + textData, newPath)

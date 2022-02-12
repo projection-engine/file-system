@@ -112,7 +112,8 @@ export default function FilesView(props) {
 
                         {visualizationType === 2 ?
                             <ListItems
-                                {...props}
+                                setAlert={props.setAlert}
+                                openEngineFile={props.openEngineFile}
                                 hidden={hidden}
                                 hook={hook}
                                 visualizationType={visualizationType}
@@ -123,7 +124,8 @@ export default function FilesView(props) {
                             />
                             :
                             <Cards
-                                {...props}
+                                setAlert={props.setAlert}
+                                openEngineFile={props.openEngineFile}
                                 hidden={hidden}
                                 hook={hook}
                                 visualizationType={visualizationType}

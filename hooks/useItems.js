@@ -2,6 +2,7 @@ import {useEffect, useMemo, useRef, useState} from "react";
 
 import getFileOptions from "../utils/parsers/getFileOptions";
 import EVENTS from "../../../pages/project/utils/misc/EVENTS";
+import handleRename from "../utils/handleRename";
 
 export default function useItems({hook, accept, searchString}) {
     const [currentItem, setCurrentItem] = useState()
@@ -82,24 +83,8 @@ export default function useItems({hook, accept, searchString}) {
     }, [hook, accept, searchString])
 
     const onRename = (newName, child) => {
-        const nameToApply = newName + (child.isFolder ? '' : '.' + child.type)
+        handleRename(child, newName, hook, setCurrentItem)
 
-        if (nameToApply !== child.name) {
-            const targetPath = hook.path + (child.parent ? child.parent +'\\' : '\\') + nameToApply
-            if(!hook.fs.existsSync(targetPath))
-                hook
-                    .fileSystem
-                    .rename(hook.path + child.id, targetPath)
-                    .then(error => {
-                        hook.refreshFiles()
-                    })
-            else
-                hook.setAlert({
-                    type: 'error',
-                    message: 'Item already exists.'
-                })
-        }
-        setCurrentItem(undefined)
     }
     return {
         currentItem, setCurrentItem,

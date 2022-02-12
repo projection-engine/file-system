@@ -65,7 +65,7 @@ export default function useItem(props) {
             ref.current?.removeEventListener('dragover', onDragOver)
             ref.current?.removeEventListener('dblclick', onDoubleClick)
         }
-    }, [props.data, ref])
+    }, [props.data, ref, props.openEngineFile])
 
     return {
         ref,
