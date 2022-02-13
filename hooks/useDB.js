@@ -112,6 +112,7 @@ export default function useDB(setAlert) {
                                 if (a.name > b.name) return 1
                                 return 0
                             }))
+                            quickAccess.refresh()
 
 
                         })

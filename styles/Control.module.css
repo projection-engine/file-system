@@ -42,3 +42,17 @@
 .settingsButton > * {
     font-size: 1.3rem !important;
 }
+
+.pathWrapper{
+    max-width: 100%;
+    overflow-x: auto;
+    display: flex;
+    width: fit-content;
+}
+
+.overflow{
+    overflow: hidden;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

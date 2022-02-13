@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import styles from '../../styles/Cards.module.css'
-import React from "react";
+import React, {useContext} from "react";
 import ItemCard from "./ItemCard";
 import useItems from "../../hooks/useItems";
 import ContextMenu from "../../../../components/context/ContextMenu";
+import QuickAccessProvider from "../../../../pages/project/hook/QuickAccessProvider";
 
 export default function Cards(props) {
     const {
@@ -13,6 +14,8 @@ export default function Cards(props) {
         options,
         onRename
     } = useItems(props)
+
+
 
     return (
         <div
@@ -51,6 +54,7 @@ export default function Cards(props) {
                                 openEngineFile={props.openEngineFile}
                                 hook={props.hook}
                                 onRename={currentItem}
+
                                 visualizationType={props.visualizationType}
                                 submitRename={name => onRename(name, child)}
                             />

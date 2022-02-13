@@ -35,32 +35,33 @@ export default function FilesView(props) {
     }
 
     const path = useMemo(() => {
-        // const curr = hook.currentDirectory
-        //
-        // if (curr !== null && curr !== undefined && curr.id !== undefined) {
-        //     const path = (`projects\\${props.id}\\assets`)
-        //     if(curr.id
-        //         .split(path)[1] !== undefined)
-        //     {
-        //         const allPath = curr.id
-        //             .split(path)[0] + path
-        //         let split = curr.id
-        //             .split(path)[1]
-        //             .split('\\')
-        //
-        //         return split.map(() => {
-        //             const data = {
-        //                 id: allPath + split.join('\\'),
-        //                 name: split[split.length - 1]
-        //             }
-        //             split.pop()
-        //             return data
-        //         }).filter(s => s !== undefined).reverse()
-        //     }
-        //     else
-        //         return []
-        // }
-        return []
+        let response = [], initial = {
+            name: 'Assets',
+            path: '\\'
+        }
+
+
+        if (hook.currentDirectory && hook.currentDirectory.id && hook.currentDirectory.id !== '\\') {
+            initial = {
+                name: hook.currentDirectory.name,
+                path: hook.currentDirectory.id
+            }
+            const findParent = (node) => {
+                const p = hook.items.find(n => {
+                    return n.id === node.parent
+                })
+                let res = []
+
+                if (p)
+                    res.push(...findParent(p).flat(), {name: p.name, path: p.id})
+
+                return res
+            }
+            response.push(...findParent(hook.currentDirectory))
+        }
+        response.push(initial)
+
+        return response
     }, [hook.currentDirectory, hook.items])
 
     useEffect(() => {
@@ -68,78 +69,78 @@ export default function FilesView(props) {
             hook.ref.current.previousSibling.previousSibling.style.height = '100%'
     }, [hidden])
 
-        return (
-            <>
-                <ResizableBar
-                    type={'height'}
+    return (
+        <>
+            <ResizableBar
+                type={'height'}
 
-                    onResize={() => {
-                        if (hidden && hook.ref.current.getBoundingClientRect().height > 35)
-                            setHidden(false)
-                    }}
-                    onResizeEnd={() => {
-                        if (hook.ref.current.getBoundingClientRect().height <= 35)
-                            setHidden(true)
-                    }}/>
-                <div className={styles.wrapper} style={{height: hidden ? '35px' : undefined}} ref={hook.ref}>
-                    <div className={styles.content} style={{width: '20%'}}>
-                        <div className={styles.contentWrapper}>
-                            <Button clssName={styles.button} onClick={() => setHidden(!hidden)}>
-                                <span className={'material-icons-round'}>{hidden ? 'expand_more' : 'expand_less'}</span>
-                            </Button>
-                            <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>source</span>
-                            <div className={styles.overflow}>
-                                Content browser
-                            </div>
+                onResize={() => {
+                    if (hidden && hook.ref.current.getBoundingClientRect().height > 35)
+                        setHidden(false)
+                }}
+                onResizeEnd={() => {
+                    if (hook.ref.current.getBoundingClientRect().height <= 35)
+                        setHidden(true)
+                }}/>
+            <div className={styles.wrapper} style={{height: hidden ? '35px' : undefined}} ref={hook.ref}>
+                <div className={styles.content} style={{width: '20%'}}>
+                    <div className={styles.contentWrapper}>
+                        <Button clssName={styles.button} onClick={() => setHidden(!hidden)}>
+                            <span className={'material-icons-round'}>{hidden ? 'expand_more' : 'expand_less'}</span>
+                        </Button>
+                        <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>source</span>
+                        <div className={styles.overflow}>
+                            Content browser
                         </div>
-                        {hidden ? null : <Directories hook={hook} {...props}/>}
                     </div>
-                    <ResizableBar type={'width'} color={'var(--fabric-border-primary)'}/>
-                    <div className={styles.content}>
-                        <div className={styles.contentWrapper} style={{paddingLeft: '8px'}}>
-                            <ControlBar
-                                searchString={searchString}
-                                visualizationType={visualizationType}
-                                setVisualizationType={setVisualizationType}
-                                setSearchString={v => {
-                                    if (hidden)
-                                        setHidden(false)
-                                    setSearchString(v)
-                                }}
-                                hidden={hidden} hook={hook} setHidden={setHidden} {...props} path={path}
-                            />
-                        </div>
-
-                        {visualizationType === 2 ?
-                            <ListItems
-                                setAlert={props.setAlert}
-                                openEngineFile={props.openEngineFile}
-                                hidden={hidden}
-                                hook={hook}
-                                visualizationType={visualizationType}
-                                searchString={searchString}
-                                setSelected={setSelected}
-                                selected={selected}
-                                accept={props.accept ? props.accept : []}
-                            />
-                            :
-                            <Cards
-                                setAlert={props.setAlert}
-                                openEngineFile={props.openEngineFile}
-                                hidden={hidden}
-                                hook={hook}
-                                visualizationType={visualizationType}
-                                searchString={searchString}
-                                setSelected={setSelected}
-                                selected={selected}
-                                accept={props.accept ? props.accept : []}
-                            />}
-
+                    {hidden ? null : <Directories hook={hook} {...props}/>}
+                </div>
+                <ResizableBar type={'width'} color={'var(--fabric-border-primary)'}/>
+                <div className={styles.content}>
+                    <div className={styles.contentWrapper} style={{paddingLeft: '8px'}}>
+                        <ControlBar
+                            searchString={searchString}
+                            visualizationType={visualizationType}
+                            setVisualizationType={setVisualizationType}
+                            setSearchString={v => {
+                                if (hidden)
+                                    setHidden(false)
+                                setSearchString(v)
+                            }}
+                            hidden={hidden} hook={hook} setHidden={setHidden} {...props} path={path}
+                        />
                     </div>
+
+                    {visualizationType === 2 ?
+                        <ListItems
+                            setAlert={props.setAlert}
+                            openEngineFile={props.openEngineFile}
+                            hidden={hidden}
+                            hook={hook}
+                            visualizationType={visualizationType}
+                            searchString={searchString}
+                            setSelected={setSelected}
+                            selected={selected}
+                            accept={props.accept ? props.accept : []}
+                        />
+                        :
+                        <Cards
+                            setAlert={props.setAlert}
+                            openEngineFile={props.openEngineFile}
+                            hidden={hidden}
+                            hook={hook}
+                            visualizationType={visualizationType}
+                            searchString={searchString}
+                            setSelected={setSelected}
+                            selected={selected}
+                            accept={props.accept ? props.accept : []}
+                        />}
 
                 </div>
-            </>
-        )
+
+            </div>
+        </>
+    )
 
 }
 

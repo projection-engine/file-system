@@ -1,22 +1,31 @@
-import {useEffect, useMemo, useRef, useState} from "react";
+import {useContext, useEffect, useMemo, useRef, useState} from "react";
 
 import getFileOptions from "../utils/parsers/getFileOptions";
 import EVENTS from "../../../pages/project/utils/misc/EVENTS";
 import handleRename from "../utils/handleRename";
+import QuickAccessProvider from "../../../pages/project/hook/QuickAccessProvider";
 
 export default function useItems({hook, accept, searchString}) {
     const [currentItem, setCurrentItem] = useState()
     const [focusedElement, setFocusedElement] = useState()
+    const quickAccess = useContext(QuickAccessProvider)
 
     const filesToRender = useMemo(() => {
         if(hook.currentDirectory.id !== '\\')
             return hook.items
                 .filter(file => file.parent === hook.currentDirectory.id && (searchString.length > 0 ? file.name.toLowerCase().includes(searchString) : true))
                 .map(e => {
+                    let previewImg = {}
+                    if(e.type === 'pimg')
+                        previewImg = quickAccess.images.find(m => m.registryID === e.registryID)
+                    else if(e.type === 'material')
+                        previewImg = quickAccess.materials.find(m => m.registryID === e.registryID)
+
                     return {
                         ...e, children: e.isFolder ? hook.items.filter(i => {
                             return typeof i.parent === 'string' && i.parent === e.id
-                        }).length : 0
+                        }).length : 0,
+                        preview: previewImg?.preview
                     }
                 })
         else
@@ -24,9 +33,10 @@ export default function useItems({hook, accept, searchString}) {
                 .filter(file => !file.parent && (searchString.length > 0 ? file.name.toLowerCase().includes(searchString) : true))
                 .map(e => {
                     return {
-                        ...e, children: e.isFolder ? hook.items.filter(i => {
+                        ...e,
+                        children: e.isFolder ? hook.items.filter(i => {
                             return typeof i.parent === 'string' && i.parent === e.id
-                        }).length : 0
+                        }).length : 0,
                     }
                 })
     }, [hook.items, hook.currentDirectory, searchString])

@@ -1,4 +1,4 @@
-export default function handleRename(item, newName, hook, setCurrentItem){
+export default function handleRename(item, newName, hook, setCurrentItem, quickAccess){
 
     if(item.isFolder) {
         const newNamePath = (item.parent ? item.parent + '\\' + newName : '\\' + newName)
@@ -13,6 +13,7 @@ export default function handleRename(item, newName, hook, setCurrentItem){
                         }
                     })
                 hook.refreshFiles()
+
 
             })
     }

@@ -1,9 +1,9 @@
+const pathResolve = window.require('path')
 export default async function handleDropFolder(event, target, setAlert, hook) {
-
+console.log(target)
     const textData = event.dataTransfer.getData('text')
 
-    if (target !== 'root') {
-
+    if (target !== '\\') {
         let from = textData
         if (!from.includes('\\')) {
 
@@ -28,7 +28,7 @@ export default async function handleDropFolder(event, target, setAlert, hook) {
         })
         if (from !== to && toItem && toItem.id !== from && fromItem && fromItem.parent !== to && toItem.isFolder) {
             hook.fileSystem
-                .rename(hook.path + '\\' + from, hook.path + to)
+                .rename(pathResolve.resolve(hook.path + '\\' + from), pathResolve.resolve(hook.path + to))
                 .then(error => {
                     if (from === hook.currentDirectory.id)
                         hook.setCurrentDirectory(prev => {
@@ -44,10 +44,10 @@ export default async function handleDropFolder(event, target, setAlert, hook) {
     } else if (textData.includes('\\')) {
 
         const newPath = hook.path + '\\' + textData.split('\\').pop()
-
+        console.log(pathResolve.resolve(hook.path + '\\' + textData), pathResolve.resolve(newPath))
         if (!hook.fs.existsSync(newPath))
             hook.fileSystem
-                .rename(hook.path + '\\' + textData, newPath)
+                .rename(pathResolve.resolve(hook.path + '\\' + textData), pathResolve.resolve(newPath))
                 .then(error => {
                     if (textData === hook.currentDirectory.id)
                         hook.setCurrentDirectory(prev => {
