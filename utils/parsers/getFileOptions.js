@@ -1,5 +1,4 @@
 import React from "react";
-import EVENTS from "../../../../pages/project/utils/misc/EVENTS";
 import {onCreate} from "../visuals/getDirectoryOptions";
 import handleDelete from "../handleDelete";
 

@@ -1,19 +1,19 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Control.module.css'
-import {Button} from "@f-ui/core";
+import {Button, LoaderProvider} from "@f-ui/core";
 import React, {useContext, useRef} from "react";
 
 import Search from "../../../components/search/Search";
 import EVENTS from "../../../pages/project/utils/misc/EVENTS";
-import LoadProvider from "../../../components/loader/LoadProvider";
+
 import ResizableBar from "../../../components/resizable/ResizableBar";
-import QuickAccessProvider from "../../../pages/project/hook/QuickAccessProvider";
+import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
 
 const pathRequire = window.require('path')
 export default function ControlBar(props) {
     const fileRef = useRef()
     const folderRef = useRef()
-    const load = useContext(LoadProvider)
+    const load = useContext(LoaderProvider)
     const quickAccess = useContext(QuickAccessProvider)
 
     return (

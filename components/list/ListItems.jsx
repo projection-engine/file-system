@@ -3,7 +3,7 @@ import styles from '../../styles/Cards.module.css'
 import React from "react";
 import ListItem from "./ListItem";
 import useItems from "../../hooks/useItems";
-import ContextMenu from "../../../../components/context/ContextMenu";
+import {ContextMenu} from "@f-ui/core";
 
 export default function ListItems(props) {
     const {

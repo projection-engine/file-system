@@ -1,14 +1,15 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 
-import QuickAccessProvider from "../../../pages/project/hook/QuickAccessProvider";
-import LoadProvider from "../../../components/loader/LoadProvider";
+import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
+import {LoaderProvider} from "@f-ui/core";
+
 import EVENTS from "../../../pages/project/utils/misc/EVENTS";
 
 const fs = window.require('fs')
 const pathRequire = window.require('path')
 export default function useDB(setAlert) {
     const [openModal, setOpenModal] = useState(false)
-    const load = useContext(LoadProvider)
+    const load = useContext(LoaderProvider)
     const ref = useRef()
     const uploadRef = useRef()
     const [onRename, setOnRename] = useState({})

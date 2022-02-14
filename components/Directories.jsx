@@ -1,12 +1,11 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Directories.module.css'
-import ContextMenu from "../../../components/context/ContextMenu";
+import {ContextMenu, LoaderProvider} from "@f-ui/core";
 import React, {useContext, useMemo} from "react";
 import TreeView from "../../../components/tree/TreeView";
 import mapToView from "../utils/parsers/mapToView";
-import EVENTS from "../../../pages/project/utils/misc/EVENTS";
-import LoadProvider from "../../../components/loader/LoadProvider";
-import ThemeProvider from "../../../pages/project/hook/ThemeProvider";
+
+import ThemeProvider from "../../../services/hooks/ThemeProvider";
 import getDirectoryOptions from "../utils/visuals/getDirectoryOptions";
 import handleDropFolder from "../utils/handleDropFolder";
 import handleRename from "../utils/handleRename";
@@ -32,7 +31,7 @@ export default function Directories(props) {
             parent: undefined
         }]
     }, [props.hook.items])
-    const load = useContext(LoadProvider)
+    const load = useContext(LoaderProvider)
     const theme = useContext(ThemeProvider)
     const options = useMemo(() => {
         return getDirectoryOptions(props, load)
