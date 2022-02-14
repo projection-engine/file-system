@@ -5,7 +5,7 @@ import React, {useContext, useMemo} from "react";
 import TreeView from "../../../components/tree/TreeView";
 import mapToView from "../utils/parsers/mapToView";
 import EVENTS from "../../../pages/project/utils/misc/EVENTS";
-import LoadProvider from "../../../pages/project/hook/LoadProvider";
+import LoadProvider from "../../../components/loader/LoadProvider";
 import ThemeProvider from "../../../pages/project/hook/ThemeProvider";
 import getDirectoryOptions from "../utils/visuals/getDirectoryOptions";
 import handleDropFolder from "../utils/handleDropFolder";

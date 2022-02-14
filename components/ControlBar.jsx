@@ -5,7 +5,7 @@ import React, {useContext, useRef} from "react";
 
 import Search from "../../../components/search/Search";
 import EVENTS from "../../../pages/project/utils/misc/EVENTS";
-import LoadProvider from "../../../pages/project/hook/LoadProvider";
+import LoadProvider from "../../../components/loader/LoadProvider";
 import ResizableBar from "../../../components/resizable/ResizableBar";
 import QuickAccessProvider from "../../../pages/project/hook/QuickAccessProvider";
 

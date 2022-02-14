@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 
 import QuickAccessProvider from "../../../pages/project/hook/QuickAccessProvider";
-import LoadProvider from "../../../pages/project/hook/LoadProvider";
+import LoadProvider from "../../../components/loader/LoadProvider";
 import EVENTS from "../../../pages/project/utils/misc/EVENTS";
 
 const fs = window.require('fs')
