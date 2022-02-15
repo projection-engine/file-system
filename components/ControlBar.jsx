@@ -51,10 +51,9 @@ export default function ControlBar(props) {
                     const promises = f.map(file => {
                         return new Promise(resolve => {
                             const folder = pathRequire.resolve(props.hook.path +  '\\' + (props.hook.currentDirectory.id ? props.hook.currentDirectory.id : '') + '\\' + file.webkitRelativePath.replace(file.name, ''))
-                            console.log(folder)
                             if (!props.hook.fs.existsSync(folder))
                                 props.hook.fs.mkdir(folder, () => {
-                                    props.hook.fileSystem.importFile(file, folder)
+                                    props.hook.fileSystem.importFile(file, folder, f)
                                         .then(() => {
                                             resolve()
 
@@ -62,7 +61,7 @@ export default function ControlBar(props) {
                                 })
                             else
                                 props.hook.fileSystem
-                                    .importFile(file, folder)
+                                    .importFile(file, folder, f)
                                     .then(() => {
                                         resolve()
 
