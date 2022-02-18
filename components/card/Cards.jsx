@@ -4,6 +4,7 @@ import React from "react";
 import ItemCard from "./ItemCard";
 import useItems from "../../hooks/useItems";
 import {ContextMenu} from "@f-ui/core";
+import SelectBox from "../../../../components/selectbox/SelectBox";
 
 export default function Cards(props) {
     const {
@@ -23,6 +24,7 @@ export default function Cards(props) {
             style={{display: props.hidden ? 'none' : undefined}}
             data-folder-wrapper={props.hook.currentDirectory.id}
         >
+
             <ContextMenu
                 options={options}
                 onContext={(node) => {
@@ -38,6 +40,7 @@ export default function Cards(props) {
                     'data-folder'
                 ]}
             >
+                <SelectBox nodes={props.hook.items} selected={props.selected} setSelected={props.setSelected}/>
                 {filesToRender.length > 0 ?
                     filesToRender.map(child => (
                         <React.Fragment key={child.id}>
@@ -49,7 +52,12 @@ export default function Cards(props) {
                                 data={child}
                                 childrenQuantity={child.children}
                                 selected={props.selected}
-                                setSelected={props.setSelected}
+                                setSelected={(e) => props.setSelected(prev => {
+                                    if(e.ctrlKey)
+                                        return [...prev, child.id]
+                                    else
+                                        return  [child.id]
+                                })}
                                 openEngineFile={props.openEngineFile}
                                 hook={props.hook}
                                 onRename={currentItem}
@@ -78,7 +86,7 @@ Cards.propTypes = {
 
 
     searchString: PropTypes.string,
-    selected: PropTypes.string,
+    selected: PropTypes.array,
     setSelected: PropTypes.func,
     openEngineFile: PropTypes.func.isRequired,
     accept: PropTypes.array,

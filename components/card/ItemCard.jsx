@@ -5,6 +5,7 @@ import parseFileType from "../../utils/visuals/parseFileType";
 import getIcon from "../../utils/visuals/getIcon";
 import useItem from "../../hooks/useItem";
 import ItemTooltip from "../ItemTooltip";
+import {Ripple} from "@f-ui/core";
 
 export default function ItemCard(props) {
     const className = useMemo(() => {
@@ -32,15 +33,18 @@ export default function ItemCard(props) {
         ref,
         currentlyOnRename,
         currentLabel,
-        setCurrentLabel
+        setCurrentLabel,
+        selected,handleDrag
     } = useItem(props)
 
     return (
         <div
             ref={ref}
-            onDragStart={e => e.dataTransfer.setData('text', props.type === 1 ? props.data.registryID : props.data.id)}
+            id={props.data.id}
+            onDragStart={handleDrag}
             draggable={!currentlyOnRename}
-            data-focused={`${props.focusedElement === props.data.id}`}
+            onClick={props.setSelected}
+            style={{outlineColor: selected ? 'var(--fabric-accent-color)' : undefined}}
             className={[styles.file, className.wrapper].join(' ')}
         >
             {icon}
@@ -79,6 +83,7 @@ export default function ItemCard(props) {
                 }
             </div>
             <ItemTooltip childrenQuantity={props.childrenQuantity} data={props.data} currentLabel={currentLabel} type={props.type}/>
+            <Ripple/>
         </div>
     )
 }
@@ -90,7 +95,7 @@ ItemCard.propTypes = {
     focusedElement: PropTypes.string,
     type: PropTypes.oneOf([0, 1]),
     data: PropTypes.object,
-    selected: PropTypes.string,
+    selected: PropTypes.array,
     setSelected: PropTypes.func,
     openEngineFile: PropTypes.func.isRequired,
     hook: PropTypes.object,

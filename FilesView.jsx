@@ -14,7 +14,7 @@ import ResizableBar from "../../components/resizable/ResizableBar";
 
 export default function FilesView(props) {
 
-    const [selected, setSelected] = useState()
+    const [selected, setSelected] = useState([])
     const [hidden, setHidden] = useState(true)
     const [searchString, setSearchString] = useState('')
 

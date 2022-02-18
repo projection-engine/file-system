@@ -101,11 +101,12 @@
 }
 
 .file {
+    position: relative;
     overflow: hidden;
     border-radius: 5px;
     color: var(--fabric-color-tertiary);
     border: var(--fabric-border-primary) 1px solid;
-    background-color: var(--background-1);
+    background-color: var(--fabric-background-primary);
 
     outline: transparent 2px solid;
     cursor: pointer;
@@ -113,13 +114,11 @@
 
 }
 
-.file:hover {
-    border-color: var(--fabric-accent-color);
+.file:hover, .file:active{
+    border-color: transparent;
+    outline-color: var(--fabric-accent-color);
 }
 
-.file:active, .file[data-focused = "true"] {
-    outline: var(--fabric-accent-color) 2px solid !important;
-}
 
 .fileSmall {
     height: 75px;
@@ -192,7 +191,7 @@
     border-radius: 5px;
     display: flex;
     align-items: center;
-    background-color: var(--background-1) !important;
+    background-color: var(--fabric-background-primary) !important;
     color: var(--fabric-color-primary) !important;
     position: absolute;
     bottom: 4px;

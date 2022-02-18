@@ -8,7 +8,7 @@
 }
 
 .wrapper {
-    background-color: var(--background-1);
+    background-color: var(--fabric-background-primary);
 
     width: 100%;
     height: clamp(250px, 45%, 500px);

@@ -4,6 +4,7 @@ import React from "react";
 import ListItem from "./ListItem";
 import useItems from "../../hooks/useItems";
 import {ContextMenu} from "@f-ui/core";
+import SelectBox from "../../../../components/selectbox/SelectBox";
 
 export default function ListItems(props) {
     const {
@@ -51,13 +52,14 @@ export default function ListItems(props) {
                     'data-folder'
                 ]}
             >
+                <SelectBox nodes={props.hook.items} selected={props.selected} setSelected={props.setSelected}/>
                 {filesToRender.length > 0 ?
                     filesToRender.map(child => (
                         <React.Fragment key={child.id}>
                             <ListItem
                                 {...props}
                                 setFocusedElement={setFocusedElement}
-                                focusedElement={focusedElement}
+                                focusedElement={focusedElement }
                                 type={child.isFolder ? 0 : 1}
                                 data={child}
                                 childrenQuantity={child.children}
@@ -83,7 +85,7 @@ export default function ListItems(props) {
 ListItems.propTypes = {
     visualizationType: PropTypes.number,
     searchString: PropTypes.string,
-    selected: PropTypes.string,
+    selected: PropTypes.array,
     setSelected: PropTypes.func,
     openEngineFile: PropTypes.func.isRequired,
     accept: PropTypes.array,

@@ -19,15 +19,17 @@ export default function ListItem(props) {
         ref,
         currentlyOnRename,
         currentLabel,
-        setCurrentLabel
+        setCurrentLabel,
+        selected, handleDrag
     } = useItem(props)
 
     return (
         <div
             ref={ref}
-            onDragStart={e => e.dataTransfer.setData('text', props.data.id)}
+            id={props.data.id}
+            onDragStart={handleDrag}
             draggable={!currentlyOnRename}
-            data-focused={`${props.focusedElement === props.data.id}`}
+            style={{outlineColor: selected ? 'var(--fabric-accent-color)' : undefined}}
             className={styles.wrapper}
         >
             {icon}
@@ -71,7 +73,7 @@ ListItem.propTypes = {
     focusedElement: PropTypes.string,
     type: PropTypes.oneOf([0, 1]),
     data: PropTypes.object,
-    selected: PropTypes.string,
+    selected: PropTypes.array,
     setSelected: PropTypes.func,
     openEngineFile: PropTypes.func.isRequired,
     hook: PropTypes.object,

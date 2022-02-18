@@ -1,9 +1,23 @@
 import {useEffect, useMemo, useRef, useState} from "react";
 import styles from "../styles/ItemCard.module.css";
 import handleDropFolder from "../utils/handleDropFolder";
+import dragImageMulti from '../../../static/table.svg'
+import dragImageSingle from '../../../static/file.svg'
 
 export default function useItem(props) {
     const ref = useRef()
+    const [images, setImages] = useState({
+        single: new Image(),
+        multi: new Image()
+    })
+    useEffect(() => {
+        setImages(prev => {
+            prev.single.src = dragImageSingle
+            prev.multi.src = dragImageMulti
+
+            return prev
+        })
+    }, [])
     useEffect(() => {
         if (props.type === 0)
             ref.current.setAttribute('data-folder', props.data.id)
@@ -18,7 +32,10 @@ export default function useItem(props) {
     useEffect(() => {
         setCurrentLabel(props.data.name)
     }, [props.data.name])
+    const selected = useMemo(() => {
+        return props.selected.includes(props.data.id)
 
+    }, [props.selected])
 
     const onDoubleClick = () => {
 
@@ -66,11 +83,26 @@ export default function useItem(props) {
             ref.current?.removeEventListener('dblclick', onDoubleClick)
         }
     }, [props.data, ref, props.openEngineFile])
+    const handleDrag = (event) => {
+        if(event.ctrlKey){
+            const selected = props.selected.map(s => {
+                return props.hook.items.find(i => i.id === s)
+            }).filter(e => e && !e.isFolder && e.type === 'mesh')
 
+
+            event.dataTransfer.setDragImage(images.multi, 0, 0)
+            event.dataTransfer.setData('text', JSON.stringify(selected.map(s => s.registryID)))
+        }
+        else {
+            event.dataTransfer.setDragImage(images.single, 0, 0)
+            event.dataTransfer.setData('text', JSON.stringify([props.type === 1 ? props.data.registryID : props.data.id]))
+        }
+
+    }
     return {
-        ref,
+        ref, handleDrag,
         currentlyOnRename,
         currentLabel, setCurrentLabel,
-
+        selected
     }
 }

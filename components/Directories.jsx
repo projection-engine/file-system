@@ -50,6 +50,7 @@ export default function Directories(props) {
                     onDrop={(event, target) => handleDropFolder(event, target, props.setAlert, props.hook)}
                     onDragLeave={(event) => event.preventDefault()}
                     onDragOver={(event) => event.preventDefault()}
+                    onDragStart={(e, t) => e.dataTransfer.setData('text', JSON.stringify([t]))}
                     selected={props.hook.currentDirectory.id}
                     nodes={directoriesToRender}
                     handleRename={(folder, newName) =>handleRename(folder, newName, props.hook)}
