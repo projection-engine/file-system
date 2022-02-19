@@ -37,6 +37,7 @@ export default function getFileOptions(hook, setCurrentItem) {
             label: 'Delete',
             icon: <span className={'material-icons-round'}>delete</span>,
             onClick: (node) => handleDelete(node.getAttribute('data-file'), hook)
+
         },
         {
             requiredTrigger: 'data-folder-wrapper',

@@ -83,7 +83,7 @@ export default function ItemCard(props) {
                 }
             </div>
             <ItemTooltip childrenQuantity={props.childrenQuantity} data={props.data} currentLabel={currentLabel} type={props.type}/>
-            <Ripple/>
+
         </div>
     )
 }
