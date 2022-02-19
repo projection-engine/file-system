@@ -22,7 +22,7 @@ export default function ControlBar(props) {
             <input
                 type={'file'}
                 ref={fileRef}
-                accept={['.obj', '.png', '.jpeg', '.jpg', '.hdr', '.gltf', '.glt', '.material']}
+                accept={['.png', '.jpeg', '.jpg', '.hdr', '.gltf', '.glt', '.material']}
                 multiple={true}
                 onChange={e => {
                     load.pushEvent(EVENTS.IMPORT_FILE)
@@ -41,7 +41,7 @@ export default function ControlBar(props) {
             <input
                 type={'file'}
                 ref={folderRef}
-                accept={['.obj', '.png', '.jpeg', '.jpg', '.hdr', '.gltf', '.glt', '.bin', '.material']}
+                accept={[ '.png', '.jpeg', '.jpg', '.hdr', '.gltf', '.glt',  '.material']}
                 directory=""
                 webkitdirectory=""
                 multiple={true}
