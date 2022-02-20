@@ -10,8 +10,6 @@ export default function getDirectoryOptions(props, load) {
             label: 'Delete',
             icon: <span className={'material-icons-round'}>delete</span>,
             onClick: (node) => {
-
-                // TODO - CONFIRM MODAL IF HAS CHILDREN
                 const id = node.getAttribute('data-folder')
                 load.pushEvent(EVENTS.DELETE_FOLDER)
                 fs.rm(props.hook.path + '\\' + id, {recursive: true, force: true}, (e) => {

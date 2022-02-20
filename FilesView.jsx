@@ -11,7 +11,11 @@ import useDB from "./hooks/useDB";
 import ListItems from "./components/list/ListItems";
 
 import ResizableBar from "../../components/resizable/ResizableBar";
+import DeleteConfirmation from "./components/DeleteConfirmation";
 
+
+
+DeleteConfirmation.propTypes = {hook: PropTypes.any};
 export default function FilesView(props) {
 
     const [selected, setSelected] = useState([])
@@ -82,6 +86,7 @@ export default function FilesView(props) {
                     if (hook.ref.current.getBoundingClientRect().height <= 35)
                         setHidden(true)
                 }}/>
+            <DeleteConfirmation hook={hook}/>
             <div className={styles.wrapper} style={{height: hidden ? '35px' : undefined}} ref={hook.ref}>
                 <div className={styles.content} style={{width: '20%'}}>
                     <div className={styles.contentWrapper}>

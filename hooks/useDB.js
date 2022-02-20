@@ -4,6 +4,7 @@ import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
 import {LoaderProvider} from "@f-ui/core";
 
 import EVENTS from "../../../pages/project/utils/misc/EVENTS";
+import EntitiesProvider from "../../../services/hooks/EntitiesProvider";
 
 const fs = window.require('fs')
 const pathRequire = window.require('path')
@@ -18,12 +19,15 @@ export default function useDB(setAlert) {
     const [currentDirectory, setCurrentDirectory] = useState({
         id: '\\'
     })
+    // {entitiesRelated: relatedEntities, file: id}
+    const [toDelete, setToDelete] = useState({})
     const quickAccess = useContext(QuickAccessProvider)
     const path = (quickAccess.fileSystem.path + '\\assets')
+    const {entities, removeEntity} = useContext(EntitiesProvider)
+
 
 
     useEffect(() => {
-
         if (!initialized) {
             refreshFiles()
 
@@ -122,8 +126,11 @@ export default function useDB(setAlert) {
     }
 
     return {
+        toDelete, setToDelete,
+        removeEntity,
         refreshFiles,
         fileSystem: quickAccess.fileSystem,
+        quickAccess,
         path,
         load,
         ref,
@@ -135,6 +142,7 @@ export default function useDB(setAlert) {
         uploadRef,
         onRename,
         setOnRename, setAlert,
-        fs
+        fs,
+        entities
     }
 }
