@@ -14,7 +14,6 @@ import ResizableBar from "../../components/resizable/ResizableBar";
 import DeleteConfirmation from "./components/DeleteConfirmation";
 
 
-
 DeleteConfirmation.propTypes = {hook: PropTypes.any};
 export default function FilesView(props) {
 

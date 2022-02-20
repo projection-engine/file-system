@@ -1,4 +1,4 @@
-import EVENTS from "../../../../pages/project/utils/misc/EVENTS";
+import EVENTS from "../../../../services/utils/misc/EVENTS";
 import React from "react";
 
 const fs = window.require('fs')

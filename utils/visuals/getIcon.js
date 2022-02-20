@@ -34,6 +34,12 @@ export default function getIcon(type, file, className, imageClass, childrenQuant
                     <span className={'material-icons-round'}>texture</span>
                 </div>
             )
+        case 'terrain':
+            return (
+                <div className={[styles.icon, className].join(' ')}>
+                    <span className={'material-icons-round'}>terrain</span>
+                </div>
+            )
         case 'mesh':
             if (file.preview)
                 return (

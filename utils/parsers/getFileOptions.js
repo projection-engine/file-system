@@ -75,5 +75,25 @@ export default function getFileOptions(hook, setCurrentItem) {
 
             }
         },
+
+        {
+            requiredTrigger: 'data-folder-wrapper',
+            label: 'New terrain',
+            icon: <span className={'material-icons-round'}>terrain</span>,
+            onClick: () => {
+                let path = hook.currentDirectory.id + '\\New terrain'
+                if (hook.fileSystem.assetExists(path + '.terrain')) {
+                    const existing = hook.fileSystem.fromDirectory(hook.path + hook.currentDirectory.id, '.material')
+
+                    path += ' - ' + existing.filter(e => e.includes('New terrain')).length
+                }
+
+                hook.fileSystem.writeAsset(path + '.terrain', JSON.stringify({}))
+                    .then(() => {
+                        hook.refreshFiles()
+                    })
+
+            }
+        },
     ]
 }

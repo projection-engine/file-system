@@ -1,4 +1,4 @@
-import EVENTS from "../../../pages/project/utils/misc/EVENTS";
+import EVENTS from "../../../services/utils/misc/EVENTS";
 
 export default function handleDelete(id, hook) {
     const files = hook.items.filter(i => (i.id === id) ||(i.parent && i.parent.includes(id) && !i.isFolder))

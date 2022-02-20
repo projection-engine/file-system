@@ -5,7 +5,6 @@ import parseFileType from "../../utils/visuals/parseFileType";
 import getIcon from "../../utils/visuals/getIcon";
 import useItem from "../../hooks/useItem";
 import ItemTooltip from "../ItemTooltip";
-import {Ripple} from "@f-ui/core";
 
 export default function ItemCard(props) {
     const className = useMemo(() => {

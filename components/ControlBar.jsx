@@ -4,7 +4,7 @@ import {Button, LoaderProvider} from "@f-ui/core";
 import React, {useContext, useRef} from "react";
 
 import Search from "../../../components/search/Search";
-import EVENTS from "../../../pages/project/utils/misc/EVENTS";
+import EVENTS from "../../../services/utils/misc/EVENTS";
 
 import ResizableBar from "../../../components/resizable/ResizableBar";
 import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";

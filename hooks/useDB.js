@@ -3,7 +3,7 @@ import React, {useContext, useEffect, useRef, useState} from "react";
 import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
 import {LoaderProvider} from "@f-ui/core";
 
-import EVENTS from "../../../pages/project/utils/misc/EVENTS";
+import EVENTS from "../../../services/utils/misc/EVENTS";
 import EntitiesProvider from "../../../services/hooks/EntitiesProvider";
 
 const fs = window.require('fs')
