@@ -85,8 +85,9 @@ export default function FilesView(props) {
                     if (hook.ref.current.getBoundingClientRect().height <= 35)
                         setHidden(true)
                 }}/>
-            <DeleteConfirmation hook={hook}/>
+
             <div className={styles.wrapper} style={{height: hidden ? '35px' : undefined}} ref={hook.ref}>
+                <DeleteConfirmation hook={hook}/>
                 <div className={styles.content} style={{width: '20%'}}>
                     <div className={styles.contentWrapper}>
                         <Button clssName={styles.button} onClick={() => setHidden(!hidden)}>
