@@ -1,5 +1,6 @@
 import EVENTS from "../../../../services/utils/misc/EVENTS";
 import React from "react";
+import handleDelete from "../handleDelete";
 
 const fs = window.require('fs')
 export default function getDirectoryOptions(props, load) {
@@ -10,17 +11,18 @@ export default function getDirectoryOptions(props, load) {
             label: 'Delete',
             icon: <span className={'material-icons-round'}>delete</span>,
             onClick: (node) => {
-                const id = node.getAttribute('data-folder')
-                load.pushEvent(EVENTS.DELETE_FOLDER)
-                fs.rm(props.hook.path + '\\' + id, {recursive: true, force: true}, (e) => {
-                    load.finishEvent(EVENTS.DELETE_FOLDER)
-
-                    if(props.hook.currentDirectory.id === id)
-                        props.hook.setCurrentDirectory({
-                            id: '\\'
-                        })
-                    props.hook.refreshFiles()
-                })
+                handleDelete(node.getAttribute('data-folder'), props.hook)
+                // const id =
+                // load.pushEvent(EVENTS.DELETE_FOLDER)
+                // fs.rm(props.hook.path + '\\' + id, {recursive: true, force: true}, (e) => {
+                //     load.finishEvent(EVENTS.DELETE_FOLDER)
+                //
+                //     if(props.hook.currentDirectory.id === id)
+                //         props.hook.setCurrentDirectory({
+                //             id: '\\'
+                //         })
+                //     props.hook.refreshFiles()
+                // })
             }
         },
         {

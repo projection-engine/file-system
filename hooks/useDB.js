@@ -1,16 +1,17 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 
 import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
-import {LoaderProvider} from "@f-ui/core";
+import {AlertProvider, LoaderProvider} from "@f-ui/core";
 
 import EVENTS from "../../../services/utils/misc/EVENTS";
 import EntitiesProvider from "../../../services/hooks/EntitiesProvider";
 
 const fs = window.require('fs')
 const pathRequire = window.require('path')
-export default function useDB(setAlert) {
+export default function useDB() {
     const [openModal, setOpenModal] = useState(false)
     const load = useContext(LoaderProvider)
+    const alert = useContext(AlertProvider)
     const ref = useRef()
     const uploadRef = useRef()
     const [onRename, setOnRename] = useState({})
@@ -23,7 +24,7 @@ export default function useDB(setAlert) {
     const [toDelete, setToDelete] = useState({})
     const quickAccess = useContext(QuickAccessProvider)
     const path = (quickAccess.fileSystem.path + '\\assets')
-    const {entities, removeEntity} = useContext(EntitiesProvider)
+    const {entities, removeEntities} = useContext(EntitiesProvider)
 
 
 
@@ -127,7 +128,7 @@ export default function useDB(setAlert) {
 
     return {
         toDelete, setToDelete,
-        removeEntity,
+        removeEntities,
         refreshFiles,
         fileSystem: quickAccess.fileSystem,
         quickAccess,
@@ -141,7 +142,7 @@ export default function useDB(setAlert) {
         setOpenModal,
         uploadRef,
         onRename,
-        setOnRename, setAlert,
+        setOnRename, setAlert: ({type, message}) => alert.pushAlert(message, type),
         fs,
         entities
     }

@@ -12,9 +12,9 @@ export default function DeleteConfirmation(props) {
     const submit = () => {
         deleteData(props.hook.toDelete.file, props.hook)
             .then(toRemove => {
-                props.hook.toDelete.relatedEntities.forEach(e => {
-                    props.hook.removeEntity(e.entity)
-                })
+                props.hook.removeEntities(props.hook.toDelete.relatedEntities.map(e => {
+                    return e.entity
+                }))
 
                 props.hook.setItems(prev => {
                     return prev.filter(p => !toRemove.includes(p.id))
@@ -37,7 +37,7 @@ export default function DeleteConfirmation(props) {
                     </div>
                     <div className={styles.toBeDeleted} style={{display: props.hook.toDelete.relatedEntities.length === 0 && props.hook.toDelete.relatedFiles.length === 0 ? 'none' : undefined}}>
                         <div className={styles.row} style={{borderBottom: 'var(--fabric-border-primary) 1px solid', marginBottom: '4px'}}>
-                            <div className={styles.overflow}>
+                            <div style={{display: props.hook.toDelete.relatedEntities > 0 ? undefined : 'none'}} className={styles.overflow}>
                                 Entity
                             </div>
 
@@ -64,11 +64,11 @@ export default function DeleteConfirmation(props) {
                             </div>
                         ))}
                         {props.hook.toDelete.relatedEntities.length === 0 ? props.hook.toDelete.relatedFiles.map((e, i) => (
-                            <div key={e.name + '-' + i} className={styles.row}>
+                            <div key={e + '-file-' + i} className={styles.row}>
                                 <div className={[styles.overflow, styles.row].join(' ')} style={{gap: '4px'}}>
-                                    {e.name}
+                                    {e}
                                     <ToolTip>
-                                        {e.name}
+                                        {e}
                                     </ToolTip>
                                 </div>
                             </div>
