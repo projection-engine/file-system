@@ -15,17 +15,10 @@ export default function useItems({hook, accept, searchString}) {
             return hook.items
                 .filter(file => file.parent === hook.currentDirectory.id && (searchString.length > 0 ? file.name.toLowerCase().includes(searchString) : true))
                 .map(e => {
-                    let previewImg = {}
-                    if(e.type === 'pimg')
-                        previewImg = quickAccess.images.find(m => m.registryID === e.registryID)
-                    else if(e.type === 'material')
-                        previewImg = quickAccess.materials.find(m => m.registryID === e.registryID)
-
                     return {
                         ...e, children: e.isFolder ? hook.items.filter(i => {
                             return typeof i.parent === 'string' && i.parent === e.id
-                        }).length : 0,
-                        preview: previewImg?.preview
+                        }).length : 0
                     }
                 })
         else

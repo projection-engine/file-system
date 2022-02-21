@@ -1,8 +1,9 @@
-import {useEffect, useMemo, useRef, useState} from "react";
+import {useContext, useEffect, useMemo, useRef, useState} from "react";
 import styles from "../styles/ItemCard.module.css";
 import handleDropFolder from "../utils/handleDropFolder";
 import dragImageMulti from '../../../static/table.svg'
 import dragImageSingle from '../../../static/file.svg'
+import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
 
 export default function useItem(props) {
     const ref = useRef()
@@ -99,7 +100,25 @@ export default function useItem(props) {
         }
 
     }
+
+    const quickAccess = useContext(QuickAccessProvider)
+    const preview = useMemo(() => {
+        switch (props.data.type){
+            case 'mesh':
+                // TODO
+                return
+            case 'pimg':
+                return quickAccess.images.find(m => m.registryID === props.data.registryID)?.preview
+            case 'material':
+                // TODO
+                return
+            default:
+                return quickAccess
+        }
+    }, [quickAccess.images])
     return {
+
+        preview,
         ref, handleDrag,
         currentlyOnRename,
         currentLabel, setCurrentLabel,

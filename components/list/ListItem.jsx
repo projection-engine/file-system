@@ -1,27 +1,31 @@
 import PropTypes from "prop-types";
 import styles from '../../styles/ListItem.module.css'
-import React, {useMemo} from "react";
+import React, {useContext, useEffect, useMemo} from "react";
 import getIcon from "../../utils/visuals/getIcon";
 
 import useItem from "../../hooks/useItem";
 import ItemTooltip from "../ItemTooltip";
+import QuickAccessProvider from "../../../../services/hooks/QuickAccessProvider";
 
 export default function ListItem(props) {
-
-    const icon = useMemo(() => {
-        return getIcon(props.data.type ? props.data.type : 'folder', props.data, styles.icon, styles.imageWrapper, props.childrenQuantity)
-    }, [props.data])
-    const size = useMemo(() => {
-        return props.data.size ? (props.data.size < 100000 ? (props.data.size / 1000).toFixed(2) + 'KB' : (props.data.size / (10 ** 6)).toFixed(2) + ' MB') : 'NaN'
-    }, [props.data])
-
     const {
         ref,
         currentlyOnRename,
         currentLabel,
         setCurrentLabel,
+        preview,
         selected, handleDrag
     } = useItem(props)
+    const icon = useMemo(() => {
+        return getIcon(props.data.type ? props.data.type : 'folder', preview, styles.icon, styles.imageWrapper, props.childrenQuantity, true)
+    }, [props.data])
+    const size = useMemo(() => {
+        return props.data.size ? (props.data.size < 100000 ? (props.data.size / 1000).toFixed(2) + 'KB' : (props.data.size / (10 ** 6)).toFixed(2) + ' MB') : 'NaN'
+    }, [props.data])
+    // useEffect(() => {
+    //     if(props.data.type && !props.data.registryID)
+    //         props.hook.refreshFiles()
+    // }, [])
 
     return (
         <div
@@ -68,7 +72,6 @@ export default function ListItem(props) {
 }
 
 ListItem.propTypes = {
-
     setFocusedElement: PropTypes.func,
     focusedElement: PropTypes.string,
     type: PropTypes.oneOf([0, 1]),

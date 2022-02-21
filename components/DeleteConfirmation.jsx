@@ -1,14 +1,16 @@
 import PropTypes from "prop-types";
 import {deleteData} from "../utils/handleDelete";
-import {useMemo} from "react";
+import {useContext, useMemo} from "react";
 import {Button, Modal, ToolTip} from "@f-ui/core";
 import styles from '../styles/DeleteConfirmation.module.css'
+import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
 
 export default function DeleteConfirmation(props) {
     const open = useMemo(() => {
 
         return Object.keys(props.hook.toDelete).length > 0
     }, [props.hook.toDelete])
+    const quickAccess = useContext(QuickAccessProvider)
     const submit = () => {
         deleteData(props.hook.toDelete.file, props.hook)
             .then(toRemove => {
@@ -19,7 +21,7 @@ export default function DeleteConfirmation(props) {
                 props.hook.setItems(prev => {
                     return prev.filter(p => !toRemove.includes(p.id))
                 })
-                props.hook.quickAccess.refresh()
+                quickAccess.refresh()
                 props.hook.setToDelete({})
             })
     }

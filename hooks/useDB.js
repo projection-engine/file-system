@@ -20,7 +20,7 @@ export default function useDB() {
     const [currentDirectory, setCurrentDirectory] = useState({
         id: '\\'
     })
-    // {entitiesRelated: relatedEntities, file: id}
+
     const [toDelete, setToDelete] = useState({})
     const quickAccess = useContext(QuickAccessProvider)
     const path = (quickAccess.fileSystem.path + '\\assets')
@@ -109,9 +109,7 @@ export default function useDB() {
                     })
                     Promise.all(promises)
                         .then(promiseRes => {
-
                             load.finishEvent(EVENTS.LOAD_FILES)
-
                             if (!initialized)
                                 setInitialized(true)
                             setItems(promiseRes.sort(function (a, b) {
@@ -131,7 +129,7 @@ export default function useDB() {
         removeEntities,
         refreshFiles,
         fileSystem: quickAccess.fileSystem,
-        quickAccess,
+
         path,
         load,
         ref,

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from '../../styles/ItemCard.module.css'
-import React, {useMemo} from "react";
+import React, {useEffect, useMemo} from "react";
 import parseFileType from "../../utils/visuals/parseFileType";
 import getIcon from "../../utils/visuals/getIcon";
 import useItem from "../../hooks/useItem";
@@ -23,19 +23,25 @@ export default function ItemCard(props) {
                 }
         }
     }, [props.visualizationType])
-
-    const icon = useMemo(() => {
-        return getIcon(props.data.type ? props.data.type : 'folder', props.data, className.icon, styles.imageWrapper, props.childrenQuantity)
-    }, [props.data, className])
-
     const {
         ref,
         currentlyOnRename,
         currentLabel,
         setCurrentLabel,
-        selected,handleDrag
+        preview,
+        selected, handleDrag
     } = useItem(props)
 
+    const icon = useMemo(() => {
+        return getIcon(props.data.type ? props.data.type : 'folder', preview, className.icon, styles.imageWrapper, props.childrenQuantity)
+    }, [props.data, className])
+    //
+    // useEffect(() => {
+    //     if(props.data.type && !props.data.registryID)
+    //         props.hook.refreshFiles()
+    // }, [])
+
+    console.log(props.type)
     return (
         <div
             ref={ref}
@@ -65,7 +71,7 @@ export default function ItemCard(props) {
                     (props.type === 1 ?
                             <>
 
-                                <div className={[styles.label, styles.overflow].join(' ')}>
+                                <div className={[styles.label, styles.overflow].join(' ')} style={{fontSize: props.variant === 'big' ? undefined : '.7rem'}}>
                                     {currentLabel}
                                 </div>
                                 <div className={[styles.type, styles.overflow].join(' ')}
@@ -75,7 +81,7 @@ export default function ItemCard(props) {
                             </>
                             :
                             <div className={[styles.label, styles.overflow].join(' ')}
-                                 style={{textAlign: 'center', padding: '8px 8px 16px 8px'}}>
+                                 style={{textAlign: 'center', padding: '8px 8px 16px 8px' }}>
                                 {currentLabel}
                             </div>
                     )

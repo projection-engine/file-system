@@ -32,6 +32,7 @@
 
 .settingsButton {
     height: 25px;
+    min-width: 25px;
     padding: 0 2px !important;
 
     display: flex;
@@ -40,10 +41,11 @@
 }
 
 .settingsButton > * {
-    font-size: 1.3rem !important;
+    font-size: 1.1rem !important;
 }
 
 .pathWrapper{
+
     max-width: 100%;
     overflow-x: auto;
     display: flex;
@@ -55,4 +57,13 @@
     max-width: 100%;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.divider{
+    width: 2px;
+    height: 25px;
+    min-width: 2px;
+    background: var(--fabric-border-primary);
+    margin: 0 8px;
+
 }

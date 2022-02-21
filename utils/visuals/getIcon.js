@@ -1,13 +1,13 @@
 import styles from "../../styles/ItemCard.module.css";
 
-export default function getIcon(type, file, className, imageClass, childrenQuantity) {
+export default function getIcon(type, preview, className, imageClass, childrenQuantity, noIcon) {
     switch (type) {
         case 'pimg': {
-            if (file.preview)
+            if (preview)
                 return (
                     <div style={{position: 'relative'}} className={imageClass}>
-                    <img src={file?.preview}  draggable={false} alt={'image'} className={styles.image}/>
-                        <div className={styles.floatingIcon}>
+                        <img src={preview} draggable={false} alt={'image'} className={styles.image}/>
+                        <div style={{display: noIcon ? 'none' : undefined}} className={styles.floatingIcon}>
                             <span style={{fontSize: '1rem'}} className={'material-icons-round'}>image</span>
                         </div>
                     </div>
@@ -20,11 +20,11 @@ export default function getIcon(type, file, className, imageClass, childrenQuant
         }
 
         case 'material':
-            if (file.preview)
+            if (preview)
                 return (
                     <div style={{position: 'relative'}} className={imageClass}>
-                        <img src={file?.preview}  draggable={false} alt={'image'} className={styles.image}/>
-                        <div className={styles.floatingIcon}>
+                        <img src={preview} draggable={false} alt={'image'} className={styles.image}/>
+                        <div style={{display: noIcon ? 'none' : undefined}} className={styles.floatingIcon}>
                             <span style={{fontSize: '1rem'}} className={'material-icons-round'}>texture</span>
                         </div>
                     </div>
@@ -41,11 +41,11 @@ export default function getIcon(type, file, className, imageClass, childrenQuant
                 </div>
             )
         case 'mesh':
-            if (file.preview)
+            if (preview)
                 return (
                     <div style={{position: 'relative'}} className={imageClass}>
-                        <img src={file?.preview}  draggable={false} alt={'image'} className={styles.image}/>
-                        <div className={styles.floatingIcon}>
+                        <img src={preview} draggable={false} alt={'image'} className={styles.image}/>
+                        <div style={{display: noIcon ? 'none' : undefined}} className={styles.floatingIcon}>
                             <span style={{fontSize: '1rem'}} className={'material-icons-round'}>view_in_ar</span>
                         </div>
                     </div>

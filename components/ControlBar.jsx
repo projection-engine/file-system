@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Control.module.css'
-import {Button, LoaderProvider} from "@f-ui/core";
+import {Button, Dropdown, DropdownOption, DropdownOptions, LoaderProvider} from "@f-ui/core";
 import React, {useContext, useRef} from "react";
 
 import Search from "../../../components/search/Search";
@@ -41,7 +41,7 @@ export default function ControlBar(props) {
             <input
                 type={'file'}
                 ref={folderRef}
-                accept={[ '.png', '.jpeg', '.jpg', '.hdr', '.gltf', '.glt',  '.material']}
+                accept={['.png', '.jpeg', '.jpg', '.hdr', '.gltf', '.glt', '.material']}
                 directory=""
                 webkitdirectory=""
                 multiple={true}
@@ -50,7 +50,7 @@ export default function ControlBar(props) {
                     load.pushEvent(EVENTS.IMPORT_FILE)
                     const promises = f.map(file => {
                         return new Promise(resolve => {
-                            const folder = pathRequire.resolve(props.hook.path +  '\\' + (props.hook.currentDirectory.id ? props.hook.currentDirectory.id : '') + '\\' + file.webkitRelativePath.replace(file.name, ''))
+                            const folder = pathRequire.resolve(props.hook.path + '\\' + (props.hook.currentDirectory.id ? props.hook.currentDirectory.id : '') + '\\' + file.webkitRelativePath.replace(file.name, ''))
                             if (!props.hook.fs.existsSync(folder))
                                 props.hook.fs.mkdir(folder, () => {
                                     props.hook.fileSystem.importFile(file, folder, f)
@@ -84,18 +84,22 @@ export default function ControlBar(props) {
 
             <div style={{display: 'flex', gap: '4px', width: '100%'}}>
                 <Button
-                    styles={{marginRight: '4px'}}
+                    variant={"outlined"}
                     disabled={props.path.length <= 1}
                     className={styles.settingsButton}
-                    variant={"minimal"}
+
                     onClick={() => {
                         const found = props.hook.items.find(i => i.id === props.hook.currentDirectory.parent)
                         if (found)
                             props.hook.setCurrentDirectory(found)
                     }}
                 >
-                    <span style={{fontSize: '1rem'}} className={'material-icons-round'}>arrow_upward</span>
+                    <span  className={'material-icons-round'}>arrow_upward</span>
                 </Button>
+                <Button className={styles.settingsButton} onClick={() => props.hook.refreshFiles()} variant={"outlined"}>
+                    <span className={'material-icons-round'}>refresh</span>
+                </Button>
+                <div className={styles.divider}/>
                 <Button className={styles.settingsButton} onClick={() => props.setVisualizationType(0)}
                         highlight={props.visualizationType === 0}>
                     <span className={'material-icons-round'}>grid_view</span>
@@ -109,9 +113,9 @@ export default function ControlBar(props) {
                         highlight={props.visualizationType === 2}>
                     <span className={'material-icons-round'}>view_list</span>
                 </Button>
-                <Search searchString={props.searchString} setSearchString={props.setSearchString} width={'100px'}/>
-                <ResizableBar type={'width'}/>
-                <div className={styles.pathWrapper}>
+                <div className={styles.divider}/>
+                <Search searchString={props.searchString} setSearchString={props.setSearchString} width={'50%'}/>
+                <div className={styles.pathWrapper} style={{width: '100%'}}>
                     {props.path.map((p, i) => (
                         <React.Fragment key={p.path}>
                             <Button className={styles.button}
@@ -137,18 +141,25 @@ export default function ControlBar(props) {
                     ))}
                 </div>
             </div>
-            <div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
-                <Button onClick={() => fileRef.current.click()} className={styles.button}
-                        variant={'minimal-horizontal'}>
-                    <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>description</span>
-                    Import file
-                </Button>
-                <Button onClick={() => folderRef.current.click()} className={styles.button}
-                        variant={'minimal-horizontal'}>
-                    <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>folder</span>
-                    Import folder
-                </Button>
-            </div>
+
+            <Dropdown styles={{fontSize: '.7rem'}} variant={"outlined"}>
+                <span className={'material-icons-round'} style={{fontSize: '1rem'}}>open_in_new</span>
+                Import
+                <DropdownOptions>
+                    <DropdownOption option={{
+                        icon: <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>note_add</span>,
+                        label: 'Files',
+                        onClick: () => fileRef.current.click()
+                    }}/>
+                    <DropdownOption option={{
+                        icon: <span className={'material-icons-round'}
+                                    style={{fontSize: '1.2rem'}}>create_new_folder</span>,
+                        label: 'Folder',
+                        onClick: () => folderRef.current.click()
+                    }}/>
+                </DropdownOptions>
+            </Dropdown>
+
         </>
     )
 }
