@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from '../../styles/ItemCard.module.css'
-import React, {useEffect, useMemo} from "react";
+import React, {useMemo} from "react";
 import parseFileType from "../../utils/visuals/parseFileType";
 import getIcon from "../../utils/visuals/getIcon";
 import useItem from "../../hooks/useItem";

@@ -1,12 +1,10 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Control.module.css'
 import {Button, Dropdown, DropdownOption, DropdownOptions, LoaderProvider} from "@f-ui/core";
-import React, {useContext, useRef} from "react";
+import React, {useContext, useRef, useState} from "react";
 
 import Search from "../../../components/search/Search";
 import EVENTS from "../../../services/utils/misc/EVENTS";
-
-import ResizableBar from "../../../components/resizable/ResizableBar";
 import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
 
 const pathRequire = window.require('path')
@@ -15,7 +13,7 @@ export default function ControlBar(props) {
     const folderRef = useRef()
     const load = useContext(LoaderProvider)
     const quickAccess = useContext(QuickAccessProvider)
-
+    const [asHeightmap, setAsHeightMap] = useState(false)
     return (
         <>
 
@@ -28,16 +26,22 @@ export default function ControlBar(props) {
                     load.pushEvent(EVENTS.IMPORT_FILE)
                     const f = e.target.files[0]
                     props.hook.fileSystem
-                        .importFile(f, props.hook.path + (props.hook.currentDirectory.id ? props.hook.currentDirectory.id : ''))
+                        .importFile(f, props.hook.path + (props.hook.currentDirectory.id ? props.hook.currentDirectory.id : ''), asHeightmap)
                         .then(res => {
+
                             load.finishEvent(EVENTS.IMPORT_FILE)
                             props.hook.refreshFiles()
                             quickAccess.refresh()
                         })
+
+
+                    setAsHeightMap(false)
+
                     e.target.value = "";
                 }}
                 style={{display: 'none'}}
             />
+
             <input
                 type={'file'}
                 ref={folderRef}
@@ -69,7 +73,6 @@ export default function ControlBar(props) {
 
                         })
                     })
-                    console.log(promises)
                     Promise.all(promises)
                         .then(() => {
                             load.finishEvent(EVENTS.IMPORT_FILE)
@@ -94,9 +97,10 @@ export default function ControlBar(props) {
                             props.hook.setCurrentDirectory(found)
                     }}
                 >
-                    <span  className={'material-icons-round'}>arrow_upward</span>
+                    <span className={'material-icons-round'}>arrow_upward</span>
                 </Button>
-                <Button className={styles.settingsButton} onClick={() => props.hook.refreshFiles()} variant={"outlined"}>
+                <Button className={styles.settingsButton} onClick={() => props.hook.refreshFiles()}
+                        variant={"outlined"}>
                     <span className={'material-icons-round'}>refresh</span>
                 </Button>
                 <div className={styles.divider}/>
@@ -146,6 +150,15 @@ export default function ControlBar(props) {
                 <span className={'material-icons-round'} style={{fontSize: '1rem'}}>open_in_new</span>
                 Import
                 <DropdownOptions>
+                    <DropdownOption option={{
+                        icon: <span className={'material-icons-round'}
+                                    style={{fontSize: '1.2rem'}}>terrain</span>,
+                        label: 'Terrain heightmap',
+                        onClick: () => {
+                            setAsHeightMap(true)
+                            fileRef.current.click()
+                        }
+                    }}/>
                     <DropdownOption option={{
                         icon: <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>note_add</span>,
                         label: 'Files',

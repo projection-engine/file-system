@@ -1,11 +1,10 @@
 import PropTypes from "prop-types";
 import styles from '../../styles/ListItem.module.css'
-import React, {useContext, useEffect, useMemo} from "react";
+import React, {useMemo} from "react";
 import getIcon from "../../utils/visuals/getIcon";
 
 import useItem from "../../hooks/useItem";
 import ItemTooltip from "../ItemTooltip";
-import QuickAccessProvider from "../../../../services/hooks/QuickAccessProvider";
 
 export default function ListItem(props) {
     const {

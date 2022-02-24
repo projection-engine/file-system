@@ -1,4 +1,3 @@
-import EVENTS from "../../../../services/utils/misc/EVENTS";
 import React from "react";
 import handleDelete from "../handleDelete";
 
