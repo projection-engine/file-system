@@ -41,7 +41,6 @@ export default function ItemCard(props) {
     //         props.hook.refreshFiles()
     // }, [])
 
-    console.log(props.type)
     return (
         <div
             ref={ref}
