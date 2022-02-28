@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import {deleteData} from "../utils/handleDelete";
-import {useContext, useMemo} from "react";
+import {useContext, useEffect, useMemo} from "react";
 import {Button, Modal, ToolTip} from "@f-ui/core";
 import styles from '../styles/DeleteConfirmation.module.css'
 import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
+import {KEYS} from "../../../services/hooks/useHotKeys";
 
 export default function DeleteConfirmation(props) {
     const open = useMemo(() => {
@@ -25,6 +26,16 @@ export default function DeleteConfirmation(props) {
                 props.hook.setToDelete({})
             })
     }
+
+    const handleKey = (e) => {
+        if(e.code === KEYS.Enter)
+            submit()
+    }
+    useEffect(() => {
+        if(open)
+            document.addEventListener('keydown', handleKey, {once: true})
+        return () => document.removeEventListener('keydown', handleKey)
+    }, [open])
     return (
         <Modal open={open} handleClose={() => null} className={styles.modal}>
             {open ?

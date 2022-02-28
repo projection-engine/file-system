@@ -6,12 +6,18 @@ import Cards from "./components/card/Cards";
 import ControlBar from "./components/ControlBar";
 
 import {Button} from "@f-ui/core";
-import useDB from "./hooks/useDB";
+import useFiles from "./hooks/useFiles";
 
 import ListItems from "./components/list/ListItems";
 
 import ResizableBar from "../../components/resizable/ResizableBar";
 import DeleteConfirmation from "./components/DeleteConfirmation";
+import useHotKeys, {KEYS} from "../../services/hooks/useHotKeys";
+import MaterialClass from "../material/workflows/material/Material";
+import deleteNode from "../material/utils/deleteNode";
+import cloneClass from "../../services/utils/misc/cloneClass";
+import randomID from "../../services/utils/misc/randomID";
+import handleDelete from "./utils/handleDelete";
 
 
 DeleteConfirmation.propTypes = {hook: PropTypes.any};
@@ -21,7 +27,7 @@ export default function FilesView(props) {
     const [hidden, setHidden] = useState(true)
     const [searchString, setSearchString] = useState('')
 
-    const hook = useDB(props.setAlert)
+    const hook = useFiles(props.setAlert)
     const [visualizationType, setVisualizationType] = useState(0)
     useEffect(() => {
         setHidden(true)
@@ -71,7 +77,18 @@ export default function FilesView(props) {
         if (hidden && hook.ref.current)
             hook.ref.current.previousSibling.previousSibling.style.height = '100%'
     }, [hidden])
-
+    useHotKeys({
+        focusTarget: props.id + '-files',
+        actions: [
+            {
+                require: [KEYS.Delete],
+                callback: () => {
+                    if (selected.length > 0)
+                        handleDelete(selected[0], hook)
+                }
+            }
+        ]
+    })
     return (
         <>
             <ResizableBar
@@ -85,9 +102,9 @@ export default function FilesView(props) {
                     if (hook.ref.current.getBoundingClientRect().height <= 35)
                         setHidden(true)
                 }}/>
-
             <div className={styles.wrapper} style={{height: hidden ? '35px' : undefined}} ref={hook.ref}>
                 <DeleteConfirmation hook={hook}/>
+                {/*TODO - TERRAIN IMPORT + MESH IMPORT*/}
                 <div className={styles.content} style={{width: '20%'}}>
                     <div className={styles.contentWrapper}>
                         <Button clssName={styles.button} onClick={() => setHidden(!hidden)}>
@@ -101,7 +118,7 @@ export default function FilesView(props) {
                     {hidden ? null : <Directories hook={hook} {...props}/>}
                 </div>
                 <ResizableBar type={'width'} color={'var(--fabric-border-primary)'}/>
-                <div className={styles.content}>
+                <div className={styles.content} id={props.id + '-files'}>
                     <div className={styles.contentWrapper} style={{paddingLeft: '8px'}}>
                         <ControlBar
                             searchString={searchString}

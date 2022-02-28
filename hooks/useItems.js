@@ -8,7 +8,6 @@ import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
 export default function useItems({hook, accept, searchString}) {
     const [currentItem, setCurrentItem] = useState()
     const [focusedElement, setFocusedElement] = useState()
-    const quickAccess = useContext(QuickAccessProvider)
 
     const filesToRender = useMemo(() => {
         if(hook.currentDirectory.id !== '\\')

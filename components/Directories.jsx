@@ -4,8 +4,6 @@ import {ContextMenu, LoaderProvider} from "@f-ui/core";
 import React, {useContext, useMemo} from "react";
 import TreeView from "../../../components/tree/TreeView";
 import mapToView from "../utils/parsers/mapToView";
-
-import ThemeProvider from "../../../services/hooks/ThemeProvider";
 import getDirectoryOptions from "../utils/visuals/getDirectoryOptions";
 import handleDropFolder from "../utils/handleDropFolder";
 import handleRename from "../utils/handleRename";
@@ -32,30 +30,30 @@ export default function Directories(props) {
         }]
     }, [props.hook.items])
     const load = useContext(LoaderProvider)
-    const theme = useContext(ThemeProvider)
+
     const options = useMemo(() => {
         return getDirectoryOptions(props, load)
     }, [props, load])
     return (
         <div data-directories-wrapper={'true'} className={styles.wrapper}>
-            <ContextMenu
-                options={options}
-                triggers={[
+
+            <TreeView
+                contextTriggers={[
                     'data-directories-wrapper',
                     'data-folder',
                     'data-root'
-                ]} className={theme.backgroundStripesClass} styles={{paddingRight: '8px'}}>
-                <TreeView
-                    draggable={true}
-                    onDrop={(event, target) => handleDropFolder(event, target, props.setAlert, props.hook)}
-                    onDragLeave={(event) => event.preventDefault()}
-                    onDragOver={(event) => event.preventDefault()}
-                    onDragStart={(e, t) => e.dataTransfer.setData('text', JSON.stringify([t]))}
-                    selected={props.hook.currentDirectory.id}
-                    nodes={directoriesToRender}
-                    handleRename={(folder, newName) =>handleRename(folder, newName, props.hook)}
-                />
-            </ContextMenu>
+                ]}
+                options={options}
+                draggable={true}
+                onDrop={(event, target) => handleDropFolder(event, target, props.setAlert, props.hook)}
+                onDragLeave={(event) => event.preventDefault()}
+                onDragOver={(event) => event.preventDefault()}
+                onDragStart={(e, t) => e.dataTransfer.setData('text', JSON.stringify([t]))}
+                selected={props.hook.currentDirectory.id}
+                nodes={directoriesToRender}
+                handleRename={(folder, newName) => handleRename(folder, newName, props.hook)}
+            />
+
         </div>
     )
 }

@@ -8,7 +8,7 @@ import EntitiesProvider from "../../../services/hooks/EntitiesProvider";
 
 const fs = window.require('fs')
 const pathRequire = window.require('path')
-export default function useDB() {
+export default function useFiles() {
     const [openModal, setOpenModal] = useState(false)
     const load = useContext(LoaderProvider)
     const alert = useContext(AlertProvider)
@@ -21,6 +21,7 @@ export default function useDB() {
         id: '\\'
     })
 
+    const [createTerrain, setCreateTerrain] = useState(false)
     const [toDelete, setToDelete] = useState({})
     const quickAccess = useContext(QuickAccessProvider)
     const path = (quickAccess.fileSystem.path + '\\assets')
@@ -142,6 +143,7 @@ export default function useDB() {
         onRename,
         setOnRename, setAlert: ({type, message}) => alert.pushAlert(message, type),
         fs,
-        entities
+        entities,
+        createTerrain, setCreateTerrain
     }
 }
