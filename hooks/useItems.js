@@ -1,9 +1,8 @@
-import {useContext, useEffect, useMemo, useRef, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 
 import getFileOptions from "../utils/parsers/getFileOptions";
 import EVENTS from "../../../services/utils/misc/EVENTS";
 import handleRename from "../utils/handleRename";
-import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
 
 export default function useItems({hook, accept, searchString}) {
     const [currentItem, setCurrentItem] = useState()

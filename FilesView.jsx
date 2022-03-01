@@ -13,10 +13,6 @@ import ListItems from "./components/list/ListItems";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import DeleteConfirmation from "./components/DeleteConfirmation";
 import useHotKeys, {KEYS} from "../../services/hooks/useHotKeys";
-import MaterialClass from "../material/workflows/material/Material";
-import deleteNode from "../material/utils/deleteNode";
-import cloneClass from "../../services/utils/misc/cloneClass";
-import randomID from "../../services/utils/misc/randomID";
 import handleDelete from "./utils/handleDelete";
 
 
