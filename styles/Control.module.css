@@ -10,41 +10,41 @@
 }
 
 .button {
-    padding: 4px 8px !important;;
+    padding: 4px;
+    text-align: left;
 
     height: 100%;
     gap: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
 
     overflow: hidden;
-    white-space: nowrap;
+    max-width: 100%;
     text-overflow: ellipsis;
-    width: fit-content;
+    white-space: nowrap;
 
-    font-size: .7rem !important;
-    font-weight: 550;
+    font-size: .7rem;
     color: var(--fabric-color-tertiary);
-
 }
 
 
 .settingsButton {
     height: 25px;
     min-width: 25px;
-    padding: 0 2px !important;
+    padding: 0 2px;
 
     display: flex;
     align-items: center;
     justify-content: center;
+
+    font-size: .7rem;
+
 }
 
 .settingsButton > * {
     font-size: 1.1rem !important;
 }
 
-.pathWrapper{
+.pathWrapper {
 
     max-width: 100%;
     overflow-x: auto;
@@ -52,18 +52,105 @@
     width: fit-content;
 }
 
-.overflow{
-    overflow: hidden;
-    max-width: 100%;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.divider{
+.divider {
     width: 2px;
     height: 25px;
     min-width: 2px;
     background: var(--fabric-border-primary);
-    margin: 0 8px;
+
+
+}
+
+.importHeader {
+    font-weight: 550;
+}
+
+.modal {
+    color: var(--fabric-color-secondary);
+    display: flex;
+    flex-direction: column;
+    /*align-content: flex-start;*/
+
+    gap: 16px;
+
+    background: var(--fabric-background-primary);
+    width: 35%;
+    height: 75%;
+    max-height: 75%;
+
+    border-radius: 5px;
+    padding: 8px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+
+}
+
+.buttonGroup {
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.buttonGroup > button {
+    padding: 8px;
+}
+
+.toImport {
+    height: 100%;
+
+    display: grid;
+    align-items: flex-start;
+    align-content: flex-start;
+    gap: 4px;
+    background: var(--fabric-background-secondary);
+
+    border-radius: 5px;
+    padding: 4px;
+    border: var(--fabric-border-primary) 1px solid;
+
+overflow-y: auto;
+}
+
+.toolTip {
+    display: grid;
+    justify-content: flex-start;
+    text-align: left;
+    width: 100%;
+}
+.item{
+    display: flex;
+    align-items: center;
+    text-align: left;
+    justify-content: flex-start;
+    gap: 4px;
+    font-size: .7rem;
+    font-weight: 550;
+    width: 100%;
+}
+
+.icon{
+    width: fit-content;
+}
+.image{
+    width: 100%;
+    border-radius: 5px;
+
+}
+.input{
+    padding: 4px 0;
+    display: grid;
+    align-items: center;
+    gap: 8px;
+
+    white-space: nowrap;
+    font-size: .7rem;
+    font-weight: 500;
+    width: 100%;
 
 }

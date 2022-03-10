@@ -69,7 +69,6 @@ export default function ItemCard(props) {
                     :
                     (props.type === 1 ?
                             <>
-
                                 <div className={[styles.label, styles.overflow].join(' ')} style={{fontSize: props.variant === 'big' ? undefined : '.7rem'}}>
                                     {currentLabel}
                                 </div>

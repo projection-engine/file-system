@@ -22,7 +22,8 @@ export default function Cards(props) {
             ref={ref}
             className={styles.content}
             style={{display: props.hidden ? 'none' : undefined}}
-            data-folder-wrapper={props.hook.currentDirectory.id}
+            data-folder-wrapper={props.hook.currentDirectory}
+
         >
 
             <ContextMenu

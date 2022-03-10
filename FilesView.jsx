@@ -100,7 +100,6 @@ export default function FilesView(props) {
                 }}/>
             <div className={styles.wrapper} style={{height: hidden ? '35px' : undefined}} ref={hook.ref}>
                 <DeleteConfirmation hook={hook}/>
-                {/*TODO - TERRAIN IMPORT + MESH IMPORT*/}
                 <div className={styles.content} style={{width: '20%'}}>
                     <div className={styles.contentWrapper}>
                         <Button clssName={styles.button} onClick={() => setHidden(!hidden)}>
@@ -115,7 +114,7 @@ export default function FilesView(props) {
                 </div>
                 <ResizableBar type={'width'} color={'var(--fabric-border-primary)'}/>
                 <div className={styles.content} id={props.id + '-files'}>
-                    <div className={styles.contentWrapper} style={{paddingLeft: '8px'}}>
+                    <div className={styles.contentWrapper} style={{padding: '0 4px'}}>
                         <ControlBar
                             searchString={searchString}
                             visualizationType={visualizationType}

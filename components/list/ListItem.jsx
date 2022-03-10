@@ -55,7 +55,7 @@ export default function ListItem(props) {
                         {props.data.name}
                     </div>
                     <div className={styles.label}>
-                        {props.type === 0 ? 'Folder' :'File'}
+                        {props.data.type === 'pimg' ? 'Image' : props.data.type}
                     </div>
                     <div className={styles.label}>
                         {size}

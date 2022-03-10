@@ -9,27 +9,15 @@ export default function getDirectoryOptions(props, load) {
             requiredTrigger: 'data-folder',
             label: 'Delete',
             icon: <span className={'material-icons-round'}>delete</span>,
-            onClick: (node) => {
-                handleDelete(node.getAttribute('data-folder'), props.hook)
-                // const id =
-                // load.pushEvent(EVENTS.DELETE_FOLDER)
-                // fs.rm(props.hook.path + '\\' + id, {recursive: true, force: true}, (e) => {
-                //     load.finishEvent(EVENTS.DELETE_FOLDER)
-                //
-                //     if(props.hook.currentDirectory.id === id)
-                //         props.hook.setCurrentDirectory({
-                //             id: '\\'
-                //         })
-                //     props.hook.refreshFiles()
-                // })
-            }
+            onClick: (node) => handleDelete(node.getAttribute('data-folder'), props.hook)
         },
         {
             requiredTrigger: 'data-folder',
             label: 'Rename',
             icon: <span className={'material-icons-round'}>edit</span>,
             onClick: (node) => {
-                const target = document.getElementById(node.getAttribute('data-folder') + '-node')
+                const target = document.getElementById(node.getAttribute('data-folder') )
+                console.log(node, target, node.getAttribute('data-folder'))
                 if (target) {
                     const event = new MouseEvent('dblclick', {
                         'view': window,

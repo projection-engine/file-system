@@ -39,20 +39,13 @@ export default function getFileOptions(hook, setCurrentItem) {
             onClick: (node) => handleDelete(node.getAttribute('data-file'), hook)
 
         },
-        {
-            requiredTrigger: 'data-folder-wrapper',
-            label: 'New terrain',
-            icon: <span className={'material-icons-round'}>texture</span>,
-            onClick: () => hook.setCreateTerrain(true)
-
-        },
-
 
         {
             requiredTrigger: 'data-folder-wrapper',
             label: 'New material',
             icon: <span className={'material-icons-round'}>texture</span>,
             onClick: () => {
+
                 let path = hook.currentDirectory.id + '\\New material'
                 if (hook.fileSystem.assetExists(path + '.material')) {
                     const existing = hook.fileSystem.fromDirectory(hook.path + hook.currentDirectory.id, '.material')
@@ -66,7 +59,6 @@ export default function getFileOptions(hook, setCurrentItem) {
                     })
             }
         },
-
         {
             requiredTrigger: 'data-folder-wrapper',
             label: 'New directory',
