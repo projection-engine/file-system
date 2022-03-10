@@ -41,23 +41,27 @@ export default function ImportHandler(props) {
             const promises = filesToImport.map(file => {
                 return new Promise(resolve => {
                     const folder = pathRequire.resolve(props.hook.path + '\\' + (props.hook.currentDirectory.id ? props.hook.currentDirectory.id : '') + '\\' + file.webkitRelativePath.replace(file.name, ''))
-
-                    if (!props.hook.fs.existsSync(folder))
-                        props.hook.fs.mkdir(folder, () => {
-                            props.hook.fileSystem.importFile(file, folder, false)
+                    const relative = folder.split(pathRequire.sep)
+                    let folderPromises = []
+                    relative.forEach((p, i) => {
+                        const currPath = relative.slice(0, i + 1).join(pathRequire.sep)
+                        if (!props.hook.fs.existsSync(currPath)) {
+                            folderPromises.push(new Promise(resolve1 => {
+                                props.hook.fs.mkdir(currPath, () => {
+                                    resolve1()
+                                })
+                            }))
+                        }
+                    })
+                    Promise.all(folderPromises)
+                        .then(() => {
+                            props.hook.fileSystem
+                                .importFile(file, folder, false)
                                 .then(() => {
                                     resolve()
 
                                 })
                         })
-                    else
-                        props.hook.fileSystem
-                            .importFile(file, folder, false)
-                            .then(() => {
-                                resolve()
-
-                            })
-
                 })
             })
             Promise.all(promises)
@@ -103,37 +107,39 @@ export default function ImportHandler(props) {
                 style={{display: 'none'}}
             />
 
-            <Modal className={styles.modal} styles={{height: asHeightmap ? 'fit-content' : undefined}} open={filesToImport.length > 0} handleClose={() => null}>
+            <Modal className={styles.modal} styles={{height: asHeightmap ? 'fit-content' : undefined}}
+                   open={filesToImport.length > 0} handleClose={() => null}>
                 <div className={styles.importHeader}>{asHeightmap ? 'Import terrain' : 'Files to import'}</div>
                 {!asHeightmap ? <div className={styles.toImport}>
-                    {filesToImport.map((f, i) => (
-                        <div key={i + 'file-to-import'} className={styles.item}>
-                            <div style={{width: '100%', display: 'flex', alignItems: 'center'}}>
-                                {getIcon(f.type.split('/')[0] === 'image' ? 'pimg' : 'mesh', null, styles.icon)}
+                        {filesToImport.map((f, i) => (
+                            <div key={i + 'file-to-import'} className={styles.item}>
+                                <div style={{width: '100%', display: 'flex', alignItems: 'center'}}>
+                                    {getIcon(f.type.split('/')[0] === 'image' ? 'pimg' : 'mesh', null, styles.icon)}
 
-                                {f.name}
-                            </div>
-                            <ToolTip>
-                                <div className={styles.toolTip}>
-                                    <div>
-                                        Name: {f.name}
-                                    </div>
-                                    <div>
-                                        Size: {f.size ? (f.size < 100000 ? (f.size / 1000).toFixed(2) + 'KB' : (f.size / (10 ** 6)).toFixed(2) + ' MB') : 'NaN'}
-                                    </div>
-                                    <div>
-                                        Type: {f.type}
-                                    </div>
+                                    {f.name}
                                 </div>
-                            </ToolTip>
-                            <div style={{textAlign: 'right', width: '100%'}}>
-                                {f.size ? (f.size < 100000 ? (f.size / 1000).toFixed(2) + 'KB' : (f.size / (10 ** 6)).toFixed(2) + ' MB') : 'NaN'}
+                                <ToolTip>
+                                    <div className={styles.toolTip}>
+                                        <div>
+                                            Name: {f.name}
+                                        </div>
+                                        <div>
+                                            Size: {f.size ? (f.size < 100000 ? (f.size / 1000).toFixed(2) + 'KB' : (f.size / (10 ** 6)).toFixed(2) + ' MB') : 'NaN'}
+                                        </div>
+                                        <div>
+                                            Type: {f.type}
+                                        </div>
+                                    </div>
+                                </ToolTip>
+                                <div style={{textAlign: 'right', width: '100%'}}>
+                                    {f.size ? (f.size < 100000 ? (f.size / 1000).toFixed(2) + 'KB' : (f.size / (10 ** 6)).toFixed(2) + ' MB') : 'NaN'}
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
                     :
-                    <TerrainImporter submit={submit} terrainSettings={terrainSettings} setTerrainSettings={setTerrainSettings} file={filesToImport[0]}/>
+                    <TerrainImporter submit={submit} terrainSettings={terrainSettings}
+                                     setTerrainSettings={setTerrainSettings} file={filesToImport[0]}/>
                 }
 
 
