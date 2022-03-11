@@ -14,17 +14,7 @@ export default function handleDelete(entries, hook) {
             })
             return {...e, file: file}
         })
-
-
-        if(relatedEntities.length > 0 || files.length > 0)
-            hook.setToDelete({relatedEntities, file: id, relatedFiles:  files.map(i => i.name)})
-
-        else
-            deleteData(id, hook).then(toRemove => {
-                hook.setItems(prev => {
-                    return prev.filter(p => !toRemove.includes(p.id))
-                })
-            })
+        hook.setToDelete({relatedEntities, file: id, relatedFiles:  files.map(i => i.name)})
     })
 }
 

@@ -23,22 +23,23 @@ export default function ImportHandler(props) {
     const [asFolder, setAsFolder] = useState(true)
     const [terrainSettings, setTerrainSettings] = useState(DEFAULT_TERRAIN)
 
+    const submit = (files, folder) => {
+        if (!folder) {
+            files.forEach(file => {
+                setFilesToImport([])
+                load.pushEvent(EVENTS.IMPORT_FILE)
+                props.hook.fileSystem
+                    .importFile(file, props.hook.path + (props.hook.currentDirectory.id ? props.hook.currentDirectory.id : ''), asHeightmap, terrainSettings)
+                    .then(res => {
+                        load.finishEvent(EVENTS.IMPORT_FILE)
+                        props.hook.refreshFiles()
+                        quickAccess.refresh()
+                    })
+            })
 
-    const submit = () => {
-        if (!asFolder) {
-            const file = filesToImport[0]
-            setFilesToImport([])
-            load.pushEvent(EVENTS.IMPORT_FILE)
-            props.hook.fileSystem
-                .importFile(file, props.hook.path + (props.hook.currentDirectory.id ? props.hook.currentDirectory.id : ''), asHeightmap, terrainSettings)
-                .then(res => {
-                    load.finishEvent(EVENTS.IMPORT_FILE)
-                    props.hook.refreshFiles()
-                    quickAccess.refresh()
-                })
         } else {
             load.pushEvent(EVENTS.IMPORT_FILE)
-            const promises = filesToImport.map(file => {
+            const promises = files.map(file => {
                 return new Promise(resolve => {
                     const folder = pathRequire.resolve(props.hook.path + '\\' + (props.hook.currentDirectory.id ? props.hook.currentDirectory.id : '') + '\\' + file.webkitRelativePath.replace(file.name, ''))
                     const relative = folder.split(pathRequire.sep)
@@ -86,7 +87,11 @@ export default function ImportHandler(props) {
                 multiple={true}
                 onChange={e => {
                     setAsFolder(false)
-                    setFilesToImport(Array.from(e.target.files))
+
+                    if (!asHeightmap)
+                        submit(Array.from(e.target.files))
+                    else
+                        setFilesToImport(Array.from(e.target.files))
                     e.target.value = "";
                 }}
                 style={{display: 'none'}}
@@ -101,7 +106,10 @@ export default function ImportHandler(props) {
                 multiple={true}
                 onChange={e => {
                     setAsFolder(true)
-                    setFilesToImport(Array.from(e.target.files))
+                    if (!asHeightmap)
+                        submit(Array.from(e.target.files), true)
+                    else
+                        setFilesToImport(Array.from(e.target.files))
                     e.target.value = "";
                 }}
                 style={{display: 'none'}}
@@ -138,7 +146,7 @@ export default function ImportHandler(props) {
                         ))}
                     </div>
                     :
-                    <TerrainImporter submit={submit} terrainSettings={terrainSettings}
+                    <TerrainImporter  terrainSettings={terrainSettings}
                                      setTerrainSettings={setTerrainSettings} file={filesToImport[0]}/>
                 }
 
@@ -159,7 +167,7 @@ export default function ImportHandler(props) {
                         styles={{'--fabric-accent-color': '#0095ff'}}
                         className={styles.settingsButton}
                         onClick={() => {
-                            submit()
+                            submit(filesToImport, asFolder)
                         }}>
                         Accept
                     </Button>

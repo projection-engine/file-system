@@ -1,18 +1,16 @@
 import PropTypes from "prop-types";
 import {deleteData} from "../utils/handleDelete";
-import {useContext, useEffect, useMemo} from "react";
+import {useContext, useEffect, useMemo, useState} from "react";
 import {Button, Modal, ToolTip} from "@f-ui/core";
 import styles from '../styles/DeleteConfirmation.module.css'
 import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
 import {KEYS} from "../../../services/hooks/useHotKeys";
 
 export default function DeleteConfirmation(props) {
-    const open = useMemo(() => {
+    const [open, setOpen] = useState(false)
 
-        return Object.keys(props.hook.toDelete).length > 0
-    }, [props.hook.toDelete])
-    const quickAccess = useContext(QuickAccessProvider)
     const submit = () => {
+        setOpen(false)
         deleteData(props.hook.toDelete.file, props.hook)
             .then(toRemove => {
                 props.hook.removeEntities(props.hook.toDelete.relatedEntities.map(e => {
@@ -27,15 +25,29 @@ export default function DeleteConfirmation(props) {
             })
     }
 
+
+    useEffect(() => {
+        const notEmpty = Object.keys(props.hook.toDelete).length > 0
+
+        if (notEmpty && props.hook.toDelete.relatedEntities.length === 0 && props.hook.toDelete.relatedFiles.length === 1)
+            submit()
+        else
+            setOpen(notEmpty)
+    }, [props.hook.toDelete])
+    const quickAccess = useContext(QuickAccessProvider)
+
+
     const handleKey = (e) => {
-        if(e.code === KEYS.Enter)
+        if (e.code === KEYS.Enter)
             submit()
     }
     useEffect(() => {
-        if(open)
+        if (open)
             document.addEventListener('keydown', handleKey, {once: true})
         return () => document.removeEventListener('keydown', handleKey)
     }, [open])
+
+
     return (
         <Modal open={open} handleClose={() => null} className={styles.modal}>
             {open ?
@@ -44,13 +56,16 @@ export default function DeleteConfirmation(props) {
                         Delete assets
                     </div>
                     <div className={styles.message}>
-                        {props.hook.toDelete.relatedEntities.length > 0 ?
+                        {props.hook.toDelete.relatedEntities?.length > 0 ?
                             'The following entities depend on the files to be deleted, do you want to continue ?' : 'Do you want to permanently delete these files ?'
                         }
                     </div>
-                    <div className={styles.toBeDeleted} style={{display: props.hook.toDelete.relatedEntities.length === 0 && props.hook.toDelete.relatedFiles.length === 0 ? 'none' : undefined}}>
-                        <div className={styles.row} style={{borderBottom: 'var(--fabric-border-primary) 1px solid', marginBottom: '4px'}}>
-                            <div style={{display: props.hook.toDelete.relatedEntities > 0 ? undefined : 'none'}} className={styles.overflow}>
+                    <div className={styles.toBeDeleted}
+                         style={{display: props.hook.toDelete.relatedEntities.length === 0 && props.hook.toDelete.relatedFiles?.length === 0 ? 'none' : undefined}}>
+                        <div className={styles.row}
+                             style={{borderBottom: 'var(--fabric-border-primary) 1px solid', marginBottom: '4px'}}>
+                            <div style={{display: props.hook.toDelete.relatedEntities > 0 ? undefined : 'none'}}
+                                 className={styles.overflow}>
                                 Entity
                             </div>
 
@@ -89,10 +104,14 @@ export default function DeleteConfirmation(props) {
                     </div>
 
                     <div className={styles.options}>
-                        <Button styles={{'--fabric-accent-color': '#ff5555'}} onClick={() => submit()} variant={'filled'}>
+                        <Button styles={{'--fabric-accent-color': '#ff5555'}} onClick={() => submit()}
+                                variant={'filled'}>
                             Delete permanently
                         </Button>
-                        <Button variant={'outlined'} onClick={() => props.hook.setToDelete({})}>
+                        <Button variant={'outlined'} onClick={() => {
+                            setOpen(false)
+                            props.hook.setToDelete({})
+                        }}>
                             Cancel
                         </Button>
                     </div>
