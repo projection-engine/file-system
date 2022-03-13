@@ -3,14 +3,8 @@
     height: 100%;
     background-color: var(--fabric-background-primary);
 
-    display: grid;
-
-
     gap: 4px;
 
-    height: 100%;
-    ;
-    overflow-y: auto;
 
 }
 

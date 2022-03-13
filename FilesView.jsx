@@ -40,31 +40,30 @@ export default function FilesView(props) {
     }
 
     const path = useMemo(() => {
-        let response = [], initial = {
+        let response = [{
             name: 'Assets',
             path: '\\'
+        }]
+
+
+
+        const findParent = (node) => {
+            const p = hook.items.find(n => {
+                return n.id === node.parent
+            })
+            let res = []
+
+            if (p)
+                res.push(...findParent(p).flat(), {name: p.name, path: p.id})
+
+            return res
         }
-
-
-        if (hook.currentDirectory && hook.currentDirectory.id && hook.currentDirectory.id !== '\\') {
-            initial = {
+        response.push(...findParent(hook.currentDirectory))
+        if (hook.currentDirectory.name)
+            response.push({
                 name: hook.currentDirectory.name,
                 path: hook.currentDirectory.id
-            }
-            const findParent = (node) => {
-                const p = hook.items.find(n => {
-                    return n.id === node.parent
-                })
-                let res = []
-
-                if (p)
-                    res.push(...findParent(p).flat(), {name: p.name, path: p.id})
-
-                return res
-            }
-            response.push(...findParent(hook.currentDirectory))
-        }
-        response.push(initial)
+            })
 
         return response
     }, [hook.currentDirectory, hook.items])

@@ -64,6 +64,7 @@ export default function getFileOptions(hook, setCurrentItem) {
             label: 'New directory',
             icon: <span className={'material-icons-round'}>create_new_folder</span>,
             onClick: () => {
+
                 let path = hook.currentDirectory.id + '\\New folder'
 
                 const existing = hook.fileSystem.foldersFromDirectory(hook.path + hook.currentDirectory.id)

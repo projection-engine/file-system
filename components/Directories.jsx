@@ -35,7 +35,6 @@ export default function Directories(props) {
         return getDirectoryOptions(props, load)
     }, [props, load])
     return (
-        <div data-directories-wrapper={'true'} className={styles.wrapper}>
 
             <TreeView
                 contextTriggers={[
@@ -54,7 +53,7 @@ export default function Directories(props) {
                 handleRename={(folder, newName) => handleRename(folder, newName, props.hook)}
             />
 
-        </div>
+
     )
 }
 
