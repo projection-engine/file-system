@@ -110,7 +110,6 @@ export default function useItem(props) {
             case 'pimg':
                 return quickAccess.images.find(m => m.registryID === props.data.registryID)?.preview
             case 'material':
-                console.log(quickAccess.materials.find(m => m.registryID === props.data.registryID)?.preview)
                 return quickAccess.materials.find(m => m.registryID === props.data.registryID)?.preview
             default:
                 return quickAccess
