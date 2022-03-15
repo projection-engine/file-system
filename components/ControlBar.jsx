@@ -15,9 +15,9 @@ export default function ControlBar(props) {
                     {props.path.map((p, i) => (
                         <React.Fragment key={p.path}>
                             <Button className={styles.button}
-                                    variant={"minimal-horizontal"}
+
                                     styles={{fontWeight: 'normal', minWidth: '60px'}}
-                                    highlight={props.hook.currentDirectory.id === p.path}
+
                                     onClick={() => {
                                         const found = props.hook.items.find(i => i.id === p.path)
                                         if (found)
@@ -32,7 +32,7 @@ export default function ControlBar(props) {
 
                             </Button>
                             {i < props.path.length - 1 ?
-                                <span className={'material-icons-round'}>chevron_right</span> : null}
+                                <span className={'material-icons-round'} style={{fontSize: '1.2rem', height: 'fit-content'}}>chevron_right</span> : null}
                         </React.Fragment>
                     ))}
                 </div>

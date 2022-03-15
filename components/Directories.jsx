@@ -17,7 +17,9 @@ export default function Directories(props) {
             label: 'Assets',
             phantomNode: true,
             onClick: () => {
-              props.hook.setCurrentDirectory('\\')
+              props.hook.setCurrentDirectory({
+                  id: '\\'
+              })
             },
             children: toFilter.map(f => {
                 return mapToView(f, props.hook)
@@ -40,7 +42,8 @@ export default function Directories(props) {
                 contextTriggers={[
                     'data-directories-wrapper',
                     'data-folder',
-                    'data-root'
+                    'data-root',
+                    'data-self'
                 ]}
                 options={options}
                 draggable={true}

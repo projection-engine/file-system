@@ -34,6 +34,13 @@ export default function getDirectoryOptions(props, load) {
             icon: <span className={'material-icons-round'}>create_new_folder</span>,
             onClick: () => onCreate('', props.hook)
         },
+
+        {
+            requiredTrigger: 'data-self',
+            label: 'New sub-folder',
+            icon: <span className={'material-icons-round'}>create_new_folder</span>,
+            onClick: () => onCreate('', props.hook)
+        },
         {
             requiredTrigger: 'data-folder',
             label: 'New sub-folder',

@@ -10,8 +10,8 @@
 }
 
 .button {
-    padding: 4px;
-    text-align: left;
+    padding: 2px !important;
+
 
     height: 100%;
     gap: 4px;
@@ -49,6 +49,8 @@
     max-width: 100%;
     overflow-x: auto;
     display: flex;
+    align-content: center;
+    align-items: center;
     width: fit-content;
 }
 
