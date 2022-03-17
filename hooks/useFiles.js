@@ -41,40 +41,45 @@ export default function useFiles() {
     const parsePath = (p, registryData) => {
         return new Promise(resolve => {
             fs.lstat(p, (e, stat) => {
-                const split = p.split('\\')
-                let parent = [...split]
-                parent.pop()
+                if(!e ){
+                    const split = p.split('\\')
+                    let parent = [...split]
+                    parent.pop()
 
-                parent = parent.join('\\').replace(path, '')
-                const currentPath = p.replace(path, '')
-                if (stat.isDirectory())
-                    resolve(
-                        {
-                            isFolder: true,
-                            name: [...split].pop(),
+                    parent = parent.join('\\').replace(path, '')
+                    const currentPath = p.replace(path, '')
+
+                    if (stat && stat.isDirectory())
+                        resolve(
+                            {
+                                isFolder: true,
+                                name: [...split].pop(),
+                                creationDate: new Date(stat.birthtime).toDateString(),
+                                id: currentPath,
+
+                                parent: split[split.length - 2] === 'assets' ? undefined : parent
+                            }
+                        )
+                    else {
+
+                        const parsedPath = pathRequire.resolve(path + currentPath).replace(path + '\\', '')
+
+                        resolve({
+                            isFolder: false,
+                            name: [...split].pop().split(/\.([a-zA-Z0-9]+)$/)[0],
+                            type: p.split('.').pop(),
                             creationDate: new Date(stat.birthtime).toDateString(),
                             id: currentPath,
-
+                            size: stat.size,
+                            registryID: registryData.find(reg => {
+                                return reg.path === parsedPath || reg.path === currentPath
+                            })?.id,
                             parent: split[split.length - 2] === 'assets' ? undefined : parent
-                        }
-                    )
-                else {
-
-                    const parsedPath = pathRequire.resolve(path + currentPath).replace(path + '\\', '')
-
-                    resolve({
-                        isFolder: false,
-                        name: [...split].pop().split(/\.([a-zA-Z0-9]+)$/)[0],
-                        type: p.split('.').pop(),
-                        creationDate: new Date(stat.birthtime).toDateString(),
-                        id: currentPath,
-                        size: stat.size,
-                        registryID: registryData.find(reg => {
-                            return reg.path === parsedPath || reg.path === currentPath
-                        })?.id,
-                        parent: split[split.length - 2] === 'assets' ? undefined : parent
-                    })
+                        })
+                    }
                 }
+                else
+                    resolve()
             })
         })
 
@@ -113,7 +118,7 @@ export default function useFiles() {
                             load.finishEvent(EVENTS.LOAD_FILES)
                             if (!initialized)
                                 setInitialized(true)
-                            setItems(promiseRes.sort(function (a, b) {
+                            setItems(promiseRes.filter(p => p).sort(function (a, b) {
                                 if (a.name < b.name) return -1
                                 if (a.name > b.name) return 1
                                 return 0

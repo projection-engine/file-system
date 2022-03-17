@@ -7,10 +7,13 @@ import {useContext, useRef, useState} from "react";
 import ControlBar from "./ControlBar";
 import getIcon from "../utils/visuals/getIcon";
 import TerrainImporter from "./TerrainImporter";
+import GLTFImporter from "./GLTFImporter";
 
 const pathRequire = window.require('path')
 const DEFAULT_TERRAIN = {
-    heightScale: 200
+    heightScale: 200,
+    keepNormals: true,
+    keepTangents: true
 }
 export default function ImportHandler(props) {
 
@@ -21,7 +24,7 @@ export default function ImportHandler(props) {
     const [asHeightmap, setAsHeightMap] = useState(false)
     const [filesToImport, setFilesToImport] = useState([])
     const [asFolder, setAsFolder] = useState(true)
-    const [terrainSettings, setTerrainSettings] = useState(DEFAULT_TERRAIN)
+    const [settings, setSettings] = useState(DEFAULT_TERRAIN)
 
     const submit = (files, folder) => {
         if (!folder) {
@@ -29,14 +32,13 @@ export default function ImportHandler(props) {
                 setFilesToImport([])
                 load.pushEvent(EVENTS.IMPORT_FILE)
                 props.hook.fileSystem
-                    .importFile(file, props.hook.path + (props.hook.currentDirectory.id ? props.hook.currentDirectory.id : ''), asHeightmap, terrainSettings)
+                    .importFile(file, props.hook.path + (props.hook.currentDirectory.id ? props.hook.currentDirectory.id : ''), asHeightmap, settings)
                     .then(res => {
                         load.finishEvent(EVENTS.IMPORT_FILE)
                         props.hook.refreshFiles()
                         quickAccess.refresh()
                     })
             })
-
         } else {
             load.pushEvent(EVENTS.IMPORT_FILE)
             const promises = files.map(file => {
@@ -73,7 +75,6 @@ export default function ImportHandler(props) {
                 })
         }
 
-
         setAsHeightMap(false)
         setFilesToImport([])
     }
@@ -87,8 +88,8 @@ export default function ImportHandler(props) {
                 multiple={true}
                 onChange={e => {
                     setAsFolder(false)
-
-                    if (!asHeightmap)
+                    const ext = e.target.files[0].name.split('.').pop()
+                    if (!asHeightmap && ext !== 'gltf')
                         submit(Array.from(e.target.files))
                     else
                         setFilesToImport(Array.from(e.target.files))
@@ -117,37 +118,19 @@ export default function ImportHandler(props) {
 
             <Modal className={styles.modal} styles={{height: asHeightmap ? 'fit-content' : undefined}}
                    open={filesToImport.length > 0} handleClose={() => null}>
-                <div className={styles.importHeader}>{asHeightmap ? 'Import terrain' : 'Files to import'}</div>
-                {!asHeightmap ? <div className={styles.toImport}>
-                        {filesToImport.map((f, i) => (
-                            <div key={i + 'file-to-import'} className={styles.item}>
-                                <div style={{width: '100%', display: 'flex', alignItems: 'center'}}>
-                                    {getIcon(f.type.split('/')[0] === 'image' ? 'pimg' : 'mesh', null, styles.icon)}
-
-                                    {f.name}
-                                </div>
-                                <ToolTip>
-                                    <div className={styles.toolTip}>
-                                        <div>
-                                            Name: {f.name}
-                                        </div>
-                                        <div>
-                                            Size: {f.size ? (f.size < 100000 ? (f.size / 1000).toFixed(2) + 'KB' : (f.size / (10 ** 6)).toFixed(2) + ' MB') : 'NaN'}
-                                        </div>
-                                        <div>
-                                            Type: {f.type}
-                                        </div>
-                                    </div>
-                                </ToolTip>
-                                <div style={{textAlign: 'right', width: '100%'}}>
-                                    {f.size ? (f.size < 100000 ? (f.size / 1000).toFixed(2) + 'KB' : (f.size / (10 ** 6)).toFixed(2) + ' MB') : 'NaN'}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                <div className={styles.importHeader}>{asHeightmap ? 'Import terrain' : 'Import GLTF'}</div>
+                {!asHeightmap ?
+                    <GLTFImporter
+                        files={filesToImport}
+                        settings={settings}
+                        setSettings={setSettings}
+                    />
                     :
-                    <TerrainImporter  terrainSettings={terrainSettings}
-                                     setTerrainSettings={setTerrainSettings} file={filesToImport[0]}/>
+                    <TerrainImporter
+                        terrainSettings={settings}
+                        setTerrainSettings={setSettings}
+                        file={filesToImport[0]}
+                    />
                 }
 
 

@@ -45,8 +45,6 @@ export default function FilesView(props) {
             path: '\\'
         }]
 
-
-
         const findParent = (node) => {
             const p = hook.items.find(n => {
                 return n.id === node.parent
