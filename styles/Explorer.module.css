@@ -59,21 +59,24 @@
 
 
 .button {
-    padding: 4px 8px !important;;
+    padding: 0 !important;
 
-    height: 100%;
+    width: 35px;
+    height: 35px;
+
     gap: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
 
+}
+.header{
+    color: var(--fabric-color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 35px;
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    width: fit-content;
-
-    font-size: .7rem !important;
+    font-size: .8rem;
     font-weight: 550;
-    color: var(--fabric-color-tertiary);
-
 }
