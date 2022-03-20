@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import {useMemo} from "react";
 import styles from "../styles/Control.module.css";
-import Range from "../../../components/range/Range";
 import {Checkbox} from "@f-ui/core";
 
 export default function GLTFImporter(props) {

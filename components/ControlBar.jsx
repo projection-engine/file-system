@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Control.module.css'
-import {Button, Dropdown, DropdownOption, DropdownOptions, LoaderProvider} from "@f-ui/core";
-import React, {useContext, useRef, useState} from "react";
+import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
+import React from "react";
 import Search from "../../../components/search/Search";
 import ImportHandler from "./ImportHandler";
+
 export default function ControlBar(props) {
 
     return (

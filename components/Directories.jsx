@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import styles from '../styles/Directories.module.css'
 import {LoaderProvider} from "@f-ui/core";
 import React, {useContext, useMemo} from "react";
 import TreeView from "../../../components/tree/TreeView";

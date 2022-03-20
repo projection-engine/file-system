@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from "../styles/Control.module.css";
-import {useEffect, useMemo, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import FileBlob from "../../../services/workers/FileBlob";
 import Range from "../../../components/range/Range";
 

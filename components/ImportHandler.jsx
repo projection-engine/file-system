@@ -1,11 +1,9 @@
 import PropTypes from "prop-types";
 import EVENTS from "../../../services/utils/misc/EVENTS";
 import styles from "../styles/Control.module.css";
-import {Button, Dropdown, DropdownOption, DropdownOptions, LoaderProvider, Modal, ToolTip} from "@f-ui/core";
+import {Button, Dropdown, DropdownOption, DropdownOptions, LoaderProvider, Modal} from "@f-ui/core";
 import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
 import {useContext, useRef, useState} from "react";
-import ControlBar from "./ControlBar";
-import getIcon from "../utils/visuals/getIcon";
 import TerrainImporter from "./TerrainImporter";
 import GLTFImporter from "./GLTFImporter";
 

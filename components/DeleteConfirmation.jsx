@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import {deleteData} from "../utils/handleDelete";
-import {useContext, useEffect, useMemo, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Button, Modal, ToolTip} from "@f-ui/core";
 import styles from '../styles/DeleteConfirmation.module.css'
 import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
