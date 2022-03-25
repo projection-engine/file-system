@@ -9,7 +9,6 @@ export default function TerrainImporter(props) {
     const [img, setImg] = useState()
     const imgRef = useRef()
     useEffect(() => {
-        console.log(imgRef.current.naturalWidth)
         if (img)
             props.setTerrainSettings(prev => {
                 return {...prev, dimension: imgRef.current.naturalWidth}

@@ -17,7 +17,7 @@ export default function getDirectoryOptions(props, load) {
             icon: <span className={'material-icons-round'}>edit</span>,
             onClick: (node) => {
                 const target = document.getElementById(node.getAttribute('data-folder') )
-                console.log(node, target, node.getAttribute('data-folder'))
+
                 if (target) {
                     const event = new MouseEvent('dblclick', {
                         'view': window,

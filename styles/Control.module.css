@@ -1,13 +1,4 @@
 
-.header {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 100%;
-
-    font-size: .9rem;
-    font-weight: bold;
-}
 
 .button {
     padding: 2px !important;
@@ -125,17 +116,6 @@ overflow-y: auto;
     text-align: left;
     width: 100%;
 }
-.item{
-    display: flex;
-    align-items: center;
-    text-align: left;
-    justify-content: flex-start;
-    gap: 4px;
-    font-size: .7rem;
-    font-weight: 550;
-    width: 100%;
-}
-
 .icon{
     width: fit-content;
 }
