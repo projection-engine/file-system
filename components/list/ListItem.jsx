@@ -5,6 +5,7 @@ import getIcon from "../../utils/visuals/getIcon";
 
 import useItem from "../../hooks/useItem";
 import ItemTooltip from "../ItemTooltip";
+import parseFileType from "../../utils/visuals/parseFileType";
 
 export default function ListItem(props) {
     const {
@@ -55,7 +56,7 @@ export default function ListItem(props) {
                         {props.data.name}
                     </div>
                     <div className={styles.label}>
-                        {props.data.type === 'pimg' ? 'Image' : props.data.type}
+                        {parseFileType(props.data.type)}
                     </div>
                     <div className={styles.label}>
                         {size}

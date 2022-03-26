@@ -10,6 +10,9 @@ export default function parseFileType(type){
         case 'mesh':{
             return 'Mesh'
         }
+        case 'flow':{
+            return 'Flow script'
+        }
         default:
             return type
     }

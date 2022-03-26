@@ -3,6 +3,18 @@ import {onCreate} from "../visuals/getDirectoryOptions";
 import handleDelete from "../handleDelete";
 
 export default function getFileOptions(hook, setCurrentItem) {
+    const check = (path, ext) => {
+        let n = path + ext
+        let it = 0
+
+        while (hook.fileSystem.assetExists(n)) {
+            it++
+            n = path + `(${it})` + ext
+            console.log(n)
+        }
+
+        return n
+    }
     return [
         {
             requiredTrigger: 'data-folder',
@@ -14,7 +26,7 @@ export default function getFileOptions(hook, setCurrentItem) {
             requiredTrigger: 'data-folder',
             label: 'New sub-folder',
             icon: <span className={'material-icons-round'}>create_new_folder</span>,
-            onClick: (node) => onCreate( node.getAttribute('data-folder') , hook)
+            onClick: (node) => onCreate(node.getAttribute('data-folder'), hook)
         },
         {
             requiredTrigger: 'data-folder',
@@ -45,15 +57,8 @@ export default function getFileOptions(hook, setCurrentItem) {
             label: 'New material',
             icon: <span className={'material-icons-round'}>texture</span>,
             onClick: () => {
-
-                let path = hook.currentDirectory.id + '\\New material'
-                if (hook.fileSystem.assetExists(path + '.material')) {
-                    const existing = hook.fileSystem.fromDirectory(hook.path + hook.currentDirectory.id, '.material')
-
-                    path += ' - ' + existing.filter(e => e.includes('New material')).length
-                }
-
-                hook.fileSystem.writeAsset(path + '.material', JSON.stringify({}))
+                let path = check(hook.currentDirectory.id + '\\New material', '.material')
+                hook.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
                         hook.refreshFiles()
                     })
@@ -64,14 +69,9 @@ export default function getFileOptions(hook, setCurrentItem) {
             label: 'New flow script',
             icon: <span className={'material-icons-round'}>functions</span>,
             onClick: () => {
-                let path = hook.currentDirectory.id + '\\New script'
-                if (hook.fileSystem.assetExists(path + '.flow')) {
-                    const existing = hook.fileSystem.fromDirectory(hook.path + hook.currentDirectory.id, '.material')
+                let path = check(hook.currentDirectory.id + '\\New script', '.flow')
 
-                    path += ' - ' + existing.filter(e => e.includes('New script')).length
-                }
-
-                hook.fileSystem.writeAsset(path + '.flow', JSON.stringify({}))
+                hook.fileSystem.writeAsset(path , JSON.stringify({}))
                     .then(() => {
                         hook.refreshFiles()
                     })
