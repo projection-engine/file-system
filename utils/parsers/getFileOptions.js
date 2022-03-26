@@ -61,6 +61,25 @@ export default function getFileOptions(hook, setCurrentItem) {
         },
         {
             requiredTrigger: 'data-folder-wrapper',
+            label: 'New flow script',
+            icon: <span className={'material-icons-round'}>functions</span>,
+            onClick: () => {
+                let path = hook.currentDirectory.id + '\\New script'
+                if (hook.fileSystem.assetExists(path + '.flow')) {
+                    const existing = hook.fileSystem.fromDirectory(hook.path + hook.currentDirectory.id, '.material')
+
+                    path += ' - ' + existing.filter(e => e.includes('New script')).length
+                }
+
+                hook.fileSystem.writeAsset(path + '.flow', JSON.stringify({}))
+                    .then(() => {
+                        hook.refreshFiles()
+                    })
+            }
+        },
+
+        {
+            requiredTrigger: 'data-folder-wrapper',
             label: 'New directory',
             icon: <span className={'material-icons-round'}>create_new_folder</span>,
             onClick: () => {

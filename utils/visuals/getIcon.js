@@ -55,6 +55,13 @@ export default function getIcon(type, preview, className, imageClass, childrenQu
                     <span className={'material-icons-round'}>view_in_ar</span>
                 </div>
             )
+        case 'flow':
+
+            return (
+                <div className={[styles.icon, className].join(' ')}>
+                    <span className={'material-icons-round'}>functions</span>
+                </div>
+            )
         case 'folder': {
             return (
                 <div className={[styles.icon, className].join(' ')}>

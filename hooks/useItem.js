@@ -42,7 +42,7 @@ export default function useItem(props) {
 
         if (props.type === 1) {
 
-            if (props.data.type === 'mesh' || props.data.type === 'material' || props.data.type === 'image')
+            if (props.data.type === 'mesh' || props.data.type === 'material' || props.data.type === 'image'|| props.data.type === 'flow')
                 props.openEngineFile(props.data.registryID, currentLabel)
             else
                 props.setSelected(props.data.id)
