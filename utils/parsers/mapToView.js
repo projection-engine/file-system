@@ -12,7 +12,7 @@ export default function mapToView(folder, hook) {
         label: folder.name,
         onClick: () => hook.setCurrentDirectory(folder),
         children,
-
+        draggable: true,
         icon: <span style={{fontSize: '1rem'}}
                     className={'material-icons-round'}>{childrenQuantity === 0 ? 'folder_open' : 'source'}</span>,
         attributes: {'data-folder': folder.id},
