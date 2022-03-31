@@ -1,5 +1,4 @@
 
-
 .button {
     padding: 2px !important;
 
@@ -21,6 +20,7 @@
 .settingsButton {
     height: 25px;
     min-width: 25px;
+
     padding: 0 2px;
 
     display: flex;
@@ -107,7 +107,7 @@
     padding: 4px;
     border: var(--fabric-border-primary) 1px solid;
 
-overflow-y: auto;
+    overflow-y: auto;
 }
 
 .toolTip {
@@ -116,15 +116,18 @@ overflow-y: auto;
     text-align: left;
     width: 100%;
 }
-.icon{
+
+.icon {
     width: fit-content;
 }
-.image{
+
+.image {
     width: 100%;
     border-radius: 5px;
 
 }
-.input{
+
+.input {
     padding: 4px 0;
     display: grid;
     align-items: center;
