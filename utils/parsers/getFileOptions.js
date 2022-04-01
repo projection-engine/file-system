@@ -54,10 +54,10 @@ export default function getFileOptions(hook, setCurrentItem) {
 
         {
             requiredTrigger: 'data-folder-wrapper',
-            label: 'New material',
+            label: 'New Material',
             icon: <span className={'material-icons-round'}>texture</span>,
             onClick: () => {
-                let path = check(hook.currentDirectory.id + '\\New material', '.material')
+                let path = check(hook.currentDirectory.id + '\\New Material', '.material')
                 hook.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
                         hook.refreshFiles()
@@ -66,10 +66,10 @@ export default function getFileOptions(hook, setCurrentItem) {
         },
         {
             requiredTrigger: 'data-folder-wrapper',
-            label: 'New flow script',
+            label: 'New Blueprint',
             icon: <span className={'material-icons-round'}>functions</span>,
             onClick: () => {
-                let path = check(hook.currentDirectory.id + '\\New script', '.flow')
+                let path = check(hook.currentDirectory.id + '\\New Blueprint', '.flow')
 
                 hook.fileSystem.writeAsset(path , JSON.stringify({}))
                     .then(() => {
