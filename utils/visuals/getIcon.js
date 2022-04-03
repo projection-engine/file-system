@@ -59,7 +59,7 @@ export default function getIcon(type, preview, className, imageClass, childrenQu
 
             return (
                 <div className={[styles.icon, className].join(' ')}>
-                    <span className={'material-icons-round'}>functions</span>
+                    <span className={'material-icons-round'}>engineering</span>
                 </div>
             )
         case 'folder': {
