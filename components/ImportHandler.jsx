@@ -115,7 +115,7 @@ export default function ImportHandler(props) {
             />
 
             <Modal className={styles.modal} styles={{height: asHeightmap ? 'fit-content' : undefined}}
-                   open={filesToImport.length > 0} handleClose={() => null}>
+                   open={filesToImport.length > 0} handleClose={() => null} blurIntensity={'1px'}>
                 <div className={styles.importHeader}>{asHeightmap ? 'Import terrain' : 'Import GLTF'}</div>
                 {!asHeightmap ?
                     <GLTFImporter

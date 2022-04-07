@@ -99,13 +99,7 @@
 
     display: grid;
     align-items: flex-start;
-    align-content: flex-start;
-    gap: 4px;
-    background: var(--fabric-background-secondary);
-
-    border-radius: 5px;
-    padding: 4px;
-    border: var(--fabric-border-primary) 1px solid;
+    align-content: start;
 
     overflow-y: auto;
 }
@@ -128,7 +122,7 @@
 }
 
 .input {
-    padding: 4px 0;
+
     display: grid;
     align-items: center;
     gap: 8px;

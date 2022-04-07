@@ -10,7 +10,6 @@ export default function getFileOptions(hook, setCurrentItem) {
         while (hook.fileSystem.assetExists(n)) {
             it++
             n = path + `(${it})` + ext
-            console.log(n)
         }
 
         return n

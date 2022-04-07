@@ -13,10 +13,12 @@ export default function GLTFImporter(props) {
     }, [props.files])
 
     return (
-        <div className={styles.toImport}>
+        <div className={styles.toImport} style={{display: 'flex', gap: '4px'}}>
 
             <div className={styles.input}>
                 <Checkbox
+                    noMargin={true}
+                    width={'100%'}
                     checked={props.settings.keepNormals}
                     label={'Keep mesh normals'}
                     handleCheck={() => {
@@ -27,6 +29,8 @@ export default function GLTFImporter(props) {
             </div>
             <div className={styles.input}>
                 <Checkbox
+                    noMargin={true}
+                    width={'100%'}
                     checked={props.settings.keepTangents}
                     label={'Keep mesh tangents'}
                     handleCheck={() => {
