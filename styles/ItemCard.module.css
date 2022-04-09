@@ -107,8 +107,7 @@
     overflow: hidden;
     border-radius: 5px;
     color: var(--fabric-color-tertiary);
-    border: var(--fabric-border-primary) 1px solid;
-    background-color: var(--fabric-background-primary);
+    gap: 4px;
 
     outline: transparent 2px solid;
     cursor: pointer;
@@ -116,7 +115,7 @@
 
 }
 
-.file:hover, .file:active{
+.file:hover, .file:active {
     border-color: transparent;
     outline-color: var(--fabric-accent-color);
 }
@@ -188,7 +187,7 @@
     gap: 8px;
 }
 
-.floatingIcon{
+.floatingIcon {
     padding: 4px;
     border-radius: 5px;
     display: flex;

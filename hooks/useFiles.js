@@ -32,9 +32,6 @@ export default function useFiles() {
     useEffect(() => {
         if (!initialized) {
             refreshFiles()
-
-            if (!fs.existsSync(quickAccess.fileSystem.path + '\\assetsRegistry\\'))
-                fs.mkdirSync(quickAccess.fileSystem.path + '\\assetsRegistry\\')
         }
     }, [])
 
@@ -87,9 +84,7 @@ export default function useFiles() {
 
 
     const refreshFiles = () => {
-        load.pushEvent(EVENTS.LOAD_FILES)
         quickAccess.refresh()
-
         let promises = [],
             creationPromises = [
                 new Promise(resolve => {
@@ -99,12 +94,6 @@ export default function useFiles() {
                         })
                 })
             ]
-        if (!fs.existsSync(path)) {
-            creationPromises = [
-                new Promise(resolve => fs.mkdir(path, () => resolve())),
-                new Promise(resolve => fs.mkdir(path + '/Content', () => resolve())),
-            ]
-        }
 
         Promise.all(creationPromises)
             .then(registryData => {
@@ -115,7 +104,6 @@ export default function useFiles() {
                     })
                     Promise.all(promises)
                         .then(promiseRes => {
-                            load.finishEvent(EVENTS.LOAD_FILES)
                             if (!initialized)
                                 setInitialized(true)
                             setItems(promiseRes.filter(p => p).sort(function (a, b) {
@@ -123,8 +111,6 @@ export default function useFiles() {
                                 if (a.name > b.name) return 1
                                 return 0
                             }))
-
-
                         })
                 })
             })
