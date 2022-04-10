@@ -8,88 +8,104 @@ import ImportHandler from "./ImportHandler";
 export default function ControlBar(props) {
 
     return (
-        <>
-            <Search searchString={props.searchString} setSearchString={props.setSearchString} width={'50%'}/>
-            <div style={{display: 'flex', justifyContent: 'space-between', width: '100%'}}>
+        <div className={styles.wrapper}>
+            <div className={styles.buttonGroup}>
+                <Button
+                disabled={true}
+                    className={styles.settingsButton}
+                        styles={{borderRadius: '5px 0 0 5px'}}
+                        onClick={() => null}
+                        variant={"outlined"}>
+                    <span className={'material-icons-round'}>arrow_back</span>
+                </Button>
+                <Button
+                    disabled={true}
+                    styles={{borderRadius: 0}}
+                    className={styles.settingsButton}
 
-                <div className={styles.pathWrapper}>
-                    <div className={styles.divider}/>
-                    {props.path.map((p, i) => (
-                        <React.Fragment key={p.path}>
-                            <Button className={styles.button}
+                    onClick={() => null}
+                    variant={"outlined"}>
+                    <span className={'material-icons-round'} style={{transform: 'rotate(180deg)'}}>arrow_back</span>
+                </Button>
+                <Button
+                    variant={"outlined"}
 
-                                    styles={{fontWeight: 'normal', minWidth: '60px'}}
-
-                                    onClick={() => {
-                                        const found = props.hook.items.find(i => i.id === p.path)
-                                        if (found)
-                                            props.hook.setCurrentDirectory(found)
-                                        else
-                                            props.hook.setCurrentDirectory({
-                                                id: '\\'
-                                            })
-                                    }}>
-
-                                {p.name}
-
-                            </Button>
-                            {i < props.path.length - 1 ?
-                                <span className={'material-icons-round'}
-                                      style={{fontSize: '1.2rem', height: 'fit-content'}}>chevron_right</span> : null}
-                        </React.Fragment>
-                    ))}
-                </div>
-                <div className={styles.pathWrapper} style={{gap: '4px'}}>
-                    <div className={styles.divider}/>
-                    <Button
-                        variant={"outlined"}
-                        disabled={props.path.length <= 1}
-                        className={styles.settingsButton}
-
-                        onClick={() => {
-                            const found = props.hook.items.find(i => i.id === props.hook.currentDirectory.parent)
-                            if (found)
-                                props.hook.setCurrentDirectory(found)
-                        }}
-                    >
-                        <span className={'material-icons-round'}>arrow_upward</span>
-                    </Button>
-                    <Button className={styles.settingsButton} onClick={() => props.hook.refreshFiles()}
-                            variant={"outlined"}>
-                        <span className={'material-icons-round'}>refresh</span>
-                    </Button>
-                    <div className={styles.divider}/>
-                    <Dropdown
-                        variant={'outlined'}
-                        className={styles.settingsButton}
-                    >
-                        <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>view_headline</span>View
-                        <DropdownOptions>
-                            <DropdownOption option={{
-                                icon: props.visualizationType === 0 ? <span className={'material-icons-round'}
-                                                                            style={{fontSize: '1.1rem'}}>check</span> : null,
-                                label: 'Big card',
-                                onClick: () => props.setVisualizationType(0)
-                            }}/>
-                            <DropdownOption option={{
-                                icon: props.visualizationType === 1 ? <span className={'material-icons-round'}
-                                                                            style={{fontSize: '1.1rem'}}>check</span> : null,
-                                label: 'Small card',
-                                onClick: () => props.setVisualizationType(1)
-                            }}/>
-                            <DropdownOption option={{
-                                icon: props.visualizationType === 2 ? <span className={'material-icons-round'}
-                                                                            style={{fontSize: '1.1rem'}}>check</span> : null,
-                                label: 'List',
-                                onClick: () => props.setVisualizationType(2)
-                            }}/>
-                        </DropdownOptions>
-                    </Dropdown>
-
-                    <ImportHandler {...props}/>
-                </div>
+                    className={styles.settingsButton}
+                    styles={{borderRadius: 0}}
+                    onClick={() => {
+                        const found = props.hook.items.find(i => i.id === props.hook.currentDirectory.parent)
+                        if (found)
+                            props.hook.setCurrentDirectory(found)
+                    }}
+                >
+                    <span className={'material-icons-round'}
+                          style={{transform: 'rotate(180deg)'}}>subdirectory_arrow_right</span>
+                </Button>
+                <Button
+                    className={styles.settingsButton}
+                    styles={{borderRadius: '0 5px 5px 0', border: 'none'}}
+                    onClick={() => props.hook.refreshFiles()}
+                    variant={"outlined"}>
+                    <span className={'material-icons-round'}>sync</span>
+                </Button>
             </div>
-        </>
+            <Search searchString={props.searchString} height={'27px'}
+                    setSearchString={props.setSearchString} width={'50%'}/>
+
+            <div className={styles.divider}/>
+            <div className={styles.pathWrapper}>
+                {props.path.map((p, i) => (
+                    <React.Fragment key={p.path}>
+                        <button
+                            className={styles.button}
+                            onClick={() => {
+                                const found = props.hook.items.find(i => i.id === p.path)
+                                if (found)
+                                    props.hook.setCurrentDirectory(found)
+                                else
+                                    props.hook.setCurrentDirectory({
+                                        id: '\\'
+                                    })
+                            }}>
+                            {p.name}
+                        </button>
+                        {i < props.path.length - 1 ? '/' : null}
+                    </React.Fragment>
+                ))}
+            </div>
+
+            <div className={styles.buttonGroup}>
+                <Dropdown
+                    styles={{borderRadius: '5px 0 0 5px'}}
+                    variant={'outlined'}
+                    className={styles.settingsButton}
+                >
+                    <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>view_headline</span>View
+                    <DropdownOptions>
+                        <DropdownOption option={{
+                            icon: props.visualizationType === 0 ? <span className={'material-icons-round'}
+                                                                        style={{fontSize: '1.1rem'}}>check</span> : null,
+                            label: 'Big card',
+                            onClick: () => props.setVisualizationType(0)
+                        }}/>
+                        <DropdownOption option={{
+                            icon: props.visualizationType === 1 ? <span className={'material-icons-round'}
+                                                                        style={{fontSize: '1.1rem'}}>check</span> : null,
+                            label: 'Small card',
+                            onClick: () => props.setVisualizationType(1)
+                        }}/>
+                        <DropdownOption option={{
+                            icon: props.visualizationType === 2 ? <span className={'material-icons-round'}
+                                                                        style={{fontSize: '1.1rem'}}>check</span> : null,
+                            label: 'List',
+                            onClick: () => props.setVisualizationType(2)
+                        }}/>
+                    </DropdownOptions>
+                </Dropdown>
+
+                <ImportHandler {...props}/>
+            </div>
+        </div>
     )
 }
 

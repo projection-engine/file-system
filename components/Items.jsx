@@ -1,18 +1,20 @@
 import PropTypes from "prop-types";
-import styles from '../../styles/Cards.module.css'
+import styles from '../styles/Cards.module.css'
 import React from "react";
-import ListItem from "./ListItem";
-import useItems from "../../hooks/useItems";
+import Item from "./Item";
+import useItems from "../hooks/useItems";
 import {ContextMenu} from "@f-ui/core";
-import SelectBox from "../../../../components/selectbox/SelectBox";
+import SelectBox from "../../../components/selectbox/SelectBox";
 
-export default function ListItems(props) {
+export default function Items(props) {
     const {
         currentItem, setCurrentItem,
         focusedElement, setFocusedElement,
         filesToRender, ref,
-        options, onRename
+        options,
+        onRename
     } = useItems(props)
+
 
 
     return (
@@ -21,21 +23,9 @@ export default function ListItems(props) {
             className={styles.content}
             style={{display: props.hidden ? 'none' : undefined}}
             data-folder-wrapper={props.hook.currentDirectory}
+
         >
-            <div className={styles.types}>
-                <div className={styles.type}>
-                    Name
-                </div>
-                <div className={styles.type}>
-                    Type
-                </div>
-                <div className={styles.type}>
-                    Size
-                </div>
-                <div className={styles.type}>
-                    Creation date
-                </div>
-            </div>
+
             <ContextMenu
                 options={options}
                 onContext={(node) => {
@@ -44,8 +34,9 @@ export default function ListItems(props) {
                         setFocusedElement(attr)
                     }
                 }}
-                className={styles.filesWrapperList}
 
+                className={styles.filesWrapper}
+                styles={{padding: props.visualizationType === 2 ? '0' : undefined, gap: props.visualizationType === 2 ? '0' : undefined}}
                 triggers={[
                     'data-folder-wrapper',
                     'data-file',
@@ -54,16 +45,27 @@ export default function ListItems(props) {
             >
                 <SelectBox nodes={props.hook.items} selected={props.selected} setSelected={props.setSelected}/>
                 {filesToRender.length > 0 ?
-                    filesToRender.map(child => (
+                    filesToRender.map((child, index) => (
                         <React.Fragment key={child.id}>
-                            <ListItem
-                                {...props}
+                            <Item
+                                index={index}
                                 setFocusedElement={setFocusedElement}
-                                focusedElement={focusedElement }
+                                focusedElement={focusedElement}
                                 type={child.isFolder ? 0 : 1}
                                 data={child}
                                 childrenQuantity={child.children}
+                                selected={props.selected}
+                                setSelected={(e) => props.setSelected(prev => {
+                                    if(e.ctrlKey)
+                                        return [...prev, child.id]
+                                    else
+                                        return  [child.id]
+                                })}
+                                openEngineFile={props.openEngineFile}
+                                hook={props.hook}
                                 onRename={currentItem}
+
+                                visualizationType={props.visualizationType}
                                 submitRename={name => onRename(name, child)}
                             />
                         </React.Fragment>
@@ -82,8 +84,10 @@ export default function ListItems(props) {
     )
 }
 
-ListItems.propTypes = {
+Items.propTypes = {
     visualizationType: PropTypes.number,
+
+
     searchString: PropTypes.string,
     selected: PropTypes.array,
     setSelected: PropTypes.func,

@@ -23,7 +23,7 @@
     padding: 8px;
     gap: 8px;
 
-    background: var(--fabric-background-secondary);
+    background: var(--fabric-background-tertiary);
     min-height: 100%;
     position: relative;
 
@@ -32,6 +32,7 @@
 
     align-items: flex-start;
     align-content: flex-start;
+    justify-items: flex-start;
 }
 
 
@@ -43,7 +44,6 @@
     display: flex;
     flex-flow: column;
     grid-auto-flow: row dense;
-
 }
 
 .types {

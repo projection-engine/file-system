@@ -154,7 +154,9 @@ export default function ImportHandler(props) {
                     </Button>
                 </div>
             </Modal>
-            <Dropdown styles={{fontSize: '.7rem'}} className={styles.settingsButton} variant={"outlined"}>
+            <Dropdown
+                styles={{borderRadius: '0 5px 5px 0', fontSize: '.7rem', border: 'none'}}
+                className={styles.settingsButton} variant={"outlined"}>
                 <span className={'material-icons-round'} style={{fontSize: '1rem'}}>open_in_new</span>
                 Import
                 <DropdownOptions>

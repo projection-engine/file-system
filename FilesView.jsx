@@ -2,13 +2,12 @@ import styles from './styles/Explorer.module.css'
 import PropTypes from "prop-types";
 import React, {useEffect, useMemo, useState} from "react";
 import Directories from "./components/Directories";
-import Cards from "./components/card/Cards";
+import Items from "./components/Items";
 import ControlBar from "./components/ControlBar";
 
 import {Button} from "@f-ui/core";
 import useFiles from "./hooks/useFiles";
 
-import ListItems from "./components/list/ListItems";
 
 import ResizableBar from "../../components/resizable/ResizableBar";
 import DeleteConfirmation from "./components/DeleteConfirmation";
@@ -124,8 +123,8 @@ export default function FilesView(props) {
                         />
                     </div>
 
-                    {visualizationType === 2 ?
-                        <ListItems
+
+                        <Items
                             setAlert={props.setAlert}
                             openEngineFile={props.openEngineFile}
                             hidden={hidden}
@@ -136,18 +135,6 @@ export default function FilesView(props) {
                             selected={selected}
                             accept={props.accept ? props.accept : []}
                         />
-                        :
-                        <Cards
-                            setAlert={props.setAlert}
-                            openEngineFile={props.openEngineFile}
-                            hidden={hidden}
-                            hook={hook}
-                            visualizationType={visualizationType}
-                            searchString={searchString}
-                            setSelected={setSelected}
-                            selected={selected}
-                            accept={props.accept ? props.accept : []}
-                        />}
 
                 </div>
 
