@@ -82,7 +82,7 @@ export default function ImportHandler(props) {
             <input
                 type={'file'}
                 ref={fileRef}
-                accept={['.png', '.jpeg', '.jpg', '.hdr', '.gltf', '.glt', '.material']}
+                accept={['.png', '.jpeg', '.jpg', '.hdr', '.gltf', '.glt', '.material', '.fbx']}
                 multiple={true}
                 onChange={e => {
                     setAsFolder(false)

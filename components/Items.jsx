@@ -8,8 +8,7 @@ import SelectBox from "../../../components/selectbox/SelectBox";
 
 export default function Items(props) {
     const {
-        currentItem, setCurrentItem,
-        focusedElement, setFocusedElement,
+        currentItem,
         filesToRender, ref,
         options,
         onRename
@@ -29,9 +28,12 @@ export default function Items(props) {
             <ContextMenu
                 options={options}
                 onContext={(node) => {
+                    console.log(node)
                     if (node !== undefined && node !== null && (node.getAttribute('data-file') || node.getAttribute('data-folder'))) {
+                        console.log('HERE')
                         const attr = node.getAttribute('data-file') ? node.getAttribute('data-file') : node.getAttribute('data-folder')
-                        setFocusedElement(attr)
+                        console.log('HERE', attr)
+                        props.setSelected([attr])
                     }
                 }}
 
@@ -49,8 +51,7 @@ export default function Items(props) {
                         <React.Fragment key={child.id}>
                             <Item
                                 index={index}
-                                setFocusedElement={setFocusedElement}
-                                focusedElement={focusedElement}
+
                                 type={child.isFolder ? 0 : 1}
                                 data={child}
                                 childrenQuantity={child.children}

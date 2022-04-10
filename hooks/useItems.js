@@ -6,17 +6,19 @@ import handleRename from "../utils/handleRename";
 
 export default function useItems({hook, accept, searchString}) {
     const [currentItem, setCurrentItem] = useState()
-    const [focusedElement, setFocusedElement] = useState()
+
 
     const filesToRender = useMemo(() => {
         if(hook.currentDirectory.id !== '\\')
             return hook.items
                 .filter(file => file.parent === hook.currentDirectory.id && (searchString.length > 0 ? file.name.toLowerCase().includes(searchString) : true))
                 .map(e => {
+
                     return {
                         ...e, children: e.isFolder ? hook.items.filter(i => {
                             return typeof i.parent === 'string' && i.parent === e.id
-                        }).length : 0
+                        }).length : 0,
+
                     }
                 })
         else
@@ -34,13 +36,6 @@ export default function useItems({hook, accept, searchString}) {
     const ref = useRef()
     const onDragOver = e => e.preventDefault()
 
-    const onMouseDown = e => {
-        const elements = document.elementsFromPoint(e.clientX, e.clientY)
-        const isChild = elements.find(e => e.getAttribute('data-file') !== null || elements.find(e => e.getAttribute('data-folder') !== null))
-
-        if (!isChild)
-            setFocusedElement(undefined)
-    }
     const onDrop = e => {
         hook.load.pushEvent(EVENTS.LOAD_FILE)
         e.preventDefault()
@@ -70,11 +65,9 @@ export default function useItems({hook, accept, searchString}) {
     }
     useEffect(() => {
         ref.current?.addEventListener('drop', onDrop)
-        ref.current?.addEventListener('mousedown', onMouseDown)
         ref.current?.addEventListener('dragover', onDragOver)
         return () => {
             ref.current?.removeEventListener('drop', onDrop)
-            ref.current?.removeEventListener('mousedown', onMouseDown)
             ref.current?.removeEventListener('dragover', onDragOver)
         }
     }, [ref, hook, accept, searchString])
@@ -89,7 +82,6 @@ export default function useItems({hook, accept, searchString}) {
     }
     return {
         currentItem, setCurrentItem,
-        focusedElement, setFocusedElement,
         filesToRender, ref,
         options, onRename
     }

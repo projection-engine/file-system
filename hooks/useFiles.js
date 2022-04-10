@@ -65,6 +65,7 @@ export default function useFiles() {
                             isFolder: false,
                             name: [...split].pop().split(/\.([a-zA-Z0-9]+)$/)[0],
                             type: p.split('.').pop(),
+                            fileType:'.'+ p.split('.').pop(),
                             creationDate: new Date(stat.birthtime).toDateString(),
                             id: currentPath,
                             size: stat.size,
@@ -106,6 +107,7 @@ export default function useFiles() {
                         .then(promiseRes => {
                             if (!initialized)
                                 setInitialized(true)
+
                             setItems(promiseRes.filter(p => p).sort(function (a, b) {
                                 if (a.name < b.name) return -1
                                 if (a.name > b.name) return 1

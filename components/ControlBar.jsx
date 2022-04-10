@@ -33,9 +33,15 @@ export default function ControlBar(props) {
                     className={styles.settingsButton}
                     styles={{borderRadius: 0}}
                     onClick={() => {
-                        const found = props.hook.items.find(i => i.id === props.hook.currentDirectory.parent)
-                        if (found)
-                            props.hook.setCurrentDirectory(found)
+                        const found = props.hook.currentDirectory.id
+                        if(found){
+                            const split = found.split('\\')
+                            split.pop()
+                            if(split.length === 1)
+                                props.hook.setCurrentDirectory({id: '\\'})
+                            else
+                                props.hook.setCurrentDirectory({id: split.join('\\')})
+                        }
                     }}
                 >
                     <span className={'material-icons-round'}

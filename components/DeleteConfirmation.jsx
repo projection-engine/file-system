@@ -49,7 +49,7 @@ export default function DeleteConfirmation(props) {
 
 
     return (
-        <Modal open={open} handleClose={() => null} className={styles.modal}>
+        <Modal open={open} blurIntensity={'1px'} handleClose={() => null} className={styles.modal}>
             {open ?
                 <>
                     <div className={styles.warning}>

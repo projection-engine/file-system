@@ -19,7 +19,7 @@ export default function Item(props) {
     } = useItem(props)
 
 
-    console.log(props.childrenQuantity)
+    console.log(props.data)
     const icon = useMemo(() => {
         return getIcon({
             type: props.data.type ? props.data.type : 'folder',
@@ -59,7 +59,7 @@ export default function Item(props) {
                 />
                 :
                 <div className={[styles.label, styles.overflow].join(' ')}>
-                    {currentLabel + props.type}
+                    {currentLabel }{props.type === 0 ? '' : '.'+props.data.type}
                 </div>
             }
             <ItemTooltip
@@ -76,8 +76,7 @@ Item.propTypes = {
     index: PropTypes.number,
     visualizationType: PropTypes.number,
     childrenQuantity: PropTypes.number,
-    setFocusedElement: PropTypes.func,
-    focusedElement: PropTypes.string,
+
     type: PropTypes.oneOf([0, 1]),
     data: PropTypes.object,
     selected: PropTypes.array,

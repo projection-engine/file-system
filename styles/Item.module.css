@@ -111,6 +111,7 @@ height: 100%;
     font-size: .75rem;
     font-weight: 550;
     padding: 4px;
+    padding-bottom: 8px;
     text-align: center;
     line-height: 100%;
 }
@@ -165,17 +166,3 @@ height: 100%;
     background: var(--fabric-background-primary) !important;
 }
 
-
-
-.floatingIcon {
-    padding: 4px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    background-color: var(--fabric-background-primary) !important;
-    color: var(--fabric-color-primary) !important;
-    position: absolute;
-    bottom: 4px;
-    right: 4px;
-
-}
