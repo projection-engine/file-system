@@ -57,7 +57,6 @@ export default function getIcon({
                 </div>
             )
         case 'folder': {
-            console.log(childrenQuantity)
             return (
                 <div className={styles.icon} data-size={`${visualization}`}>
                     <span className={'material-icons-round'}>{childrenQuantity > 0 ? 'source' : 'folder_open'}</span>

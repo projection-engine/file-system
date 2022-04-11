@@ -21,8 +21,8 @@
 }
 
 .settingsButton {
-    height: 22px;
-    min-width: 22px;
+    height: 25px;
+    min-width: 25px;
 
     padding: 0 2px;
 
@@ -53,7 +53,7 @@
 
     gap: 0;
     background: var(--fabric-background-quaternary);
-    height: 22px;
+    height: 25px;
     overflow-y: hidden;
     overflow-x: auto;
     width: 100%;
@@ -141,10 +141,14 @@
 }
 
 .wrapper{
+    height: 100%;
+    padding: 0 4px;
     width: 100%;
     display: flex;
     align-items: center;
     gap: 8px;
+    max-height: 35px;
+    border-bottom: var(--fabric-border-primary) 1px solid;
 }
 .buttonGroup{
     display: flex;

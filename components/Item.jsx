@@ -1,11 +1,9 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Item.module.css'
 import React, {useMemo} from "react";
-import parseFileType from "../utils/visuals/parseFileType";
 import getIcon from "../utils/visuals/getIcon";
 import useItem from "../hooks/useItem";
 import ItemTooltip from "./ItemTooltip";
-import {DataRow} from "@f-ui/core";
 
 export default function Item(props) {
 
@@ -19,7 +17,6 @@ export default function Item(props) {
     } = useItem(props)
 
 
-    console.log(props.data)
     const icon = useMemo(() => {
         return getIcon({
             type: props.data.type ? props.data.type : 'folder',

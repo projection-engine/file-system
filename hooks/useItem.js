@@ -56,7 +56,7 @@ export default function useItem(props) {
             ref.current?.classList.add(styles.hovered)
         }
     }
-    const onClick = () => props.setFocusedElement(props.data.id)
+
     const onDragLeave = e => {
         if (props.type === 0) {
             e.preventDefault()
@@ -71,14 +71,12 @@ export default function useItem(props) {
 
     useEffect(() => {
         ref.current?.addEventListener('drop', onDrop)
-        ref.current?.addEventListener('click', onClick)
         ref.current?.addEventListener('dragleave', onDragLeave)
         ref.current?.addEventListener('dragover', onDragOver)
         ref.current?.addEventListener('dblclick', onDoubleClick)
 
         return () => {
             ref.current?.removeEventListener('drop', onDrop)
-            ref.current?.removeEventListener('click', onClick)
             ref.current?.removeEventListener('dragleave', onDragLeave)
             ref.current?.removeEventListener('dragover', onDragOver)
             ref.current?.removeEventListener('dblclick', onDoubleClick)

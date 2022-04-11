@@ -8,14 +8,14 @@ import ImportHandler from "./ImportHandler";
 export default function ControlBar(props) {
 
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} style={{border: props.hidden ? 'none' : undefined}}>
             <div className={styles.buttonGroup}>
                 <Button
                 disabled={true}
                     className={styles.settingsButton}
                         styles={{borderRadius: '5px 0 0 5px'}}
                         onClick={() => null}
-                        variant={"outlined"}>
+                        >
                     <span className={'material-icons-round'}>arrow_back</span>
                 </Button>
                 <Button
@@ -24,11 +24,11 @@ export default function ControlBar(props) {
                     className={styles.settingsButton}
 
                     onClick={() => null}
-                    variant={"outlined"}>
+                    >
                     <span className={'material-icons-round'} style={{transform: 'rotate(180deg)'}}>arrow_back</span>
                 </Button>
                 <Button
-                    variant={"outlined"}
+
 
                     className={styles.settingsButton}
                     styles={{borderRadius: 0}}
@@ -51,14 +51,36 @@ export default function ControlBar(props) {
                     className={styles.settingsButton}
                     styles={{borderRadius: '0 5px 5px 0', border: 'none'}}
                     onClick={() => props.hook.refreshFiles()}
-                    variant={"outlined"}>
+                    >
                     <span className={'material-icons-round'}>sync</span>
                 </Button>
+
+
             </div>
-            <Search searchString={props.searchString} height={'27px'}
+            <Button
+            styles={{border: 'none'}}
+                className={styles.settingsButton}
+                onClick={() => {
+                    const hook = props.hook
+                    let path = hook.currentDirectory.id + '\\New folder'
+
+                    const existing = hook.fileSystem.foldersFromDirectory(hook.path + hook.currentDirectory.id)
+                    if (existing.length > 0)
+                        path += ' - ' + existing.length
+
+                    hook.fs.mkdir(hook.path + path, {}, () => {
+                        hook.refreshFiles()
+                    })
+
+                }}
+
+            >
+                <span className={'material-icons-round'} style={{transform: 'rotate(180deg)'}}>create_new_folder</span>
+            </Button>
+            <Search searchString={props.searchString} height={'30px'}
                     setSearchString={props.setSearchString} width={'50%'}/>
 
-            <div className={styles.divider}/>
+
             <div className={styles.pathWrapper}>
                 {props.path.map((p, i) => (
                     <React.Fragment key={p.path}>
@@ -125,5 +147,5 @@ ControlBar.propTypes = {
     path: PropTypes.arrayOf(PropTypes.object),
 
     hook: PropTypes.object.isRequired,
-
+hidden: PropTypes.bool
 }

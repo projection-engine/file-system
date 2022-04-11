@@ -28,11 +28,11 @@ export default function Items(props) {
             <ContextMenu
                 options={options}
                 onContext={(node) => {
-                    console.log(node)
+
                     if (node !== undefined && node !== null && (node.getAttribute('data-file') || node.getAttribute('data-folder'))) {
-                        console.log('HERE')
+
                         const attr = node.getAttribute('data-file') ? node.getAttribute('data-file') : node.getAttribute('data-folder')
-                        console.log('HERE', attr)
+
                         props.setSelected([attr])
                     }
                 }}

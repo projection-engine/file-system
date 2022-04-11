@@ -109,8 +109,9 @@ export default function FilesView(props) {
                 </div>
                 <ResizableBar type={'width'} color={'var(--fabric-border-primary)'}/>
                 <div className={styles.content} id={props.id + '-files'}>
-                    <div className={styles.contentWrapper} style={{padding: '0 4px'}}>
+
                         <ControlBar
+                            {...props}
                             searchString={searchString}
                             visualizationType={visualizationType}
                             setVisualizationType={setVisualizationType}
@@ -119,10 +120,10 @@ export default function FilesView(props) {
                                     setHidden(false)
                                 setSearchString(v)
                             }}
-                            hidden={hidden} hook={hook} setHidden={setHidden} {...props} path={path}
+                            hidden={hidden}
+                            hook={hook}
+                            path={path}
                         />
-                    </div>
-
 
                         <Items
                             setAlert={props.setAlert}
