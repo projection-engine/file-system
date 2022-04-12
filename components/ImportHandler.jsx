@@ -30,7 +30,7 @@ export default function ImportHandler(props) {
                 setFilesToImport([])
                 load.pushEvent(EVENTS.IMPORT_FILE)
                 props.hook.fileSystem
-                    .importFile(file, props.hook.path + (props.hook.currentDirectory.id ? props.hook.currentDirectory.id : ''), asHeightmap, settings)
+                    .importFile(file, props.hook.path + (props.hook.currentDirectory.id ? props.hook.currentDirectory.id : ''), asHeightmap, settings, props.setAlert)
                     .then(res => {
                         load.finishEvent(EVENTS.IMPORT_FILE)
                         props.hook.refreshFiles()
@@ -57,7 +57,7 @@ export default function ImportHandler(props) {
                     Promise.all(folderPromises)
                         .then(() => {
                             props.hook.fileSystem
-                                .importFile(file, folder, false)
+                                .importFile(file, folder, false, undefined, props.setAlert)
                                 .then(() => {
                                     resolve()
 
@@ -82,7 +82,7 @@ export default function ImportHandler(props) {
             <input
                 type={'file'}
                 ref={fileRef}
-                accept={['.png', '.jpeg', '.jpg', '.hdr', '.gltf', '.glt', '.material', '.fbx']}
+                accept={['.png', '.jpeg', '.jpg', '.hdr', '.obj', '.gltf', '.glt', '.material', '.fbx']}
                 multiple={true}
                 onChange={e => {
                     setAsFolder(false)
@@ -188,9 +188,6 @@ export default function ImportHandler(props) {
 
 
 ImportHandler.propTypes = {
-
-
+    setAlert: PropTypes.func,
     hook: PropTypes.object.isRequired,
-
-
 }

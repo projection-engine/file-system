@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Cards.module.css'
-import React from "react";
+import React, {useMemo} from "react";
 import Item from "./Item";
 import useItems from "../hooks/useItems";
 import {ContextMenu} from "@f-ui/core";
@@ -13,7 +13,16 @@ export default function Items(props) {
         options,
         onRename
     } = useItems(props)
-
+    const cardSize = useMemo(() => {
+        switch (props.visualizationType){
+            case 1:
+                return '75px'
+            case 2:
+                return '100%'
+            default:
+                return '115px'
+        }
+    }, [props.visualizationType])
 
 
     return (
@@ -38,7 +47,10 @@ export default function Items(props) {
                 }}
 
                 className={styles.filesWrapper}
-                styles={{padding: props.visualizationType === 2 ? '0' : undefined, gap: props.visualizationType === 2 ? '0' : undefined}}
+                styles={{
+                    '--card_size': cardSize,
+                    padding: props.visualizationType === 2 ? '0' : undefined, gap: props.visualizationType === 2 ? '0' : undefined,
+                }}
                 triggers={[
                     'data-folder-wrapper',
                     'data-file',

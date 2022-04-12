@@ -8,8 +8,8 @@ export default function ItemTooltip(props){
         return props.data.size ? (props.data.size < 100000 ? (props.data.size / 1000).toFixed(2) + 'KB' : (props.data.size / (10 ** 6)).toFixed(2) + ' MB') : 'NaN'
     }, [props.data])
     return (
-        <ToolTip align={"middle"} justify={'end'}>
-            <div className={styles.toolTip}>
+        <ToolTip className={styles.toolTip}>
+
                 <div className={styles.infoRow}>
                     Name:
                     <div className={styles.infoRowContent}>
@@ -52,7 +52,7 @@ export default function ItemTooltip(props){
                     </div>
                 }
 
-            </div>
+
         </ToolTip>
     )
 }

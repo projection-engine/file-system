@@ -18,8 +18,9 @@
 
 
 .toolTip {
-    box-shadow: rgba(0, 0, 0, .2) 2px 2px 2px 2px;
-    width: fit-content;
+    box-shadow: var(--fabric-boxshadow);
+    width: 250px;
+    border-radius: 5px;
     padding: 4px;
 
 }
@@ -149,11 +150,13 @@ height: 100%;
     outline: transparent 2px solid;
     cursor: pointer;
     transition: 150ms linear;
+
+    flex: 1 1 80px;
 }
 
 .file[data-size='1'] {
     height: 75px;
-    width: 75px;
+    max-width: 75px;
 }
 .file[data-size='2']{
     height: 30px;
