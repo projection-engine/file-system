@@ -80,7 +80,7 @@ export default function FilesView(props) {
                 }
             }
         ]
-    })
+    }, [selected])
     return (
         <>
             <ResizableBar
