@@ -1,4 +1,4 @@
-import EVENTS from "../../../services/utils/misc/EVENTS";
+import EVENTS from "../../../pages/project/utils/utils/EVENTS";
 
 export default function handleDelete(entries, hook) {
     (!Array.isArray(entries) ? [entries] : entries).forEach(id => {

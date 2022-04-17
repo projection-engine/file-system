@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
-import EVENTS from "../../../services/utils/misc/EVENTS";
+import EVENTS from "../../../pages/project/utils/utils/EVENTS";
 import styles from "../styles/Control.module.css";
 import {Button, Dropdown, DropdownOption, DropdownOptions, LoaderProvider, Modal} from "@f-ui/core";
-import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
+import QuickAccessProvider from "../../../pages/project/utils/hooks/QuickAccessProvider";
 import {useContext, useRef, useState} from "react";
 import TerrainImporter from "./TerrainImporter";
 import GLTFImporter from "./GLTFImporter";
