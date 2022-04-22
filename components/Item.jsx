@@ -4,7 +4,7 @@ import React, {useEffect, useMemo} from "react";
 import getIcon from "../utils/visuals/getIcon";
 import useItem from "../hooks/useItem";
 import ItemTooltip from "./ItemTooltip";
-import usePreview from "../../../pages/project/utils/hooks/usePreview";
+import usePreview from "../../../components/preview/usePreview";
 
 export default function Item(props) {
 
@@ -17,10 +17,9 @@ export default function Item(props) {
         selected, handleDrag
     } = useItem(props)
 
-    const imageRef = usePreview(props.hook.fileSystem.path + '\\previews\\' + props.data.registryID + '.preview')
     const icon = useMemo(() => {
         return getIcon({
-            imageRef,
+            path: props.hook.fileSystem.path + '\\previews\\' + props.data.registryID + '.preview',
             type: props.data.type ? props.data.type : 'folder',
             preview,
             visualization: props.visualizationType,

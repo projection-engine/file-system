@@ -1,7 +1,8 @@
 import styles from "../../styles/Item.module.css";
+import Preview from "../../../../components/preview/Preview";
 
 export default function getIcon({
-                                    imageRef,
+                                    path,
                                     type,
                                     preview,
                                     visualization,
@@ -10,22 +11,13 @@ export default function getIcon({
 
     switch (type) {
         case 'pimg':
+        case 'material':
             return (
-                <div style={{position: 'relative'}} className={styles.imageWrapper} data-size={`${visualization}`}>
-                    <img ref={imageRef} src={undefined} draggable={false} alt={'image'} className={styles.image}/>
+                <div style={{position: 'relative'}} className={[styles.imageWrapper, styles.icon].join(' ')} data-size={`${visualization}`}>
+                    <Preview iconStyles={{fontSize: '4rem'}} path={path} className={styles.image} fallbackIcon={type === 'material' ? 'texture' : undefined}/>
+                    {/*<img ref={imageRef} src={undefined} draggable={false} alt={'image'} className={styles.image}/>*/}
                 </div>
             )
-        case 'material':
-                return (
-                    <div style={{position: 'relative'}} className={styles.imageWrapper} data-size={`${visualization}`}>
-                        <img src={preview} draggable={false} alt={'image'} className={styles.image}/>
-                    </div>
-                )
-            // return (
-            //     <div className={styles.icon} data-size={`${visualization}`}>
-            //         <span className={'material-icons-round'}>texture</span>
-            //     </div>
-            // )
         case 'terrain':
             return (
                 <div className={styles.icon} data-size={`${visualization}`}>
