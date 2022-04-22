@@ -49,15 +49,17 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-
-
     gap: 0;
-    background: var(--fabric-background-quaternary);
+
+    background: var(--fabric-background-tertiary);
+    border: var(--fabric-border-primary) 1px solid;
+    border-radius:5px;
+
     height: 25px;
     overflow-y: hidden;
     overflow-x: auto;
     width: 100%;
-    border-radius:5px;
+
     padding: 2px;
     font-weight: normal;
 }

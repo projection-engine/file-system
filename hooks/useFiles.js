@@ -26,7 +26,6 @@ export default function useFiles() {
     const {entities, removeEntities} = useContext(EntitiesProvider)
 
 
-
     useEffect(() => {
         if (!initialized) {
             refreshFiles()
@@ -36,7 +35,7 @@ export default function useFiles() {
     const parsePath = (p, registryData) => {
         return new Promise(resolve => {
             fs.lstat(p, (e, stat) => {
-                if(!e ){
+                if (!e) {
                     const split = p.split('\\')
                     let parent = [...split]
                     parent.pop()
@@ -63,7 +62,7 @@ export default function useFiles() {
                             isFolder: false,
                             name: [...split].pop().split(/\.([a-zA-Z0-9]+)$/)[0],
                             type: p.split('.').pop(),
-                            fileType:'.'+ p.split('.').pop(),
+                            fileType: '.' + p.split('.').pop(),
                             creationDate: new Date(stat.birthtime).toDateString(),
                             id: currentPath,
                             size: stat.size,
@@ -73,8 +72,7 @@ export default function useFiles() {
                             parent: split[split.length - 2] === 'assets' ? undefined : parent
                         })
                     }
-                }
-                else
+                } else
                     resolve()
             })
         })
@@ -115,24 +113,63 @@ export default function useFiles() {
                 })
             })
     }
+    const [navHistory, setNavHistory] = useState([])
+    const [navIndex, setNavIndex] = useState(0)
+    useEffect(() => {
+        if(navHistory.length > 0)
+        setNavIndex(navHistory.length - 1)
+    }, [navHistory])
 
+    const returnDir = () => {
+        if (navIndex > 0 && navHistory[navIndex -1]) {
+
+            setNavIndex(n => {
+                return n - 1
+            })
+            setCurrentDirectory(navHistory[navIndex])
+        }
+    }
+    const forwardDir = () => {
+        if (navIndex < 10 && navHistory[navIndex + 1]) {
+            setNavIndex(n => {
+                return n + 1
+            })
+            setCurrentDirectory(navHistory[navIndex])
+        }
+    }
     return {
         toDelete, setToDelete,
         removeEntities,
         refreshFiles,
         fileSystem: quickAccess.fileSystem,
 
+        navIndex,
+        returnDir,
+        forwardDir,
+
+        navHistory,
+        setNavHistory,
+
         path,
         load,
         ref,
         currentDirectory,
-        setCurrentDirectory,
+        setCurrentDirectory: v => {
+            setNavHistory(prev => {
+                const c = [...prev, v]
+                if (c.length > 10)
+                    c.shift()
+                return c
+            })
+            setCurrentDirectory(v)
+        },
         items, setItems,
         openModal,
         setOpenModal,
         uploadRef,
         onRename,
-        setOnRename, setAlert: ({type, message}) => alert.pushAlert(message, type),
+        setOnRename,
+        setAlert: ({type, message}) => alert.pushAlert(message, type),
         fs,
         entities,
         createTerrain, setCreateTerrain

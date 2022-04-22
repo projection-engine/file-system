@@ -1,36 +1,31 @@
 import styles from "../../styles/Item.module.css";
 
 export default function getIcon({
-                                    type, preview, visualization, childrenQuantity
+                                    imageRef,
+                                    type,
+                                    preview,
+                                    visualization,
+                                    childrenQuantity
                                 }) {
 
     switch (type) {
-        case 'pimg': {
-            if (preview)
-                return (
-                    <div style={{position: 'relative'}} className={styles.imageWrapper} data-size={`${visualization}`}>
-                        <img src={preview} draggable={false} alt={'image'} className={styles.image}/>
-                    </div>
-                )
+        case 'pimg':
             return (
-                <div className={styles.icon} data-size={`${visualization}`}>
-                    <span className={'material-icons-round'}>image</span>
+                <div style={{position: 'relative'}} className={styles.imageWrapper} data-size={`${visualization}`}>
+                    <img ref={imageRef} src={undefined} draggable={false} alt={'image'} className={styles.image}/>
                 </div>
             )
-        }
-
         case 'material':
-            if (preview)
                 return (
                     <div style={{position: 'relative'}} className={styles.imageWrapper} data-size={`${visualization}`}>
                         <img src={preview} draggable={false} alt={'image'} className={styles.image}/>
                     </div>
                 )
-            return (
-                <div className={styles.icon} data-size={`${visualization}`}>
-                    <span className={'material-icons-round'}>texture</span>
-                </div>
-            )
+            // return (
+            //     <div className={styles.icon} data-size={`${visualization}`}>
+            //         <span className={'material-icons-round'}>texture</span>
+            //     </div>
+            // )
         case 'terrain':
             return (
                 <div className={styles.icon} data-size={`${visualization}`}>

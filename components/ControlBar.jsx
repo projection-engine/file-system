@@ -1,43 +1,46 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Control.module.css'
 import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
-import React from "react";
+import React, {useMemo} from "react";
 import Search from "../../../components/search/Search";
 import ImportHandler from "./ImportHandler";
 
 export default function ControlBar(props) {
-
+    const disabled = useMemo(() => {
+        return {
+            backwards: props.hook.navIndex === 0,
+            forward: props.hook.navIndex === 9 || props.hook.navHistory[props.hook.navIndex + 1] === undefined
+        }
+    }, [props.hook.navHistory, props.hook.navIndex])
     return (
         <div className={styles.wrapper} style={{border: props.hidden ? 'none' : undefined}}>
             <div className={styles.buttonGroup}>
                 <Button
-                disabled={true}
+                    disabled={disabled.backwards}
                     className={styles.settingsButton}
-                        styles={{borderRadius: '5px 0 0 5px'}}
-                        onClick={() => null}
-                        >
+                    styles={{borderRadius: '5px 0 0 5px'}}
+                    onClick={() => props.hook.returnDir()}
+                >
                     <span className={'material-icons-round'}>arrow_back</span>
                 </Button>
                 <Button
-                    disabled={true}
+                    disabled={disabled.forward}
                     styles={{borderRadius: 0}}
                     className={styles.settingsButton}
-
-                    onClick={() => null}
-                    >
+                    onClick={() => props.hook.forwardDir()}
+                >
                     <span className={'material-icons-round'} style={{transform: 'rotate(180deg)'}}>arrow_back</span>
                 </Button>
                 <Button
-
 
                     className={styles.settingsButton}
                     styles={{borderRadius: 0}}
                     onClick={() => {
                         const found = props.hook.currentDirectory.id
-                        if(found){
+                        if (found) {
                             const split = found.split('\\')
                             split.pop()
-                            if(split.length === 1)
+                            if (split.length === 1)
                                 props.hook.setCurrentDirectory({id: '\\'})
                             else
                                 props.hook.setCurrentDirectory({id: split.join('\\')})
@@ -51,14 +54,14 @@ export default function ControlBar(props) {
                     className={styles.settingsButton}
                     styles={{borderRadius: '0 5px 5px 0', border: 'none'}}
                     onClick={() => props.hook.refreshFiles()}
-                    >
+                >
                     <span className={'material-icons-round'}>sync</span>
                 </Button>
 
 
             </div>
             <Button
-            styles={{border: 'none'}}
+                styles={{border: 'none'}}
                 className={styles.settingsButton}
                 onClick={() => {
                     const hook = props.hook
@@ -77,8 +80,6 @@ export default function ControlBar(props) {
             >
                 <span className={'material-icons-round'} style={{transform: 'rotate(180deg)'}}>create_new_folder</span>
             </Button>
-            <Search searchString={props.searchString} height={'30px'}
-                    setSearchString={props.setSearchString} width={'50%'}/>
 
 
             <div className={styles.pathWrapper}>
@@ -101,6 +102,12 @@ export default function ControlBar(props) {
                     </React.Fragment>
                 ))}
             </div>
+            <Search
+                searchString={props.searchString}
+                height={'30px'}
+                setSearchString={props.setSearchString}
+                width={'50%'}
+            />
 
             <div className={styles.buttonGroup}>
                 <Dropdown
@@ -147,5 +154,5 @@ ControlBar.propTypes = {
     path: PropTypes.arrayOf(PropTypes.object),
 
     hook: PropTypes.object.isRequired,
-hidden: PropTypes.bool
+    hidden: PropTypes.bool
 }

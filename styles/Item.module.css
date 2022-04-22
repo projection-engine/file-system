@@ -77,11 +77,9 @@ height: 100%;
 
 
 .imageWrapper {
-    overflow: hidden !important;
+    overflow: hidden;
+    border-radius: 5px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
 }
 
@@ -100,17 +98,16 @@ height: 100%;
 
 
 .image {
+    display: block;
+    width: 100%;
 
-
-    max-height: 100%;
-    border-radius: 5px;
-
+    object-fit: cover;
 }
 
 
 .label {
     font-size: .75rem;
-    font-weight: 550;
+
     padding: 4px 4px 8px;
 
     text-align: center;
@@ -149,9 +146,11 @@ height: 100%;
 
     outline: transparent 2px solid;
     cursor: pointer;
-    transition: 150ms linear;
+
 
     flex: 1 1 80px;
+
+    padding: 4px 4px 0;
 }
 
 .file[data-size='1'] {
@@ -168,6 +167,6 @@ height: 100%;
 }
 .file:hover, .file:active {
     border-color: transparent;
-    background: var(--fabric-background-primary) !important;
+    background: var(--fabric-background-primary) ;
 }
 

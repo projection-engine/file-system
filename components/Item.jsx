@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Item.module.css'
-import React, {useMemo} from "react";
+import React, {useEffect, useMemo} from "react";
 import getIcon from "../utils/visuals/getIcon";
 import useItem from "../hooks/useItem";
 import ItemTooltip from "./ItemTooltip";
+import usePreview from "../../../pages/project/utils/hooks/usePreview";
 
 export default function Item(props) {
 
@@ -16,16 +17,16 @@ export default function Item(props) {
         selected, handleDrag
     } = useItem(props)
 
-
+    const imageRef = usePreview(props.hook.fileSystem.path + '\\previews\\' + props.data.registryID + '.preview')
     const icon = useMemo(() => {
         return getIcon({
+            imageRef,
             type: props.data.type ? props.data.type : 'folder',
             preview,
-            visualization:  props.visualizationType,
+            visualization: props.visualizationType,
             childrenQuantity: props.childrenQuantity
         })
     }, [props.data, props.visualizationType])
-
 
     return (
         <div
@@ -36,7 +37,7 @@ export default function Item(props) {
             draggable={!currentlyOnRename}
             onClick={props.setSelected}
             style={{
-                background:selected ? 'var(--fabric-border-primary)' : props.visualizationType === 2 ? (props.index % 2 === 0 ? 'var(--fabric-background-secondary)' : 'var(--fabric-background-tertiary)') : undefined
+                background: selected ? 'var(--fabric-accent-color)' : props.visualizationType === 2 ? (props.index % 2 === 0 ? 'var(--fabric-background-secondary)' : 'var(--fabric-background-tertiary)') : undefined
             }}
             className={styles.file}
         >
@@ -56,7 +57,7 @@ export default function Item(props) {
                 />
                 :
                 <div className={[styles.label, styles.overflow].join(' ')}>
-                    {currentLabel }{props.type === 0 ? '' : '.'+props.data.type}
+                    {currentLabel}{props.type === 0 ? '' : '.' + props.data.type}
                 </div>
             }
             <ItemTooltip
