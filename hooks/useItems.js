@@ -4,7 +4,7 @@ import getFileOptions from "../utils/parsers/getFileOptions";
 import EVENTS from "../../../pages/project/utils/utils/EVENTS";
 import handleRename from "../utils/handleRename";
 
-export default function useItems({hook, accept, searchString}) {
+export default function useItems({hook, accept, searchString, bookmarksHook}) {
     const [currentItem, setCurrentItem] = useState()
 
 
@@ -73,12 +73,11 @@ export default function useItems({hook, accept, searchString}) {
     }, [ref, hook, accept, searchString])
 
     const options = useMemo(() => {
-        return getFileOptions(hook, setCurrentItem)
+        return getFileOptions(hook, setCurrentItem, bookmarksHook)
     }, [hook, accept, searchString])
 
     const onRename = (newName, child) => {
-        handleRename(child, newName, hook, setCurrentItem)
-
+        handleRename(child, newName, hook, setCurrentItem, bookmarksHook)
     }
     return {
         currentItem, setCurrentItem,

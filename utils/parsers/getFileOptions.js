@@ -2,7 +2,7 @@ import React from "react";
 import {onCreate} from "../visuals/getDirectoryOptions";
 import handleDelete from "../handleDelete";
 
-export default function getFileOptions(hook, setCurrentItem) {
+export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
     const check = (path, ext) => {
         let n = path + ext
         let it = 0
@@ -19,7 +19,7 @@ export default function getFileOptions(hook, setCurrentItem) {
             requiredTrigger: 'data-folder',
             label: 'Delete',
             icon: <span className={'material-icons-round'}>delete</span>,
-            onClick: (node) => handleDelete(node.getAttribute('data-folder'), hook)
+            onClick: (node) => handleDelete(node.getAttribute('data-folder'), hook, bookmarksHook)
         },
         {
             requiredTrigger: 'data-folder',

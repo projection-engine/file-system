@@ -1,9 +1,11 @@
 import EVENTS from "../../../pages/project/utils/utils/EVENTS";
 
-export default function handleDelete(entries, hook) {
-    (!Array.isArray(entries) ? [entries] : entries).forEach(id => {
+export default function handleDelete(entries, hook, bookmarksHook) {
+    const ee = !Array.isArray(entries) ? [entries] : entries
+    if(bookmarksHook)
+        bookmarksHook.removeBlock(ee)
+    ee.forEach(id => {
         const files = hook.items.filter(i => (i.id === id) ||(i.parent && i.parent.includes(id) && !i.isFolder))
-
         const relatedFiles = files.map(i => i.registryID).filter(i => i)
 
         const relatedEntities = hook.entities.filter(e => {
@@ -16,6 +18,7 @@ export default function handleDelete(entries, hook) {
         })
         hook.setToDelete({relatedEntities, file: id, relatedFiles:  files.map(i => i.name)})
     })
+
 }
 
 export function deleteData(id, hook){

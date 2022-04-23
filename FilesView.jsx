@@ -13,16 +13,18 @@ import ResizableBar from "../../components/resizable/ResizableBar";
 import DeleteConfirmation from "./components/DeleteConfirmation";
 import useHotKeys, {KEYS} from "../../pages/project/utils/hooks/useHotKeys";
 import handleDelete from "./utils/handleDelete";
+import useBookmarks from "./hooks/useBookmarks";
 
 
-DeleteConfirmation.propTypes = {hook: PropTypes.any};
 export default function FilesView(props) {
+    const hook = useFiles(props.setAlert)
+    const bookmarksHook = useBookmarks(hook.fileSystem)
 
     const [selected, setSelected] = useState([])
     const [hidden, setHidden] = useState(true)
     const [searchString, setSearchString] = useState('')
 
-    const hook = useFiles(props.setAlert)
+
     const [visualizationType, setVisualizationType] = useState(0)
     useEffect(() => {
         setHidden(true)
@@ -76,7 +78,7 @@ export default function FilesView(props) {
                 require: [KEYS.Delete],
                 callback: () => {
                     if (selected.length > 0)
-                        handleDelete(selected[0], hook)
+                        handleDelete(selected[0], hook, bookmarksHook)
                 }
             }
         ]
@@ -105,37 +107,38 @@ export default function FilesView(props) {
                             Content browser
                         </div>
                     </div>
-                    {hidden ? null : <Directories hook={hook} {...props}/>}
+                    {hidden ? null : <Directories hook={hook} bookmarksHook={bookmarksHook} {...props}/>}
                 </div>
                 <ResizableBar type={'width'} color={'var(--fabric-border-primary)'}/>
                 <div className={styles.content} id={props.id + '-files'}>
+                    <ControlBar
+                        {...props}
+                        bookmarksHook={bookmarksHook}
+                        searchString={searchString}
+                        visualizationType={visualizationType}
+                        setVisualizationType={setVisualizationType}
+                        setSearchString={v => {
+                            if (hidden)
+                                setHidden(false)
+                            setSearchString(v)
+                        }}
+                        hidden={hidden}
+                        hook={hook}
+                        path={path}
+                    />
 
-                        <ControlBar
-                            {...props}
-                            searchString={searchString}
-                            visualizationType={visualizationType}
-                            setVisualizationType={setVisualizationType}
-                            setSearchString={v => {
-                                if (hidden)
-                                    setHidden(false)
-                                setSearchString(v)
-                            }}
-                            hidden={hidden}
-                            hook={hook}
-                            path={path}
-                        />
-
-                        <Items
-                            setAlert={props.setAlert}
-                            openEngineFile={props.openEngineFile}
-                            hidden={hidden}
-                            hook={hook}
-                            visualizationType={visualizationType}
-                            searchString={searchString}
-                            setSelected={setSelected}
-                            selected={selected}
-                            accept={props.accept ? props.accept : []}
-                        />
+                    <Items
+                        bookmarksHook={bookmarksHook}
+                        setAlert={props.setAlert}
+                        openEngineFile={props.openEngineFile}
+                        hidden={hidden}
+                        hook={hook}
+                        visualizationType={visualizationType}
+                        searchString={searchString}
+                        setSelected={setSelected}
+                        selected={selected}
+                        accept={props.accept ? props.accept : []}
+                    />
 
                 </div>
 

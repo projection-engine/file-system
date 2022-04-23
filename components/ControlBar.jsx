@@ -12,6 +12,10 @@ export default function ControlBar(props) {
             forward: props.hook.navIndex === 9 || props.hook.navHistory[props.hook.navIndex + 1] === undefined
         }
     }, [props.hook.navHistory, props.hook.navIndex])
+
+    const starred = useMemo(() => {
+        return props.bookmarksHook.bookmarks.find(b => b.path === props.hook.currentDirectory.id) !== undefined
+    }, [props.hook.currentDirectory, props.bookmarksHook.bookmarks])
     return (
         <div className={styles.wrapper} style={{border: props.hidden ? 'none' : undefined}}>
             <div className={styles.buttonGroup}>
@@ -57,8 +61,6 @@ export default function ControlBar(props) {
                 >
                     <span className={'material-icons-round'}>sync</span>
                 </Button>
-
-
             </div>
             <Button
                 styles={{border: 'none'}}
@@ -80,7 +82,18 @@ export default function ControlBar(props) {
             >
                 <span className={'material-icons-round'} style={{transform: 'rotate(180deg)'}}>create_new_folder</span>
             </Button>
-
+            <Button
+                className={styles.settingsButton}
+                variant={starred ? "filled" : undefined}
+                onClick={() => {
+                    if (starred)
+                        props.bookmarksHook.removeBookmark(props.hook.currentDirectory.id)
+                    else
+                        props.bookmarksHook.addBookmark(props.hook.currentDirectory.id)
+                }}
+            >
+                <span className={'material-icons-round'}>star</span>
+            </Button>
 
             <div className={styles.pathWrapper}>
                 {props.path.map((p, i) => (
@@ -153,6 +166,7 @@ ControlBar.propTypes = {
     setSearchString: PropTypes.func,
     path: PropTypes.arrayOf(PropTypes.object),
 
+    bookmarksHook: PropTypes.object,
     hook: PropTypes.object.isRequired,
     hidden: PropTypes.bool
 }

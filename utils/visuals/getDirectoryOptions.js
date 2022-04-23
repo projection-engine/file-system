@@ -9,7 +9,7 @@ export default function getDirectoryOptions(props, load) {
             requiredTrigger: 'data-folder',
             label: 'Delete',
             icon: <span className={'material-icons-round'}>delete</span>,
-            onClick: (node) => handleDelete(node.getAttribute('data-folder'), props.hook)
+            onClick: (node) => handleDelete(node.getAttribute('data-folder'), props.hook, props.bookmarksHook)
         },
         {
             requiredTrigger: 'data-folder',

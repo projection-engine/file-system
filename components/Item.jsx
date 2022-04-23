@@ -1,10 +1,9 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Item.module.css'
-import React, {useEffect, useMemo} from "react";
+import React, {useMemo} from "react";
 import getIcon from "../utils/visuals/getIcon";
 import useItem from "../hooks/useItem";
 import ItemTooltip from "./ItemTooltip";
-import usePreview from "../../../components/preview/usePreview";
 
 export default function Item(props) {
 

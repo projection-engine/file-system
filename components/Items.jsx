@@ -100,7 +100,7 @@ export default function Items(props) {
 Items.propTypes = {
     visualizationType: PropTypes.number,
 
-
+    bookmarksHook: PropTypes.object,
     searchString: PropTypes.string,
     selected: PropTypes.array,
     setSelected: PropTypes.func,

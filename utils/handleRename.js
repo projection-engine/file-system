@@ -1,4 +1,4 @@
-export default function handleRename(item, newName, hook, setCurrentItem, quickAccess){
+export default function handleRename(item, newName, hook, setCurrentItem, bookmarksHook){
 
     if(item.isFolder) {
         const newNamePath = (item.parent ? item.parent + '\\' + newName : '\\' + newName)
@@ -13,8 +13,7 @@ export default function handleRename(item, newName, hook, setCurrentItem, quickA
                         }
                     })
                 hook.refreshFiles()
-
-
+                bookmarksHook.renameBookmark(item.id, newNamePath)
             })
     }
     else{

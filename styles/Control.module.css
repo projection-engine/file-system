@@ -62,6 +62,7 @@
 
     padding: 2px;
     font-weight: normal;
+    color: var(--fabric-color-secondary);
 }
 
 .divider {
@@ -148,7 +149,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     max-height: 35px;
     border-bottom: var(--fabric-border-primary) 1px solid;
 }
