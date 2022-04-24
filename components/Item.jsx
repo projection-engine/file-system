@@ -4,6 +4,8 @@ import React, {useMemo} from "react";
 import getIcon from "../utils/visuals/getIcon";
 import useItem from "../hooks/useItem";
 import ItemTooltip from "./ItemTooltip";
+import DragDropProvider from "../../../components/dragdrop/hooks/DragDropProvider";
+import DragDrop from "../../../components/dragdrop/DragDrop";
 
 export default function Item(props) {
 
@@ -27,43 +29,57 @@ export default function Item(props) {
     }, [props.data, props.visualizationType])
 
     return (
+
         <div
             ref={ref}
             id={props.data.id}
             data-size={props.visualizationType}
-            onDragStart={handleDrag}
-            draggable={!currentlyOnRename}
+            // onDragStart={handleDrag}
+            draggable={false}
             onClick={props.setSelected}
             style={{
                 background: selected ? 'var(--fabric-accent-color)' : props.visualizationType === 2 ? (props.index % 2 === 0 ? 'var(--fabric-background-secondary)' : 'var(--fabric-background-tertiary)') : undefined
             }}
             className={styles.file}
         >
-            {icon}
-            {currentlyOnRename ?
-                <input
-                    className={styles.input}
-                    onKeyPress={key => {
-                        if (key.code === 'Enter')
+            <DragDrop
+                onDrop={(d) => console.log(d)}
+                dragIdentifier={'file-item-'+props.data.type}
+                dragData={props.data}
+                dragImage={(
+                    <div className={styles.dragImage}>
+                        {icon}
+                        {currentLabel}
+                    </div>
+                )}
+            >
+                {icon}
+                {currentlyOnRename ?
+                    <input
+                        className={styles.input}
+                        onKeyPress={key => {
+                            if (key.code === 'Enter')
+                                props.submitRename(currentLabel)
+                        }}
+                        onBlur={() => {
                             props.submitRename(currentLabel)
-                    }}
-                    onBlur={() => {
-                        props.submitRename(currentLabel)
-                    }}
-                    onChange={e => setCurrentLabel(e.target.value)}
-                    value={currentLabel}
+                        }}
+                        onChange={e => setCurrentLabel(e.target.value)}
+                        value={currentLabel}
+                    />
+                    :
+                    <div className={[styles.label, styles.overflow].join(' ')}>
+                        {currentLabel}
+                    </div>
+                }
+                <ItemTooltip
+                    childrenQuantity={props.childrenQuantity}
+                    data={props.data}
+                    currentLabel={currentLabel}
+                    type={props.type}
                 />
-                :
-                <div className={[styles.label, styles.overflow].join(' ')}>
-                    {currentLabel}{props.type === 0 ? '' : '.' + props.data.type}
-                </div>
-            }
-            <ItemTooltip
-                childrenQuantity={props.childrenQuantity}
-                data={props.data}
-                currentLabel={currentLabel}
-                type={props.type}
-            />
+            </DragDrop>
+
         </div>
     )
 }

@@ -51,7 +51,10 @@ export default function Directories(props) {
                     ]}
                     noBackground={true}
                     options={options}
+
                     draggable={true}
+
+                    // dragIdentifier={'file-item'}
                     onDrop={(event, target) => handleDropFolder(event, target, props.setAlert, props.hook)}
                     onDragLeave={(event) => event.preventDefault()}
                     onDragOver={(event) => event.preventDefault()}

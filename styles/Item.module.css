@@ -172,3 +172,29 @@
     background: var(--fabric-background-primary) ;
 }
 
+
+
+.dragImage{
+    display: grid;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4px;
+
+    color: var(--fabric-color-secondary);
+    font-size: .75rem;
+
+    text-align: center;
+
+    height: fit-content;
+    width: 115px !important;
+
+    overflow: hidden;
+    background-color: var(--fabric-border-primary);
+    box-shadow: var(--fabric-boxshadow);
+    border-radius: 5px;
+    padding: 4px;
+}
+.dragImage > *{
+
+    font-size: 1.1rem !important;
+}
