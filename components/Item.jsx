@@ -34,53 +34,54 @@ export default function Item(props) {
             ref={ref}
             id={props.data.id}
             data-size={props.visualizationType}
-            // onDragStart={handleDrag}
-            draggable={false}
+            onDragStart={handleDrag}
+            draggable={true}
             onClick={props.setSelected}
             style={{
                 background: selected ? 'var(--fabric-accent-color)' : props.visualizationType === 2 ? (props.index % 2 === 0 ? 'var(--fabric-background-secondary)' : 'var(--fabric-background-tertiary)') : undefined
             }}
             className={styles.file}
         >
-            <DragDrop
-                onDrop={(d) => console.log(d)}
-                dragIdentifier={'file-item-'+props.data.type}
-                dragData={props.data}
-                dragImage={(
-                    <div className={styles.dragImage}>
-                        {icon}
-                        {currentLabel}
-                    </div>
-                )}
-            >
-                {icon}
-                {currentlyOnRename ?
-                    <input
-                        className={styles.input}
-                        onKeyPress={key => {
-                            if (key.code === 'Enter')
-                                props.submitRename(currentLabel)
-                        }}
-                        onBlur={() => {
+            {/*<DragDrop*/}
+            {/**/}
+            {/*    dragIdentifier={'file-item-' + props.data.type}*/}
+            {/*    dragData={props.data}*/}
+            {/*    dragImage={(*/}
+            {/*        <div className={styles.dragImage}>*/}
+            {/*            {icon}*/}
+            {/*            {currentLabel}*/}
+            {/*        </div>*/}
+            {/*    )}*/}
+            {/*/>*/}
+            {icon}
+            {currentlyOnRename ?
+                <input
+                    className={styles.input}
+                    onKeyPress={key => {
+                        if (key.code === 'Enter')
                             props.submitRename(currentLabel)
-                        }}
-                        onChange={e => setCurrentLabel(e.target.value)}
-                        value={currentLabel}
-                    />
-                    :
-                    <div className={[styles.label, styles.overflow].join(' ')}>
-                        {currentLabel}
-                    </div>
-                }
-                <ItemTooltip
-                    childrenQuantity={props.childrenQuantity}
-                    data={props.data}
-                    currentLabel={currentLabel}
-                    type={props.type}
+                    }}
+                    onBlur={() => {
+                        props.submitRename(currentLabel)
+                    }}
+                    onChange={e => setCurrentLabel(e.target.value)}
+                    value={currentLabel}
                 />
-            </DragDrop>
+                :
+                <div className={[styles.label, styles.overflow].join(' ')}>
+                    {currentLabel}
+                </div>
+            }
+            <ItemTooltip
+                childrenQuantity={props.childrenQuantity}
+                data={props.data}
+                currentLabel={currentLabel}
+                type={props.type}
+            />
 
         </div>
+
+
     )
 }
 
