@@ -52,7 +52,7 @@
 
 
 .icon {
-    color: var(--fabric-color-quaternary);
+    color: var(--fabric-color-secondary);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -135,7 +135,7 @@
     position: relative;
     overflow: hidden ;
     border-radius: 5px;
-    color: var(--fabric-color-tertiary);
+    color: var(--fabric-color-secondary);
     gap: 4px;
 
     display: flex;

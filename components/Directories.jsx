@@ -68,28 +68,32 @@ export default function Directories(props) {
                 <AccordionSummary className={styles.accordion}>
                     Bookmarks
                 </AccordionSummary>
-                <>
-                    {props.bookmarksHook.bookmarks.length > 0 ? props.bookmarksHook.bookmarks.map((b, i) => (
-                        <React.Fragment key={b.path + '-' + i}>
+
+                {props.bookmarksHook.bookmarks.length > 0 ? props.bookmarksHook.bookmarks.map((b, i) => (
+                    <React.Fragment key={b.path + '-' + i}>
                         <Button className={styles.row} onClick={() => props.hook.setCurrentDirectory({id: b.path})}>
                             <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>source</span>
                             {b.path === '\\' ? 'Assets' : b.name}
                         </Button>
-                        </React.Fragment>
-                    )) : (
-                        <div className={styles.empty}>
+                    </React.Fragment>
+                )) : (
+                    <div className={styles.empty}>
+                        <div className={styles.overflow}>
                             No bookmarks found.
-                            <Button
-                                className={styles.button}
-                                onClick={() => {
-                                    props.bookmarksHook.addBookmark(props.hook.currentDirectory.id)
-                                }}>
-                                <span className={'material-icons-round'}>star</span>
-                                Add current directory.
-                            </Button>
                         </div>
-                    )}
-                </>
+                        <Button
+                            className={styles.button}
+                            onClick={() => {
+                                props.bookmarksHook.addBookmark(props.hook.currentDirectory.id)
+                            }}>
+                            <span className={'material-icons-round'}>star</span>
+                            <div className={styles.overflow}>
+                                Add current directory.
+                            </div>
+                        </Button>
+                    </div>
+                )}
+
             </Accordion>
         </div>
     )

@@ -21,6 +21,7 @@
 .accordionWrapper {
     min-height: unset !important;
     height: fit-content;
+    overflow: hidden;
 }
 
 .button {
@@ -34,6 +35,17 @@
     height: 25px;
 
     font-size: .75rem;
+
+    overflow: hidden;
+    max-width: 100%;
+
+}
+
+.overflow {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
 .row {
@@ -50,11 +62,12 @@
 
 .empty {
 
-
+    overflow: hidden;
     font-size: .75rem;
     text-align: center;
     padding: 8px;
-    display: grid;
-    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 4px;
 }
