@@ -82,7 +82,14 @@ export default function ImportHandler(props) {
             <input
                 type={'file'}
                 ref={fileRef}
-                accept={['.png', '.jpeg', '.jpg', '.hdr', '.obj', '.gltf', '.glt', '.material', '.fbx']}
+                accept={[
+                    '.png', '.jpeg', '.jpg', '.hdr',
+                    // '.obj',
+                    '.gltf',
+                    // '.glt',
+                    // '.material',
+                    // '.fbx'
+                ]}
                 multiple={true}
                 onChange={e => {
                     setAsFolder(false)
@@ -99,7 +106,14 @@ export default function ImportHandler(props) {
             <input
                 type={'file'}
                 ref={folderRef}
-                accept={['.png', '.jpeg', '.jpg', '.hdr', '.gltf', '.glt', '.material']}
+                accept={[
+                    '.png', '.jpeg', '.jpg', '.hdr',
+                    // '.obj',
+                    '.gltf',
+                    // '.glt',
+                    // '.material',
+                    // '.fbx'
+                ]}
                 directory=""
                 webkitdirectory=""
                 multiple={true}
