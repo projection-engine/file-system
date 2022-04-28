@@ -1,11 +1,12 @@
 import PropTypes from "prop-types";
 import EVENTS from "../../../pages/project/utils/utils/EVENTS";
 import styles from "../styles/Control.module.css";
-import {Button, Dropdown, DropdownOption, DropdownOptions, LoaderProvider, Modal} from "@f-ui/core";
+import {Button, Dropdown, DropdownOption, DropdownOptions, Modal} from "@f-ui/core";
 import QuickAccessProvider from "../../../pages/project/utils/hooks/QuickAccessProvider";
 import {useContext, useRef, useState} from "react";
 import TerrainImporter from "./TerrainImporter";
 import GLTFImporter from "./GLTFImporter";
+import LoaderProvider from "../../../components/loader/LoaderProvider";
 
 const pathRequire = window.require('path')
 const DEFAULT_TERRAIN = {

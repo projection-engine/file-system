@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import {Accordion, AccordionSummary, Button, LoaderProvider} from "@f-ui/core";
+import {Accordion, AccordionSummary, Button} from "@f-ui/core";
 import React, {useContext, useMemo} from "react";
 import TreeView from "../../../components/tree/TreeView";
 import mapToView from "../utils/parsers/mapToView";
@@ -7,6 +7,7 @@ import getDirectoryOptions from "../utils/visuals/getDirectoryOptions";
 import handleDropFolder from "../utils/handleDropFolder";
 import handleRename from "../utils/handleRename";
 import styles from '../styles/Directories.module.css'
+import LoaderProvider from "../../../components/loader/LoaderProvider";
 
 export default function Directories(props) {
     const directoriesToRender = useMemo(() => {
