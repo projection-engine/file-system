@@ -4,8 +4,6 @@ import React, {useMemo} from "react";
 import getIcon from "../utils/visuals/getIcon";
 import useItem from "../hooks/useItem";
 import ItemTooltip from "./ItemTooltip";
-import DragDropProvider from "../../../components/dragdrop/hooks/DragDropProvider";
-import DragDrop from "../../../components/dragdrop/DragDrop";
 
 export default function Item(props) {
 
