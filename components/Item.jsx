@@ -12,7 +12,6 @@ export default function Item(props) {
         currentlyOnRename,
         currentLabel,
         setCurrentLabel,
-        preview,
         selected, handleDrag
     } = useItem(props)
 
@@ -20,7 +19,7 @@ export default function Item(props) {
         return getIcon({
             path: props.hook.fileSystem.path + '\\previews\\' + props.data.registryID + '.preview',
             type: props.data.type ? props.data.type : 'folder',
-            preview,
+
             visualization: props.visualizationType,
             childrenQuantity: props.childrenQuantity
         })

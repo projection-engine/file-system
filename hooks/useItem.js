@@ -99,23 +99,8 @@ export default function useItem(props) {
 
     }
 
-    const quickAccess = useContext(QuickAccessProvider)
-    const preview = useMemo(() => {
-        switch (props.data.type){
-            case 'mesh':
-                // TODO
-                return
-            case 'pimg':
-                return quickAccess.images.find(m => m.registryID === props.data.registryID)?.preview
-            case 'material':
-                return quickAccess.materials.find(m => m.registryID === props.data.registryID)?.preview
-            default:
-                return quickAccess
-        }
-    }, [quickAccess.images])
     return {
 
-        preview,
         ref, handleDrag,
         currentlyOnRename,
         currentLabel, setCurrentLabel,
