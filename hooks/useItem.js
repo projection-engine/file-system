@@ -4,6 +4,7 @@ import handleDropFolder from "../utils/handleDropFolder";
 import dragImageMulti from '../../../static/table.svg'
 import dragImageSingle from '../../../static/file.svg'
 
+const { shell } =window.require('electron')
 export default function useItem(props) {
     const ref = useRef()
     const [images, setImages] = useState({
@@ -43,6 +44,8 @@ export default function useItem(props) {
 
             if (props.data.type === 'mesh' || props.data.type === 'material' || props.data.type === 'image'|| props.data.type === 'flow')
                 props.openEngineFile(props.data.registryID, currentLabel)
+            else if (props.data.type === 'flowRaw')
+                shell.openPath(props.hook.path + '\\' + props.data.id).catch()
             else
                 props.setSelected(props.data.id)
         } else

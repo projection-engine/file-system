@@ -34,7 +34,13 @@ export default function getIcon({
         case 'flow':
             return (
                 <div className={styles.icon} data-size={`${visualization}`}>
-                    <span className={'material-icons-round'}>engineering</span>
+                    <span className={'material-icons-round'}>code</span>
+                </div>
+            )
+        case 'flowRaw':
+            return (
+                <div className={styles.icon} data-size={`${visualization}`}>
+                    <span className={'material-icons-round'}>code</span>
                 </div>
             )
         case 'folder': {

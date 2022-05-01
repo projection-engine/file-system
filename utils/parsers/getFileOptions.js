@@ -2,6 +2,49 @@ import React from "react";
 import {onCreate} from "../visuals/getDirectoryOptions";
 import handleDelete from "../handleDelete";
 
+const template = `
+class YourClassName{
+    state = {} // Your system state here
+    
+    constructor(){
+        // Do your initialization state here
+    }
+    
+    execute(params){
+        // Called every frame
+        
+        // TEMPLATES    
+        this.eventTick(params)
+        // Some key pressed (example with KeyA)
+        if(params.pressedKeys.KeyA && !this.state.pressedKeyA){
+                this.state.pressedKeyA = true
+                this.onKeyDown(params)
+        }
+        else if(params.pressedKeys.KeyA && this.state.pressedKeyA)
+            this.onHold(params)
+                
+        else if(!params.pressedKeys.KeyA && this.state.pressedKeyA){
+            this.state.pressedKeyA = false
+            this.onRelease(params)
+       }
+    }
+    
+    // Templates
+    eventTick(params){
+        // Do things here
+    }
+    onHold(params){
+        // Do things here
+    }
+    onKeyDown(params){
+        // Do things here
+    }
+    onRelease(params){
+        // Do things here
+    }
+}
+`
+const {shell} = window.require('electron')
 export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
     const check = (path, ext) => {
         let n = path + ext
@@ -66,11 +109,11 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
         {
             requiredTrigger: 'data-folder-wrapper',
             label: 'New Blueprint',
-            icon: <span className={'material-icons-round'}>functions</span>,
+            icon: <span className={'material-icons-round'}>code</span>,
             onClick: () => {
                 let path = check(hook.currentDirectory.id + '\\New Blueprint', '.flow')
 
-                hook.fileSystem.writeAsset(path , JSON.stringify({}))
+                hook.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
                         hook.refreshFiles()
                     })
@@ -93,6 +136,27 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
                     hook.refreshFiles()
                 })
 
+            }
+        },
+        {
+            requiredTrigger: 'data-folder-wrapper',
+            label: 'Open with explorer',
+            icon: <span className={'material-icons-round'}>open_in_new</span>,
+            onClick: () => {
+                shell.openPath(hook.path + '\\' + hook.currentDirectory.id).catch()
+            }
+        },
+        {
+            requiredTrigger: 'data-folder-wrapper',
+            label: 'New raw Blueprint',
+            icon: <span className={'material-icons-round'}>code</span>,
+            onClick: () => {
+                let path = check(hook.currentDirectory.id + '\\New Raw Blueprint', '.flowRaw')
+
+                hook.fileSystem.writeAsset(path, template)
+                    .then(() => {
+                        hook.refreshFiles()
+                    })
             }
         },
     ]
