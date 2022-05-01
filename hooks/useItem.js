@@ -1,9 +1,8 @@
-import {useContext, useEffect, useMemo, useRef, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import styles from "../styles/Item.module.css";
 import handleDropFolder from "../utils/handleDropFolder";
 import dragImageMulti from '../../../static/table.svg'
 import dragImageSingle from '../../../static/file.svg'
-import QuickAccessProvider from "../../../pages/project/utils/hooks/QuickAccessProvider";
 
 export default function useItem(props) {
     const ref = useRef()
