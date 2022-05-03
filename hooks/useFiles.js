@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 
-import QuickAccessProvider from "../../../pages/project/utils/hooks/QuickAccessProvider";
+import QuickAccessProvider from "../../../pages/project/hooks/QuickAccessProvider";
 import {AlertProvider} from "@f-ui/core";
-import EntitiesProvider from "../../../pages/project/utils/hooks/EntitiesProvider";
+import EntitiesProvider from "../../../pages/project/hooks/EntitiesProvider";
 import LoaderProvider from "../../../components/loader/LoaderProvider";
 
 const fs = window.require('fs')

@@ -1,4 +1,4 @@
-import EVENTS from "../../../pages/project/utils/utils/EVENTS";
+import EVENTS from "../../../pages/project/utils/EVENTS";
 
 export default function handleDelete(entries, hook, bookmarksHook) {
     const ee = !Array.isArray(entries) ? [entries] : entries

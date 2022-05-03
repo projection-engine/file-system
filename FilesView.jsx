@@ -11,7 +11,7 @@ import useFiles from "./hooks/useFiles";
 
 import ResizableBar from "../../components/resizable/ResizableBar";
 import DeleteConfirmation from "./components/DeleteConfirmation";
-import useHotKeys, {KEYS} from "../../pages/project/utils/hooks/useHotKeys";
+import useHotKeys, {KEYS} from "../../pages/project/hooks/useHotKeys";
 import handleDelete from "./utils/handleDelete";
 import useBookmarks from "./hooks/useBookmarks";
 
