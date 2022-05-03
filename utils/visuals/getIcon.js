@@ -40,7 +40,7 @@ export default function getIcon({
         case 'flowRaw':
             return (
                 <div className={styles.icon} data-size={`${visualization}`}>
-                    <span className={'material-icons-round'}>code</span>
+                    <span className={'material-icons-round'}>javascript</span>
                 </div>
             )
         case 'folder': {
