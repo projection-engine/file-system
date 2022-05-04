@@ -15,7 +15,6 @@ export default function getIcon({
 
                 path={path} className={styles.image}
                 fallbackIcon={t}
-
             />
             <div title={type === 'pimg' ? 'image' : type} className={styles.floatingIconWrapper} style={{display: visualization === 2 ? 'none' : undefined}}>
                 <span className={['material-icons-round', styles.floatingIcon].join(' ')}>{t}</span>

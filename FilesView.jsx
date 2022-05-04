@@ -21,14 +21,14 @@ export default function FilesView(props) {
     const bookmarksHook = useBookmarks(hook.fileSystem)
 
     const [selected, setSelected] = useState([])
-    const [hidden, setHidden] = useState(true)
+    const [hidden, setHidden] = useState(false)
     const [searchString, setSearchString] = useState('')
 
 
     const [visualizationType, setVisualizationType] = useState(0)
-    useEffect(() => {
-        setHidden(true)
-    }, [props.currentTab])
+    // useEffect(() => {
+    //     setHidden(true)
+    // }, [props.currentTab])
     const findParent = (searchFor, searchBase) => {
         let res = []
         const found = searchBase.find(n => n.id === searchFor)
