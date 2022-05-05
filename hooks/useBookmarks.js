@@ -27,7 +27,7 @@ export default function useBookmarks(fileSystem) {
     const removeBookmark = (id) => {
         setBookmarks(prev => {
             const n = prev.filter(i => i.path !== id)
-            fileSystem.writeFile('\\bookmarks.meta', JSON.stringify(n)).then(e => console.log(e))
+            fileSystem.writeFile('\\bookmarks.meta', JSON.stringify(n)).catch()
             return n
         })
     }
@@ -38,15 +38,14 @@ export default function useBookmarks(fileSystem) {
                 name: newPath.split('\\').pop(),
                 path: newPath
             }]
-            fileSystem.writeFile('\\bookmarks.meta', JSON.stringify(n)).then(e => console.log(e))
+            fileSystem.writeFile('\\bookmarks.meta', JSON.stringify(n)).catch()
             return n
         })
     }
     const removeBlock = (v) => {
-        console.log(v)
         setBookmarks(prev => {
             const n = prev.filter(i => !v.includes(i.path))
-            fileSystem.writeFile('\\bookmarks.meta', JSON.stringify(n)).then(e => console.log(e))
+            fileSystem.writeFile('\\bookmarks.meta', JSON.stringify(n)).catch()
             return n
         })
     }
