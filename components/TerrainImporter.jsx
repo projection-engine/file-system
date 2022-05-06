@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import styles from "../styles/Control.module.css";
 import {useEffect, useRef, useState} from "react";
 
-import Range from "../../../components/range/Range";
+import Range from "../../../../components/range/Range";
 
 
 export default function TerrainImporter(props) {

@@ -3,8 +3,8 @@ import {deleteData} from "../utils/handleDelete";
 import {useContext, useEffect, useState} from "react";
 import {Button, Modal, ToolTip} from "@f-ui/core";
 import styles from '../styles/DeleteConfirmation.module.css'
-import QuickAccessProvider from "../../../pages/project/hooks/QuickAccessProvider";
-import {KEYS} from "../../../pages/project/hooks/useHotKeys";
+import QuickAccessProvider from "../../../../project/hooks/QuickAccessProvider";
+import KEYS from "../../../engine/templates/KEYS";
 
 export default function DeleteConfirmation(props) {
     const [open, setOpen] = useState(false)

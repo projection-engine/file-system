@@ -9,11 +9,12 @@ import {Button} from "@f-ui/core";
 import useFiles from "./hooks/useFiles";
 
 
-import ResizableBar from "../../components/resizable/ResizableBar";
+import ResizableBar from "../../../components/resizable/ResizableBar";
 import DeleteConfirmation from "./components/DeleteConfirmation";
-import useHotKeys, {KEYS} from "../../pages/project/hooks/useHotKeys";
+import useHotKeys from "../../hooks/useHotKeys";
 import handleDelete from "./utils/handleDelete";
 import useBookmarks from "./hooks/useBookmarks";
+import KEYS from "../../engine/templates/KEYS";
 
 
 export default function FilesView(props) {

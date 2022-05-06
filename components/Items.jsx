@@ -4,7 +4,7 @@ import React, {useMemo} from "react";
 import Item from "./Item";
 import useItems from "../hooks/useItems";
 import {ContextMenu} from "@f-ui/core";
-import SelectBox from "../../../components/selectbox/SelectBox";
+import SelectBox from "../../../../components/selectbox/SelectBox";
 
 export default function Items(props) {
     const {

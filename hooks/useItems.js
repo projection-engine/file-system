@@ -1,7 +1,7 @@
 import {useEffect, useMemo, useRef, useState} from "react";
 
 import getFileOptions from "../utils/parsers/getFileOptions";
-import EVENTS from "../../../pages/project/utils/EVENTS";
+import EVENTS from "../../../utils/EVENTS";
 import handleRename from "../utils/handleRename";
 
 export default function useItems({hook, accept, searchString, bookmarksHook}) {

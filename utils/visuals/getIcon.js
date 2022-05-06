@@ -1,5 +1,5 @@
 import styles from "../../styles/Item.module.css";
-import Preview from "../../../../components/preview/Preview";
+import Preview from "../../../../../components/preview/Preview";
 
 export default function getIcon({
                                     path,
