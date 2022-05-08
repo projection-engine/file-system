@@ -1,7 +1,6 @@
 import {useEffect, useMemo, useRef, useState} from "react";
 
 import getFileOptions from "../utils/parsers/getFileOptions";
-import EVENTS from "../../../utils/EVENTS";
 import handleRename from "../utils/handleRename";
 
 export default function useItems({hook, accept, searchString, bookmarksHook}) {
@@ -37,7 +36,10 @@ export default function useItems({hook, accept, searchString, bookmarksHook}) {
     const onDragOver = e => e.preventDefault()
 
     const onDrop = e => {
-        hook.load.pushEvent(EVENTS.LOAD_FILE)
+        hook.setAlert({
+            type: 'info',
+            message: 'Moving files.'
+        })
         e.preventDefault()
 
         let files = Array.from(e.dataTransfer.items)
@@ -57,10 +59,7 @@ export default function useItems({hook, accept, searchString, bookmarksHook}) {
                 return hook.fileSystem.importFile(f)
             })
 
-            Promise.all(files)
-                .then(r => {
-                    hook.load.finishEvent(EVENTS.LOAD_FILE)
-                })
+            Promise.all(files).catch()
         }
     }
     useEffect(() => {

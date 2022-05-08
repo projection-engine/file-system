@@ -171,7 +171,7 @@ export default function useFiles() {
         onRename,
         setOnRename,
         setAlert: ({type, message}) => alert.pushAlert(message, type),
-        fs, entities,
+          entities,
         createTerrain, setCreateTerrain
     }
 }

@@ -11,25 +11,17 @@ import useFiles from "./hooks/useFiles";
 
 import ResizableBar from "../../../components/resizable/ResizableBar";
 import DeleteConfirmation from "./components/DeleteConfirmation";
-import useHotKeys from "../../hooks/useHotKeys";
-import handleDelete from "./utils/handleDelete";
 import useBookmarks from "./hooks/useBookmarks";
-import KEYS from "../../engine/templates/KEYS";
 
 
 export default function FilesView(props) {
     const hook = useFiles(props.setAlert)
     const bookmarksHook = useBookmarks(hook.fileSystem)
-
     const [selected, setSelected] = useState([])
     const [hidden, setHidden] = useState(false)
     const [searchString, setSearchString] = useState('')
-
-
     const [visualizationType, setVisualizationType] = useState(0)
-    // useEffect(() => {
-    //     setHidden(true)
-    // }, [props.currentTab])
+
     const findParent = (searchFor, searchBase) => {
         let res = []
         const found = searchBase.find(n => n.id === searchFor)
@@ -72,23 +64,11 @@ export default function FilesView(props) {
         if (hidden && hook.ref.current)
             hook.ref.current.previousSibling.previousSibling.style.height = '100%'
     }, [hidden])
-    useHotKeys({
-        focusTarget: props.id + '-files',
-        actions: [
-            {
-                require: [KEYS.Delete],
-                callback: () => {
-                    if (selected.length > 0)
-                        handleDelete(selected[0], hook, bookmarksHook)
-                }
-            }
-        ]
-    }, [selected])
+
     return (
         <>
             <ResizableBar
                 type={'height'}
-
                 onResize={() => {
                     if (hidden && hook.ref.current.getBoundingClientRect().height > 35)
                         setHidden(false)
