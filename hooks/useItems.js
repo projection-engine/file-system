@@ -75,12 +75,11 @@ export default function useItems({hook, accept, searchString, bookmarksHook}) {
         return getFileOptions(hook, setCurrentItem, bookmarksHook)
     }, [hook, accept, searchString])
 
-    const onRename = (newName, child) => {
-        handleRename(child, newName, hook, setCurrentItem, bookmarksHook)
-    }
+
     return {
         currentItem, setCurrentItem,
         filesToRender, ref,
-        options, onRename
+        options ,
+
     }
 }

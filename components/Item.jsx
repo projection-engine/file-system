@@ -32,7 +32,7 @@ export default function Item(props) {
             id={props.data.id}
             data-size={props.visualizationType}
             onDragStart={handleDrag}
-            draggable={true}
+            draggable={!currentlyOnRename}
             onClick={props.setSelected}
             style={{
                 background: selected ? 'var(--fabric-accent-color)' : props.visualizationType === 2 ? (props.index % 2 === 0 ? 'var(--fabric-background-secondary)' : 'var(--fabric-background-tertiary)') : undefined

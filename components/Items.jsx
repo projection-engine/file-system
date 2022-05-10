@@ -5,13 +5,14 @@ import Item from "./Item";
 import useItems from "../hooks/useItems";
 import {ContextMenu} from "@f-ui/core";
 import SelectBox from "../../../../components/selectbox/SelectBox";
+import handleRename from "../utils/handleRename";
 
 export default function Items(props) {
     const {
-        currentItem,
+        setCurrentItem, currentItem,
         filesToRender, ref,
-        options,
-        onRename
+        options ,
+
     } = useItems(props)
     const cardSize = useMemo(() => {
         switch (props.visualizationType){
@@ -79,7 +80,7 @@ export default function Items(props) {
                                 onRename={currentItem}
 
                                 visualizationType={props.visualizationType}
-                                submitRename={name => onRename(name, child)}
+                                submitRename={name => handleRename(child, name, props.hook,setCurrentItem, props.bookmarksHook)}
                             />
                         </React.Fragment>
                     ))

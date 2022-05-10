@@ -1,5 +1,5 @@
+const fs = window.require('fs')
 export default function handleRename(item, newName, hook, setCurrentItem, bookmarksHook){
-
     if(item.isFolder) {
         const newNamePath = (item.parent ? item.parent + '\\' + newName : '\\' + newName)
         hook.fileSystem
@@ -23,7 +23,7 @@ export default function handleRename(item, newName, hook, setCurrentItem, bookma
         if (newName !== item.name) {
             const targetPath = hook.path + (item.parent ? item.parent +'\\' : '\\') + nameToApply
 
-            if(!hook.fs.existsSync(targetPath))
+            if(!fs.existsSync(targetPath))
                 hook
                     .fileSystem
                     .rename(hook.path + item.id, targetPath)
