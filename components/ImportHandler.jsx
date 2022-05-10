@@ -22,7 +22,7 @@ export default function ImportHandler(props) {
             <Modal
                 className={styles.modal}
                 styles={{height: asHeightmap ? 'fit-content' : undefined}}
-                open={filesToImport.length > 0} handleClose={() => null} blurIntensity={'1px'}>
+                open={filesToImport.filter(e => e.includes('gltf')).length > 0} handleClose={() => null} blurIntensity={'1px'}>
                 {filesToImport.map((p, i) => {
                     if (p.split('.').pop() === 'gltf') {
                         const name = p.split(path.sep).pop()
@@ -93,7 +93,16 @@ export default function ImportHandler(props) {
                 className={styles.settingsButton}
                 variant={'filled'}
                 onClick={async () => {
-                    setFilesToImport(await fileSystem.openDialog())
+                    const toImport = await fileSystem.openDialog()
+                    console.log(toImport.filter(e => e.includes('gltf')))
+                    if(toImport.filter(e => e.includes('gltf')).length > 0)
+                        setFilesToImport(toImport)
+                    else {
+                        await fileSystem.importFile(settings, props.hook.path + props.hook.currentDirectory.id, toImport)
+                        props.hook.refreshFiles()
+                        setFilesToImport([])
+                    }
+
                 }}
             >
                 <span className={'material-icons-round'} style={{fontSize: '1rem'}}>open_in_new</span>
