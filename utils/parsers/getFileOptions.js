@@ -1,6 +1,7 @@
 import React from "react";
 import {onCreate} from "../visuals/getDirectoryOptions";
 import handleDelete from "../handleDelete";
+import AsyncFS from "../../../../../components/AsyncFS";
 
 const template = `
 class YourClassName{
@@ -46,11 +47,11 @@ class YourClassName{
 `
 const {shell} = window.require('electron')
 export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
-    const check = (path, ext) => {
+    const check = async (path, ext) => {
         let n = path + ext
         let it = 0
 
-        while (hook.fileSystem.assetExists(n)) {
+        while (await hook.fileSystem.assetExists(n)) {
             it++
             n = path + `(${it})` + ext
         }
@@ -68,7 +69,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             requiredTrigger: 'data-folder',
             label: 'New sub-folder',
             icon: <span className={'material-icons-round'}>create_new_folder</span>,
-            onClick: (node) => onCreate(node.getAttribute('data-folder'), hook)
+            onClick: (node) => onCreate(node.getAttribute('data-folder'), hook).catch()
         },
         {
             requiredTrigger: 'data-folder',
@@ -98,8 +99,8 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             requiredTrigger: 'data-folder-wrapper',
             label: 'New Material',
             icon: <span className={'material-icons-round'}>texture</span>,
-            onClick: () => {
-                let path = check(hook.currentDirectory.id + '\\New Material', '.material')
+            onClick: async () => {
+                let path = await check(hook.currentDirectory.id + '\\New Material', '.material')
                 hook.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
                         hook.refreshFiles()
@@ -110,8 +111,8 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             requiredTrigger: 'data-folder-wrapper',
             label: 'New Blueprint',
             icon: <span className={'material-icons-round'}>code</span>,
-            onClick: () => {
-                let path = check(hook.currentDirectory.id + '\\New Blueprint', '.flow')
+            onClick: async () => {
+                let path = await check(hook.currentDirectory.id + '\\New Blueprint', '.flow')
 
                 hook.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
@@ -132,10 +133,9 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
                 if (existing.length > 0)
                     path += ' - ' + existing.length
 
-                hook.fs.mkdir(hook.path + path, {}, () => {
+                const [e] = AsyncFS.mkdir(hook.path + path, {})
+                if (!e)
                     hook.refreshFiles()
-                })
-
             }
         },
         {
@@ -150,8 +150,8 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             requiredTrigger: 'data-folder-wrapper',
             label: 'New raw Blueprint',
             icon: <span className={'material-icons-round'}>code</span>,
-            onClick: () => {
-                let path = check(hook.currentDirectory.id + '\\New Raw Blueprint', '.flowRaw')
+            onClick: async () => {
+                let path = await check(hook.currentDirectory.id + '\\New Raw Blueprint', '.flowRaw')
 
                 hook.fileSystem.writeAsset(path, template)
                     .then(() => {

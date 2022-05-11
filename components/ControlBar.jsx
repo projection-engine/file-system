@@ -4,6 +4,7 @@ import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import React, {useMemo} from "react";
 import Search from "../../../../components/search/Search";
 import ImportHandler from "./ImportHandler";
+import AsyncFS from "../../../../components/AsyncFS";
 
 export default function ControlBar(props) {
     const disabled = useMemo(() => {
@@ -65,18 +66,15 @@ export default function ControlBar(props) {
             <Button
                 styles={{border: 'none'}}
                 className={styles.settingsButton}
-                onClick={() => {
+                onClick={async () => {
                     const hook = props.hook
                     let path = hook.currentDirectory.id + '\\New folder'
 
                     const existing = hook.fileSystem.foldersFromDirectory(hook.path + hook.currentDirectory.id)
                     if (existing.length > 0)
                         path += ' - ' + existing.length
-
-                    hook.fs.mkdir(hook.path + path, {}, () => {
-                        hook.refreshFiles()
-                    })
-
+                    await AsyncFS.mkdir(hook.path + path, {})
+                    hook.refreshFiles()
                 }}
 
             >

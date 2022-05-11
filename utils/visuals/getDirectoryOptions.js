@@ -1,7 +1,7 @@
 import React from "react";
 import handleDelete from "../handleDelete";
+import AsyncFS from "../../../../../components/AsyncFS";
 
-const fs = window.require('fs')
 export default function getDirectoryOptions(props, load) {
 
     return [
@@ -16,7 +16,7 @@ export default function getDirectoryOptions(props, load) {
             label: 'Rename',
             icon: <span className={'material-icons-round'}>edit</span>,
             onClick: (node) => {
-                const target = document.getElementById(node.getAttribute('data-folder') )
+                const target = document.getElementById(node.getAttribute('data-folder'))
 
                 if (target) {
                     const event = new MouseEvent('dblclick', {
@@ -32,34 +32,34 @@ export default function getDirectoryOptions(props, load) {
             requiredTrigger: 'data-directories-wrapper',
             label: 'New folder',
             icon: <span className={'material-icons-round'}>create_new_folder</span>,
-            onClick: () => onCreate('', props.hook)
+            onClick: () => onCreate('', props.hook).catch()
         },
 
         {
             requiredTrigger: 'data-self',
             label: 'New sub-folder',
             icon: <span className={'material-icons-round'}>create_new_folder</span>,
-            onClick: () => onCreate('', props.hook)
+            onClick: () => onCreate('', props.hook).catch()
         },
         {
             requiredTrigger: 'data-folder',
             label: 'New sub-folder',
             icon: <span className={'material-icons-round'}>create_new_folder</span>,
-            onClick: (node) => onCreate(node.getAttribute('data-folder'), props.hook)
+            onClick: (node) => onCreate(node.getAttribute('data-folder'), props.hook).catch()
         },
         {
             requiredTrigger: 'data-root',
             label: 'New sub-folder',
             icon: <span className={'material-icons-round'}>create_new_folder</span>,
-            onClick: () => onCreate('', props.hook)
+            onClick: () => onCreate('', props.hook).catch()
         }
     ]
 }
 
-export function onCreate(parent, hook) {
-    const directories = hook.fileSystem.foldersFromDirectory(hook.path + parent)
+export async function onCreate(parent, hook) {
+    const directories = await hook.fileSystem.foldersFromDirectory(hook.path + parent)
 
-    const getName = (id) => {
+    const getName = async (id) => {
         const index = directories.filter(d => {
             return d.split('\\')[d.split('\\').length - 1].includes('New folder')
         }).length
@@ -67,18 +67,14 @@ export function onCreate(parent, hook) {
         if (index > 0)
             newID += ' - ' + index
 
-        while(fs.existsSync(hook.path + newID)){
-            newID = getName(newID)
+        while ((await AsyncFS.exists(hook.path + newID))) {
+            newID = await getName(newID)
         }
         return newID
     }
 
     let id = getName(parent + '\\New folder')
-
-
-    fs.mkdir(hook.path + id, (e) => {
-
-        if (!e)
-            hook.refreshFiles()
-    })
+    const [e] = await AsyncFS.mkdir(hook.path + id)
+    if (!e)
+        hook.refreshFiles()
 }

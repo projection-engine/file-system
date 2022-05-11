@@ -4,8 +4,8 @@ import QuickAccessProvider from "../../../hooks/QuickAccessProvider";
 import {AlertProvider} from "@f-ui/core";
 import EntitiesProvider from "../../../hooks/EntitiesProvider";
 import LoaderProvider from "../../../../components/loader/LoaderProvider";
+import AsyncFS from "../../../../components/AsyncFS";
 
-const fs = window.require('fs')
 const pathRequire = window.require('path')
 export default function useFiles() {
     const [openModal, setOpenModal] = useState(false)
@@ -33,96 +33,79 @@ export default function useFiles() {
         }
     }, [])
 
-    const parsePath = (p, registryData) => {
-        return new Promise(resolve => {
-            fs.lstat(p, (e, stat) => {
-                if (!e) {
-                    const split = p.split('\\')
-                    let parent = [...split]
-                    parent.pop()
+    const parsePath = async (p, registryData) => {
+        const [e, stat] = await AsyncFS.lstat(p)
+        if (!e) {
+            const split = p.split('\\')
+            let parent = [...split]
+            parent.pop()
 
-                    parent = parent.join('\\').replace(path, '')
-                    const currentPath = p.replace(path, '')
+            parent = parent.join('\\').replace(path, '')
+            const currentPath = p.replace(path, '')
+            if (stat && stat.isDirectory) {
+                return {
+                    isFolder: true,
+                    name: [...split].pop(),
+                    creationDate: new Date(stat.birthtime).toDateString(),
+                    id: currentPath,
 
-                    if (stat && stat.isDirectory())
-                        resolve(
-                            {
-                                isFolder: true,
-                                name: [...split].pop(),
-                                creationDate: new Date(stat.birthtime).toDateString(),
-                                id: currentPath,
+                    parent: split[split.length - 2] === 'assets' ? undefined : parent
+                }
+            } else {
 
-                                parent: split[split.length - 2] === 'assets' ? undefined : parent
-                            }
-                        )
-                    else {
-
-                        const parsedPath = pathRequire.resolve(path + currentPath).replace(path + '\\', '')
-
-                        resolve({
-                            isFolder: false,
-                            name: [...split].pop().split(/\.([a-zA-Z0-9]+)$/)[0],
-                            type: p.split('.').pop(),
-                            fileType: '.' + p.split('.').pop(),
-                            creationDate: new Date(stat.birthtime).toDateString(),
-                            id: currentPath,
-                            size: stat.size,
-                            registryID: registryData.find(reg => {
-                                return reg.path === parsedPath || reg.path === currentPath
-                            })?.id,
-                            parent: split[split.length - 2] === 'assets' ? undefined : parent
-                        })
-                    }
-                } else
-                    resolve()
-            })
-        })
-
+                const parsedPath = pathRequire.resolve(path + currentPath).replace(path + '\\', '')
+                return {
+                    isFolder: false,
+                    name: [...split].pop().split(/\.([a-zA-Z0-9]+)$/)[0],
+                    type: p.split('.').pop(),
+                    fileType: '.' + p.split('.').pop(),
+                    creationDate: new Date(stat.birthtime).toDateString(),
+                    id: currentPath,
+                    size: stat.size,
+                    registryID: registryData.find(reg => {
+                        return reg.path === parsedPath || reg.path === currentPath
+                    })?.id,
+                    parent: split[split.length - 2] === 'assets' ? undefined : parent
+                }
+            }
+        }
     }
 
 
     const refreshFiles = () => {
         quickAccess.refresh()
-        let promises = [],
-            creationPromises = [
-                new Promise(resolve => {
-                    quickAccess.fileSystem.readRegistry()
-                        .then(res => {
-                            resolve(res)
-                        })
+        let promises = [], creationPromises = [new Promise(resolve => {
+            quickAccess.fileSystem.readRegistry()
+                .then(res => {
+                    resolve(res)
                 })
-            ]
+        })]
 
         Promise.all(creationPromises)
-            .then(registryData => {
+            .then(async registryData => {
                 const rD = registryData.flat().filter(reg => reg !== undefined)
-                quickAccess.fileSystem.dirStructure(path, (res) => {
-                    res.forEach(f => {
-                        promises.push(parsePath(f, rD))
-                    })
-                    Promise.all(promises)
-                        .then(promiseRes => {
-                            if (!initialized)
-                                setInitialized(true)
-
-                            setItems(promiseRes.filter(p => p).sort(function (a, b) {
-                                if (a.name < b.name) return -1
-                                if (a.name > b.name) return 1
-                                return 0
-                            }))
-                        })
+                const res = await quickAccess.fileSystem.dirStructure(path)
+                res.forEach(f => {
+                    promises.push(parsePath(f, rD))
                 })
+                const promiseRes = await Promise.all(promises)
+                if (!initialized) setInitialized(true)
+                setItems(promiseRes.filter(p => p).sort((a, b) => {
+                    if (a.name < b.name) return -1
+                    if (a.name > b.name) return 1
+                    return 0
+                }))
+
             })
     }
     const [navHistory, setNavHistory] = useState([])
     const [navIndex, setNavIndex] = useState(0)
     useEffect(() => {
-        if(navHistory.length > 0)
-        setNavIndex(navHistory.length - 1)
+        if (navHistory.length > 0) setNavIndex(navHistory.length - 1)
     }, [navHistory])
 
     const returnDir = () => {
-        if (navIndex > 0 && navHistory[navIndex -1]) {
+        if (navIndex > 0 && navHistory[navIndex - 1]) {
 
             setNavIndex(n => {
                 return n - 1
@@ -139,7 +122,8 @@ export default function useFiles() {
         }
     }
     return {
-        toDelete, setToDelete,
+        toDelete,
+        setToDelete,
         removeEntities,
         refreshFiles,
         fileSystem: quickAccess.fileSystem,
@@ -158,20 +142,21 @@ export default function useFiles() {
         setCurrentDirectory: v => {
             setNavHistory(prev => {
                 const c = [...prev, v]
-                if (c.length > 10)
-                    c.shift()
+                if (c.length > 10) c.shift()
                 return c
             })
             setCurrentDirectory(v)
         },
-        items, setItems,
+        items,
+        setItems,
         openModal,
         setOpenModal,
         uploadRef,
         onRename,
         setOnRename,
         setAlert: ({type, message}) => alert.pushAlert(message, type),
-          entities,
-        createTerrain, setCreateTerrain
+        entities,
+        createTerrain,
+        setCreateTerrain
     }
 }

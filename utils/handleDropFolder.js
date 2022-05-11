@@ -1,3 +1,5 @@
+import AsyncFS from "../../../../components/AsyncFS";
+
 const pathResolve = window.require('path')
 export default async function handleDropFolder(event, target, setAlert, hook) {
     let entities = []
@@ -47,7 +49,7 @@ export default async function handleDropFolder(event, target, setAlert, hook) {
             }
         } else if (textData.includes('\\')) {
             const newPath = hook.path + '\\' + textData.split('\\').pop()
-            if (!hook.fs.existsSync(newPath))
+            if (!(await AsyncFS.exists(newPath)))
                 hook.fileSystem
                     .rename(pathResolve.resolve(hook.path + '\\' + textData), pathResolve.resolve(newPath))
                     .then(error => {

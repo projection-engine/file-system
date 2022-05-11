@@ -1,37 +1,31 @@
-const fs = window.require('fs')
-export default function handleRename(item, newName, hook, setCurrentItem, bookmarksHook){
-    if(item.isFolder) {
+import AsyncFS from "../../../../components/AsyncFS";
+
+export default async function handleRename(item, newName, hook, setCurrentItem, bookmarksHook) {
+    if (item.isFolder) {
         const newNamePath = (item.parent ? item.parent + '\\' + newName : '\\' + newName)
-        hook.fileSystem
+        await hook.fileSystem
             .rename(hook.path + item.id, hook.path + newNamePath)
-            .then(error => {
-                if (item.id === hook.currentDirectory.id)
-                    hook.setCurrentDirectory(prev => {
-                        return {
-                            ...prev,
-                            id: newNamePath
-                        }
-                    })
-                hook.refreshFiles()
-                bookmarksHook.renameBookmark(item.id, newNamePath)
+
+        if (item.id === hook.currentDirectory.id)
+            hook.setCurrentDirectory(prev => {
+                return {
+                    ...prev,
+                    id: newNamePath
+                }
             })
-    }
-    else{
-
-        const nameToApply = newName +  '.' + item.type
-
+        hook.refreshFiles()
+        bookmarksHook.renameBookmark(item.id, newNamePath)
+    } else {
+        const nameToApply = newName + '.' + item.type
         if (newName !== item.name) {
-            const targetPath = hook.path + (item.parent ? item.parent +'\\' : '\\') + nameToApply
+            const targetPath = hook.path + (item.parent ? item.parent + '\\' : '\\') + nameToApply
 
-            if(!fs.existsSync(targetPath))
-                hook
+            if (!(await AsyncFS.exists(targetPath))) {
+                await hook
                     .fileSystem
                     .rename(hook.path + item.id, targetPath)
-                    .then(error => {
-
-                        hook.refreshFiles()
-                    })
-            else
+                hook.refreshFiles()
+            } else
                 hook.setAlert({
                     type: 'error',
                     message: 'Item already exists.'
