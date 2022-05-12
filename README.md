@@ -1,0 +1,28 @@
+## Actions
+
+- Upload file
+    - PNG
+    - JPG
+    - JPEG
+    - glTF
+- Create file
+    - Material
+    - Script
+    - Raw Script
+- Open file by double-clicking
+    - Material
+    - Mesh (broken)
+    - Image (Not yet implemented)
+    - Raw script
+    - Script
+- Search all files
+- Up folder
+- Drag drop
+    - Move file/folder current folder
+    - Move file/folder current to directories sidebar
+    - Move directory from sidebar to current directory
+- Open in explorer option
+- Save/remove to/from bookmark
+- See file data on hover
+- Drag multiple by holding `ctrl` while dragging
+- Multi select with `ctrl` on hold 
