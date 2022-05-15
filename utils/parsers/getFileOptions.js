@@ -96,7 +96,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
         },
         {
             requiredTrigger: 'data-folder-wrapper',
-            label: 'UI Frame',
+            label: 'New UI Frame',
             icon: <span className={'material-icons-round'}>wysiwyg</span>,
             onClick: async () => {
                 let path = await check(hook.currentDirectory.id + '\\New UI Frame', '.ui')
@@ -134,17 +134,17 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
 
         {
             requiredTrigger: 'data-folder-wrapper',
-            label: 'New directory',
+            label: 'New sub-folder',
             icon: <span className={'material-icons-round'}>create_new_folder</span>,
-            onClick: () => {
+            onClick: async () => {
 
                 let path = hook.currentDirectory.id + '\\New folder'
 
-                const existing = hook.fileSystem.foldersFromDirectory(hook.path + hook.currentDirectory.id)
+                const existing = await hook.fileSystem.foldersFromDirectory(hook.path + hook.currentDirectory.id)
                 if (existing.length > 0)
                     path += ' - ' + existing.length
 
-                const [e] = AsyncFS.mkdir(hook.path + path, {})
+                const [e] = await AsyncFS.mkdir(hook.path + path, {})
                 if (!e)
                     hook.refreshFiles()
             }
