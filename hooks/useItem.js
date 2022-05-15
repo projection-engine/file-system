@@ -42,7 +42,7 @@ export default function useItem(props) {
 
         if (props.type === 1) {
 
-            if (props.data.type === 'mesh' || props.data.type === 'material' || props.data.type === 'image'|| props.data.type === 'flow')
+            if ( props.data.type === 'material' || props.data.type === 'flow' || props.data.type === 'ui')
                 props.openEngineFile(props.data.registryID, currentLabel)
             else if (props.data.type === 'flowRaw')
                 shell.openPath(props.hook.path + '\\' + props.data.id).catch()

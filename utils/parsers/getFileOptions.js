@@ -94,7 +94,18 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             onClick: (node) => handleDelete(node.getAttribute('data-file'), hook)
 
         },
-
+        {
+            requiredTrigger: 'data-folder-wrapper',
+            label: 'UI Frame',
+            icon: <span className={'material-icons-round'}>wysiwyg</span>,
+            onClick: async () => {
+                let path = await check(hook.currentDirectory.id + '\\New UI Frame', '.ui')
+                hook.fileSystem.writeAsset(path, JSON.stringify({}))
+                    .then(() => {
+                        hook.refreshFiles()
+                    })
+            }
+        },
         {
             requiredTrigger: 'data-folder-wrapper',
             label: 'New Material',

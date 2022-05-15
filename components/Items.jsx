@@ -38,11 +38,8 @@ export default function Items(props) {
             <ContextMenu
                 options={options}
                 onContext={(node) => {
-
                     if (node !== undefined && node !== null && (node.getAttribute('data-file') || node.getAttribute('data-folder'))) {
-
                         const attr = node.getAttribute('data-file') ? node.getAttribute('data-file') : node.getAttribute('data-folder')
-
                         props.setSelected([attr])
                     }
                 }}

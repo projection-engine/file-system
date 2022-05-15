@@ -15,10 +15,11 @@ export default function getIcon({
 
                 path={path} className={styles.image}
                 fallbackIcon={t}
-            />
+            >
             <div title={type === 'pimg' ? 'image' : type} className={styles.floatingIconWrapper} style={{display: visualization === 2 ? 'none' : undefined}}>
                 <span className={['material-icons-round', styles.floatingIcon].join(' ')}>{t}</span>
             </div>
+            </Preview>
         </div>
     )
     switch (type) {
@@ -30,6 +31,8 @@ export default function getIcon({
             return  common('terrain')
         case 'mesh':
             return  common('view_in_ar')
+        case 'ui':
+            return common('wysiwyg')
         case 'flow':
             return (
                 <div className={styles.icon} data-size={`${visualization}`}>
