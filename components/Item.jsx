@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Item.module.css'
 import React, {useMemo} from "react";
-import getIcon from "../utils/visuals/getIcon";
+import getIcon from "../utils/getIcon";
 import useItem from "../hooks/useItem";
 import ItemTooltip from "./ItemTooltip";
+import FILE_TYPES from "../../../../../public/glTF/FILE_TYPES";
 
 export default function Item(props) {
 
@@ -17,8 +18,8 @@ export default function Item(props) {
 
     const icon = useMemo(() => {
         return getIcon({
-            path: props.hook.fileSystem.path + '\\previews\\' + props.data.registryID + '.preview',
-            type: props.data.type ? props.data.type : 'folder',
+            path: props.hook.fileSystem.path + '\\previews\\' + props.data.registryID + FILE_TYPES.PREVIEW,
+            type: props.data.type ? '.' + props.data.type : 'folder',
 
             visualization: props.visualizationType,
             childrenQuantity: props.childrenQuantity
