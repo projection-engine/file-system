@@ -4,7 +4,7 @@ import React, {useMemo} from "react";
 import getIcon from "../utils/getIcon";
 import useItem from "../hooks/useItem";
 import ItemTooltip from "./ItemTooltip";
-import FILE_TYPES from "../../../../../public/glTF/FILE_TYPES";
+import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES";
 
 export default function Item(props) {
 

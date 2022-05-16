@@ -1,6 +1,6 @@
 import styles from "../styles/Item.module.css";
 import Preview from "../../../../components/preview/Preview";
-import FILE_TYPES from "../../../../../public/glTF/FILE_TYPES";
+import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES";
 
 export default function getIcon({
                                     path,
@@ -59,14 +59,6 @@ export default function getIcon({
                     <span className={'material-icons-round'}>inventory_2</span>
                 </div>
             )
-        case FILE_TYPES.MESH_WRAP:
-            return (
-                <div className={styles.icon} data-size={`${visualization}`}>
-                    <span className={'material-icons-round'}>javascript</span>
-                </div>
-            )
-
-
         case 'folder': {
             return (
                 <div className={styles.icon} data-size={`${visualization}`}>

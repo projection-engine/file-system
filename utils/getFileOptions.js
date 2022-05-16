@@ -2,7 +2,7 @@ import React from "react";
 import {onCreate} from "./getDirectoryOptions";
 import handleDelete from "./handleDelete";
 import AsyncFS from "../../../../components/AsyncFS";
-import FILE_TYPES from "../../../../../public/glTF/FILE_TYPES";
+import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES";
 
 const template = `
 class YourClassName{
