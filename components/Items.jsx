@@ -43,7 +43,6 @@ export default function Items(props) {
                         props.setSelected([attr])
                     }
                 }}
-
                 className={styles.filesWrapper}
                 styles={{
                     '--card_size': cardSize,
