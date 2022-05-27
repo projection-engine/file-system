@@ -5,24 +5,18 @@
     overflow-y: auto;
     /*align-items: flex-start;*/
     height: 100%;
-    padding: 4px;
     gap: 4px;
+    padding: 0 4px 4px;
 }
 
 
 .accordion {
-
+    border-radius: 5px;
     background-color: var(--fabric-border-primary) !important;
-    height: 25px;
-    border-radius: 0 !important;
+
 
 }
 
-.accordionWrapper {
-    min-height: unset !important;
-    height: fit-content;
-    overflow: hidden;
-}
 
 .button {
     display: flex;

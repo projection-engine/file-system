@@ -7,7 +7,7 @@ import {ContextMenu} from "@f-ui/core";
 import SelectBox from "../../../../components/selectbox/SelectBox";
 import handleRename from "../utils/handleRename";
 
-export default function Items(props) {
+export default function View(props) {
     const {
         setCurrentItem, currentItem,
         filesToRender, ref,
@@ -94,7 +94,7 @@ export default function Items(props) {
     )
 }
 
-Items.propTypes = {
+View.propTypes = {
     visualizationType: PropTypes.number,
 
     bookmarksHook: PropTypes.object,

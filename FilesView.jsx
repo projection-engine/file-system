@@ -1,8 +1,8 @@
 import styles from './styles/Explorer.module.css'
 import PropTypes from "prop-types";
 import React, {useEffect, useMemo, useState} from "react";
-import Directories from "./components/Directories";
-import Items from "./components/Items";
+import SideBar from "./components/SideBar";
+import View from "./components/View";
 import ControlBar from "./components/ControlBar";
 
 import {Button} from "@f-ui/core";
@@ -88,7 +88,7 @@ export default function FilesView(props) {
                             Content browser
                         </div>
                     </div>
-                    {hidden ? null : <Directories hook={hook} bookmarksHook={bookmarksHook} {...props}/>}
+                    {hidden ? null : <SideBar hook={hook} bookmarksHook={bookmarksHook} {...props}/>}
                 </div>
                 <ResizableBar type={'width'} color={'var(--fabric-border-primary)'}/>
                 <div className={styles.content} id={props.id + '-files'}>
@@ -108,7 +108,7 @@ export default function FilesView(props) {
                         path={path}
                     />
 
-                    <Items
+                    <View
                         bookmarksHook={bookmarksHook}
                         setAlert={props.setAlert}
                         openEngineFile={props.openEngineFile}

@@ -76,7 +76,6 @@
     align-items: center;
     justify-content: flex-start;
     min-height: 35px;
-    border-bottom: var(--fabric-border-primary) 1px solid;
     overflow: hidden;
     font-size: .8rem;
     font-weight: 550;
