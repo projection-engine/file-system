@@ -1,32 +1,32 @@
-import AsyncFS from "../../../../components/AsyncFS";
+import AsyncFS from "../../../utils/AsyncFS";
+import FileSystem from "../../../utils/files/FileSystem";
 
 const pathResolve = window.require('path')
 export default async function handleDropFolder(event, target, setAlert, hook) {
     let entities = []
-    try{
+    try {
         entities = JSON.parse(event.dataTransfer.getData('text'))
-    }catch (e){}
+    } catch (e) {
+    }
 
-    for(let i = 0; i< entities.length; i++){
+    for (let i = 0; i < entities.length; i++) {
         const textData = entities[i]
-        if (target !== '\\') {
+        if (target !== FileSystem.sep) {
             let from = textData
-            if (!from.includes('\\')) {
+            if (!from.includes(FileSystem.sep)) {
 
                 const reg = await hook.fileSystem.readRegistryFile(from)
 
-                if (reg)
-                    from = reg.path
+                if (reg) from = reg.path
                 else {
                     setAlert({
-                        type: 'error',
-                        message: 'Could not find file.'
+                        type: 'error', message: 'Could not find file.'
                     })
                     return
                 }
 
             }
-            const to = target + '\\' + from.split('\\').pop()
+            const to = target + FileSystem.sep + from.split(FileSystem.sep).pop()
 
             const toItem = hook.items.find(f => f.id === target)
             const fromItem = hook.items.find(f => {
@@ -34,40 +34,33 @@ export default async function handleDropFolder(event, target, setAlert, hook) {
             })
             if (from !== to && toItem && toItem.id !== from && fromItem && fromItem.parent !== to && toItem.isFolder) {
                 hook.fileSystem
-                    .rename(pathResolve.resolve(hook.path + '\\' + from), pathResolve.resolve(hook.path + to))
+                    .rename(pathResolve.resolve(hook.path + FileSystem.sep + from), pathResolve.resolve(hook.path + to))
                     .then(error => {
-                        if (from === hook.currentDirectory.id)
-                            hook.setCurrentDirectory(prev => {
-                                return {
-                                    ...prev,
-                                    id: to
-                                }
-                            })
+                        if (from === hook.currentDirectory.id) hook.setCurrentDirectory(prev => {
+                            return {
+                                ...prev, id: to
+                            }
+                        })
 
                         hook.refreshFiles()
                     })
             }
-        } else if (textData.includes('\\')) {
-            const newPath = hook.path + '\\' + textData.split('\\').pop()
-            if (!(await AsyncFS.exists(newPath)))
-                hook.fileSystem
-                    .rename(pathResolve.resolve(hook.path + '\\' + textData), pathResolve.resolve(newPath))
-                    .then(error => {
-                        if (textData === hook.currentDirectory.id)
-                            hook.setCurrentDirectory(prev => {
-                                return {
-                                    ...prev,
-                                    id: newPath.replace(hook.path, '')
-                                }
-                            })
-
-                        hook.refreshFiles()
+        } else if (textData.includes(FileSystem.sep)) {
+            const newPath = hook.path + FileSystem.sep + textData.split(FileSystem.sep).pop()
+            if (!(await AsyncFS.exists(newPath))) hook.fileSystem
+                .rename(pathResolve.resolve(hook.path + FileSystem.sep + textData), pathResolve.resolve(newPath))
+                .then(error => {
+                    if (textData === hook.currentDirectory.id) hook.setCurrentDirectory(prev => {
+                        return {
+                            ...prev, id: newPath.replace(hook.path, '')
+                        }
                     })
-            else
-                setAlert({
-                    type: 'error',
-                    message: 'Folder already exists.'
+
+                    hook.refreshFiles()
                 })
+            else setAlert({
+                type: 'error', message: 'Folder already exists.'
+            })
         }
 
     }

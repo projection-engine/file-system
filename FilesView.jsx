@@ -12,6 +12,7 @@ import useFiles from "./hooks/useFiles";
 import ResizableBar from "../../../components/resizable/ResizableBar";
 import DeleteConfirmation from "./components/DeleteConfirmation";
 import useBookmarks from "./hooks/useBookmarks";
+import FileSystem from "../../utils/files/FileSystem";
 
 
 export default function FilesView(props) {
@@ -36,7 +37,7 @@ export default function FilesView(props) {
     const path = useMemo(() => {
         let response = [{
             name: 'Assets',
-            path: '\\'
+            path: FileSystem.sep
         }]
 
         const findParent = (node) => {
@@ -111,7 +112,6 @@ export default function FilesView(props) {
                     <View
                         bookmarksHook={bookmarksHook}
                         setAlert={props.setAlert}
-                        openEngineFile={props.openEngineFile}
                         hidden={hidden}
                         hook={hook}
                         visualizationType={visualizationType}
@@ -131,8 +131,6 @@ export default function FilesView(props) {
 
 FilesView.propTypes = {
     id: PropTypes.string,
-    currentTab: PropTypes.number,
-    openEngineFile: PropTypes.func.isRequired,
     label: PropTypes.string,
     setAlert: PropTypes.func.isRequired
 }

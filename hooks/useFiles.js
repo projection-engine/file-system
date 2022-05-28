@@ -4,7 +4,8 @@ import QuickAccessProvider from "../../../hooks/QuickAccessProvider";
 import {AlertProvider} from "@f-ui/core";
 import EntitiesProvider from "../../../hooks/EntitiesProvider";
 import LoaderProvider from "../../../../components/loader/LoaderProvider";
-import AsyncFS from "../../../../components/AsyncFS";
+import AsyncFS from "../../../utils/AsyncFS";
+import FileSystem from "../../../utils/files/FileSystem";
 
 const pathRequire = window.require('path')
 export default function useFiles() {
@@ -17,13 +18,13 @@ export default function useFiles() {
     const [initialized, setInitialized] = useState(false)
     const [items, setItems] = useState([])
     const [currentDirectory, setCurrentDirectory] = useState({
-        id: '\\'
+        id: FileSystem.sep
     })
 
     const [createTerrain, setCreateTerrain] = useState(false)
     const [toDelete, setToDelete] = useState({})
     const quickAccess = useContext(QuickAccessProvider)
-    const path = (quickAccess.fileSystem.path + '\\assets')
+    const path = (quickAccess.fileSystem.path + FileSystem.sep + 'assets')
     const {entities, removeEntities} = useContext(EntitiesProvider)
 
 
@@ -36,11 +37,11 @@ export default function useFiles() {
     const parsePath = async (p, registryData) => {
         const [e, stat] = await AsyncFS.lstat(p)
         if (!e) {
-            const split = p.split('\\')
+            const split = p.split(FileSystem.sep )
             let parent = [...split]
             parent.pop()
 
-            parent = parent.join('\\').replace(path, '')
+            parent = parent.join(FileSystem.sep ).replace(path, '')
             const currentPath = p.replace(path, '')
             if (stat && stat.isDirectory) {
                 return {
@@ -53,7 +54,7 @@ export default function useFiles() {
                 }
             } else {
 
-                const parsedPath = pathRequire.resolve(path + currentPath).replace(path + '\\', '')
+                const parsedPath = pathRequire.resolve(path + currentPath).replace(path +FileSystem.sep , '')
                 return {
                     isFolder: false,
                     name: [...split].pop().split(/\.([a-zA-Z0-9]+)$/)[0],

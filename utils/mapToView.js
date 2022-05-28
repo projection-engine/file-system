@@ -4,9 +4,9 @@ export default function mapToView(folder, hook, bookmarks) {
         childrenQuantity = children.length
 
     return {
-        id: bookmarks ? folder.path + '-bookmark': folder.id,
+        id: bookmarks ? folder.path : folder.id,
         label: folder.name,
-        onClick: () => hook.setCurrentDirectory(bookmarks ? {id: folder.path} : folder),
+        onClick: () => hook.setCurrentDirectory(bookmarks ? {...folder, id: folder.path} : folder),
         children: children.map(i => mapToView(i, hook)),
         draggable: true,
         icon: <span style={{fontSize: '1rem'}}

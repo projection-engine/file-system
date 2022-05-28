@@ -1,8 +1,9 @@
 import React from "react";
 import {onCreate} from "./getDirectoryOptions";
 import handleDelete from "./handleDelete";
-import AsyncFS from "../../../../components/AsyncFS";
+import AsyncFS from "../../../utils/AsyncFS";
 import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES";
+import FileSystem from "../../../utils/files/FileSystem";
 
 const template = `
 class YourClassName{
@@ -100,7 +101,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             label: 'New UI Frame',
             icon: <span className={'material-icons-round'}>wysiwyg</span>,
             onClick: async () => {
-                let path = await check(hook.currentDirectory.id + '\\New UI Frame', '.ui')
+                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New UI Frame', '.ui')
                 hook.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
                         hook.refreshFiles()
@@ -112,7 +113,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             label: 'New Material',
             icon: <span className={'material-icons-round'}>texture</span>,
             onClick: async () => {
-                let path = await check(hook.currentDirectory.id + '\\New Material', '.material')
+                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New Material', '.material')
                 hook.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
                         hook.refreshFiles()
@@ -124,7 +125,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             label: 'New Blueprint',
             icon: <span className={'material-icons-round'}>code</span>,
             onClick: async () => {
-                let path = await check(hook.currentDirectory.id + '\\New Blueprint', FILE_TYPES.SCRIPT)
+                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New Blueprint', FILE_TYPES.SCRIPT)
 
                 hook.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
@@ -139,7 +140,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             icon: <span className={'material-icons-round'}>create_new_folder</span>,
             onClick: async () => {
 
-                let path = hook.currentDirectory.id + '\\New folder'
+                let path = hook.currentDirectory.id + FileSystem.sep + 'New folder'
 
                 const existing = await hook.fileSystem.foldersFromDirectory(hook.path + hook.currentDirectory.id)
                 if (existing.length > 0)
@@ -155,7 +156,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             label: 'Open with explorer',
             icon: <span className={'material-icons-round'}>open_in_new</span>,
             onClick: () => {
-                shell.openPath(hook.path + '\\' + hook.currentDirectory.id).catch()
+                shell.showItemInFolder(hook.path + FileSystem.sep +  hook.currentDirectory.id)
             }
         },
         {
@@ -163,7 +164,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             label: 'New raw Blueprint',
             icon: <span className={'material-icons-round'}>code</span>,
             onClick: async () => {
-                let path = await check(hook.currentDirectory.id + '\\New Raw Blueprint', '.flowRaw')
+                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New Raw Blueprint', '.flowRaw')
 
                 hook.fileSystem.writeAsset(path, template)
                     .then(() => {

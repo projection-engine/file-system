@@ -4,7 +4,8 @@ import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import React, {useMemo} from "react";
 import Search from "../../../../components/search/Search";
 import ImportHandler from "./ImportHandler";
-import AsyncFS from "../../../../components/AsyncFS";
+import AsyncFS from "../../../utils/AsyncFS";
+import FileSystem from "../../../utils/files/FileSystem";
 
 export default function ControlBar(props) {
     const disabled = useMemo(() => {
@@ -43,12 +44,12 @@ export default function ControlBar(props) {
                     onClick={() => {
                         const found = props.hook.currentDirectory.id
                         if (found) {
-                            const split = found.split('\\')
+                            const split = found.split(FileSystem.sep )
                             split.pop()
                             if (split.length === 1)
-                                props.hook.setCurrentDirectory({id: '\\'})
+                                props.hook.setCurrentDirectory({id: FileSystem.sep })
                             else
-                                props.hook.setCurrentDirectory({id: split.join('\\')})
+                                props.hook.setCurrentDirectory({id: split.join(FileSystem.sep)})
                         }
                     }}
                 >
@@ -68,7 +69,7 @@ export default function ControlBar(props) {
                 className={styles.settingsButton}
                 onClick={async () => {
                     const hook = props.hook
-                    let path = hook.currentDirectory.id + '\\New folder'
+                    let path = hook.currentDirectory.id + FileSystem.sep + 'New folder'
 
                     const existing = hook.fileSystem.foldersFromDirectory(hook.path + hook.currentDirectory.id)
                     if (existing.length > 0)
@@ -104,7 +105,7 @@ export default function ControlBar(props) {
                                     props.hook.setCurrentDirectory(found)
                                 else
                                     props.hook.setCurrentDirectory({
-                                        id: '\\'
+                                        id: FileSystem.sep
                                     })
                             }}>
                             {p.name}

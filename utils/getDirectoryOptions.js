@@ -1,6 +1,7 @@
 import React from "react";
 import handleDelete from "./handleDelete";
-import AsyncFS from "../../../../components/AsyncFS";
+import AsyncFS from "../../../utils/AsyncFS";
+import FileSystem from "../../../utils/files/FileSystem";
 
 export default function getDirectoryOptions(props, load) {
 
@@ -61,7 +62,7 @@ export async function onCreate(parent, hook) {
 
     const getName = async (id) => {
         const index = directories.filter(d => {
-            return d.split('\\')[d.split('\\').length - 1].includes('New folder')
+            return d.split(FileSystem.sep )[d.split(FileSystem.sep).length - 1].includes('New folder')
         }).length
         let newID = id
         if (index > 0)
@@ -73,7 +74,7 @@ export async function onCreate(parent, hook) {
         return newID
     }
 
-    let id = getName(parent + '\\New folder')
+    let id = getName(parent + FileSystem.sep + 'New folder')
     const [e] = await AsyncFS.mkdir(hook.path + id)
     if (!e)
         hook.refreshFiles()

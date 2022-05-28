@@ -1,13 +1,14 @@
 import {useEffect, useMemo, useRef, useState} from "react";
 
 import getFileOptions from "../utils/getFileOptions";
+import FileSystem from "../../../utils/files/FileSystem";
 
 export default function useItems({hook, accept, searchString, bookmarksHook}) {
     const [currentItem, setCurrentItem] = useState()
 
 
     const filesToRender = useMemo(() => {
-        if(hook.currentDirectory.id !== '\\')
+        if(hook.currentDirectory.id !== FileSystem.sep )
             return hook.items
                 .filter(file => file.parent === hook.currentDirectory.id && (searchString.length > 0 ? file.name.toLowerCase().includes(searchString) : true))
                 .map(e => {

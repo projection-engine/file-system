@@ -5,6 +5,7 @@ import getIcon from "../utils/getIcon";
 import useItem from "../hooks/useItem";
 import ItemTooltip from "./ItemTooltip";
 import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES";
+import FileSystem from "../../../utils/files/FileSystem";
 
 export default function Item(props) {
 
@@ -18,7 +19,7 @@ export default function Item(props) {
 
     const icon = useMemo(() => {
         return getIcon({
-            path: props.hook.fileSystem.path + '\\previews\\' + props.data.registryID + FILE_TYPES.PREVIEW,
+            path: props.hook.fileSystem.path + FileSystem.sep + 'previews' +FileSystem.sep +  props.data.registryID + FILE_TYPES.PREVIEW,
             type: props.data.type ? '.' + props.data.type : 'folder',
 
             visualization: props.visualizationType,
@@ -92,7 +93,6 @@ Item.propTypes = {
     data: PropTypes.object,
     selected: PropTypes.array,
     setSelected: PropTypes.func,
-    openEngineFile: PropTypes.func.isRequired,
     hook: PropTypes.object,
     onRename: PropTypes.string,
     submitRename: PropTypes.func

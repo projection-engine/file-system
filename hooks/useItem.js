@@ -3,6 +3,8 @@ import styles from "../styles/Item.module.css";
 import handleDropFolder from "../utils/handleDropFolder";
 import dragImageMulti from '../../../../static/table.svg'
 import dragImageSingle from '../../../../static/file.svg'
+import FileSystem from "../../../utils/files/FileSystem";
+import {useNavigate} from "react-router-dom";
 
 const { shell } =window.require('electron')
 export default function useItem(props) {
@@ -11,6 +13,7 @@ export default function useItem(props) {
         single: new Image(),
         multi: new Image()
     })
+    const navigate = useNavigate();
     useEffect(() => {
         setImages(prev => {
             prev.single.src = dragImageSingle
@@ -41,11 +44,10 @@ export default function useItem(props) {
     const onDoubleClick = () => {
 
         if (props.type === 1) {
-
             if ( props.data.type === 'material' || props.data.type === 'flow' || props.data.type === 'ui')
-                props.openEngineFile(props.data.registryID, currentLabel)
+                navigate(props.data.type + '/' + props.data.registryID + '/' + currentLabel)
             else if (props.data.type === 'flowRaw')
-                shell.openPath(props.hook.path + '\\' + props.data.id).catch()
+                shell.openPath(props.hook.path + FileSystem.sep  + props.data.id).catch()
             else
                 props.setSelected(props.data.id)
         } else

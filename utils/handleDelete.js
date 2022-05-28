@@ -1,3 +1,4 @@
+import FileSystem from "../../../utils/files/FileSystem";
 
 export default function handleDelete(entries, hook, bookmarksHook) {
     const ee = !Array.isArray(entries) ? [entries] : entries
@@ -26,9 +27,9 @@ export function deleteData(id, hook) {
             type: 'info',
             message: 'Deleting files.'
         })
-        hook.fileSystem.deleteFile(hook.path + '\\' + id, true, {recursive: true, force: true}).then(() => {
+        hook.fileSystem.deleteFile(hook.path +FileSystem.sep + id, true, {recursive: true, force: true}).then(() => {
             if (hook.currentDirectory.id === id)
-                hook.setCurrentDirectory({id: '\\'})
+                hook.setCurrentDirectory({id: FileSystem.sep })
             resolve(Object.keys(hook.toDelete).length > 0 ? [...hook.toDelete.relatedFiles, id] : [id])
         })
     })

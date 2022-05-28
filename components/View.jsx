@@ -71,7 +71,6 @@ export default function View(props) {
                                     else
                                         return  [child.id]
                                 })}
-                                openEngineFile={props.openEngineFile}
                                 hook={props.hook}
                                 onRename={currentItem}
 
@@ -101,7 +100,6 @@ View.propTypes = {
     searchString: PropTypes.string,
     selected: PropTypes.array,
     setSelected: PropTypes.func,
-    openEngineFile: PropTypes.func.isRequired,
     accept: PropTypes.array,
     hook: PropTypes.object.isRequired,
     setAlert: PropTypes.func.isRequired
