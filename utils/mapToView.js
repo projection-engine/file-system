@@ -11,7 +11,6 @@ export default function mapToView(folder, hook, bookmarks) {
         draggable: true,
         icon: <span style={{fontSize: '1rem'}}
                     className={'material-icons-round'}>{childrenQuantity === 0 && !bookmarks ? 'folder_open' : 'source'}</span>,
-        attributes: {'data-folder': bookmarks ? folder.path : folder.id},
         parent: folder.parent,
         isFolder: true
     }

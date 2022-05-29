@@ -8,14 +8,16 @@
 
     display: flex;
     flex-direction: column;
+    background-color: var(--fabric-background-primary);
+    border-radius: 5px;
 }
 
 .wrapper {
-    background-color: var(--fabric-background-primary);
+
 
     width: 100%;
-    height: clamp(250px, 45%, 500px);
-    border-radius: 5px;
+    height: 100%;
+
     display: flex;
 
 
@@ -71,6 +73,7 @@
 
 }
 .header{
+    padding: 4px;
     color: var(--fabric-color-primary);
     display: flex;
     align-items: center;

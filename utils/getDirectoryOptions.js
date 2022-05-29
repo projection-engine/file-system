@@ -3,21 +3,21 @@ import handleDelete from "./handleDelete";
 import AsyncFS from "../../../utils/AsyncFS";
 import FileSystem from "../../../utils/files/FileSystem";
 
-export default function getDirectoryOptions(props, load) {
+export default function getDirectoryOptions(props) {
 
     return [
         {
-            requiredTrigger: 'data-folder',
+            requiredTrigger: 'data-node',
             label: 'Delete',
             icon: <span className={'material-icons-round'}>delete</span>,
-            onClick: (node) => handleDelete(node.getAttribute('data-folder'), props.hook, props.bookmarksHook)
+            onClick: (node) => handleDelete(node.getAttribute('data-node'), props.hook, props.bookmarksHook)
         },
         {
-            requiredTrigger: 'data-folder',
+            requiredTrigger: 'data-node',
             label: 'Rename',
             icon: <span className={'material-icons-round'}>edit</span>,
             onClick: (node) => {
-                const target = document.getElementById(node.getAttribute('data-folder'))
+                const target = document.getElementById(node.getAttribute('data-node'))
 
                 if (target) {
                     const event = new MouseEvent('dblclick', {
@@ -30,23 +30,16 @@ export default function getDirectoryOptions(props, load) {
             }
         },
         {
-            requiredTrigger: 'data-directories-wrapper',
-            label: 'New folder',
-            icon: <span className={'material-icons-round'}>create_new_folder</span>,
-            onClick: () => onCreate('', props.hook).catch()
-        },
-
-        {
             requiredTrigger: 'data-self',
             label: 'New sub-folder',
             icon: <span className={'material-icons-round'}>create_new_folder</span>,
             onClick: () => onCreate('', props.hook).catch()
         },
         {
-            requiredTrigger: 'data-folder',
+            requiredTrigger: 'data-node',
             label: 'New sub-folder',
             icon: <span className={'material-icons-round'}>create_new_folder</span>,
-            onClick: (node) => onCreate(node.getAttribute('data-folder'), props.hook).catch()
+            onClick: (node) => onCreate(node.getAttribute('data-node'), props.hook).catch()
         },
         {
             requiredTrigger: 'data-root',

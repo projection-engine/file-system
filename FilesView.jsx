@@ -1,11 +1,9 @@
 import styles from './styles/Explorer.module.css'
 import PropTypes from "prop-types";
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useMemo, useState} from "react";
 import SideBar from "./components/SideBar";
 import View from "./components/View";
 import ControlBar from "./components/ControlBar";
-
-import {Button} from "@f-ui/core";
 import useFiles from "./hooks/useFiles";
 
 
@@ -61,70 +59,51 @@ export default function FilesView(props) {
         return response
     }, [hook.currentDirectory, hook.items])
 
-    useEffect(() => {
-        if (hidden && hook.ref.current)
-            hook.ref.current.previousSibling.previousSibling.style.height = '100%'
-    }, [hidden])
 
     return (
-        <>
-            <ResizableBar
-                type={'height'}
-                onResize={() => {
-                    if (hidden && hook.ref.current.getBoundingClientRect().height > 35)
-                        setHidden(false)
-                }}
-                onResizeEnd={() => {
-                    if (hook.ref.current.getBoundingClientRect().height <= 35)
-                        setHidden(true)
-                }}/>
-            <div className={styles.wrapper} style={{height: hidden ? '35px' : undefined}} ref={hook.ref}>
-                <DeleteConfirmation hook={hook}/>
-                <div className={styles.content} style={{width: '20%'}}>
-                    <div className={styles.header}>
-                        <Button className={styles.button} onClick={() => setHidden(!hidden)}>
-                            <span className={'material-icons-round'}>{hidden ? 'expand_more' : 'expand_less'}</span>
-                        </Button>
-                        <div className={styles.overflow}>
-                            Content browser
-                        </div>
-                    </div>
-                    {hidden ? null : <SideBar hook={hook} bookmarksHook={bookmarksHook} {...props}/>}
-                </div>
-                <ResizableBar type={'width'} color={'var(--fabric-border-primary)'}/>
-                <div className={styles.content} id={props.id + '-files'}>
-                    <ControlBar
-                        {...props}
-                        bookmarksHook={bookmarksHook}
-                        searchString={searchString}
-                        visualizationType={visualizationType}
-                        setVisualizationType={setVisualizationType}
-                        setSearchString={v => {
-                            if (hidden)
-                                setHidden(false)
-                            setSearchString(v)
-                        }}
-                        hidden={hidden}
-                        hook={hook}
-                        path={path}
-                    />
 
-                    <View
-                        bookmarksHook={bookmarksHook}
-                        setAlert={props.setAlert}
-                        hidden={hidden}
-                        hook={hook}
-                        visualizationType={visualizationType}
-                        searchString={searchString}
-                        setSelected={setSelected}
-                        selected={selected}
-                        accept={props.accept ? props.accept : []}
-                    />
-
+        <div className={styles.wrapper} ref={hook.ref}>
+            <DeleteConfirmation hook={hook}/>
+            <div className={styles.content} style={{width: '20%',     borderRadius: '0 5px 5px 0'}}>
+                <div className={styles.header}>
+                    <label className={styles.overflow}>Content browser</label>
                 </div>
+                {hidden ? null : <SideBar hook={hook} bookmarksHook={bookmarksHook} {...props}/>}
+            </div>
+            <ResizableBar type={'width'}/>
+            <div className={styles.content} id={props.id + '-files'}>
+                <ControlBar
+                    {...props}
+                    bookmarksHook={bookmarksHook}
+                    searchString={searchString}
+                    visualizationType={visualizationType}
+                    setVisualizationType={setVisualizationType}
+                    setSearchString={v => {
+                        if (hidden)
+                            setHidden(false)
+                        setSearchString(v)
+                    }}
+                    hidden={hidden}
+                    hook={hook}
+                    path={path}
+                />
+
+                <View
+                    bookmarksHook={bookmarksHook}
+                    setAlert={props.setAlert}
+                    hidden={hidden}
+                    hook={hook}
+                    visualizationType={visualizationType}
+                    searchString={searchString}
+                    setSelected={setSelected}
+                    selected={selected}
+                    accept={props.accept ? props.accept : []}
+                />
 
             </div>
-        </>
+
+        </div>
+
     )
 
 }

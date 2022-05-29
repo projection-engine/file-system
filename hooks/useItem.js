@@ -1,19 +1,20 @@
-import {useEffect, useMemo, useRef, useState} from "react";
+import {useContext, useEffect, useMemo, useRef, useState} from "react";
 import styles from "../styles/Item.module.css";
 import handleDropFolder from "../utils/handleDropFolder";
 import dragImageMulti from '../../../../static/table.svg'
 import dragImageSingle from '../../../../static/file.svg'
 import FileSystem from "../../../utils/files/FileSystem";
-import {useNavigate} from "react-router-dom";
+import OpenFileProvider from "../../../hooks/OpenFileProvider";
+import openFile from "../../../utils/openFile";
 
-const { shell } =window.require('electron')
+const {shell} = window.require('electron')
 export default function useItem(props) {
     const ref = useRef()
     const [images, setImages] = useState({
         single: new Image(),
         multi: new Image()
     })
-    const navigate = useNavigate();
+    const {openFiles, setOpenFiles, openTab, setOpenTab} = useContext(OpenFileProvider);
     useEffect(() => {
         setImages(prev => {
             prev.single.src = dragImageSingle
@@ -44,10 +45,10 @@ export default function useItem(props) {
     const onDoubleClick = () => {
 
         if (props.type === 1) {
-            if ( props.data.type === 'material' || props.data.type === 'flow' || props.data.type === 'ui')
-                navigate(props.data.type + '/' + props.data.registryID + '/' + currentLabel)
+            if (props.data.type === 'material' || props.data.type === 'flow' || props.data.type === 'ui')
+                openFile(openFiles, setOpenTab, setOpenFiles, props.data.registryID, currentLabel, props.data.type)
             else if (props.data.type === 'flowRaw')
-                shell.openPath(props.hook.path + FileSystem.sep  + props.data.id).catch()
+                shell.openPath(props.hook.path + FileSystem.sep + props.data.id).catch()
             else
                 props.setSelected(props.data.id)
         } else
@@ -70,7 +71,7 @@ export default function useItem(props) {
     const onDrop = e => {
         e.preventDefault()
         e.currentTarget.parentNode.classList.remove(styles.hovered)
-        handleDropFolder( e, props.data.id, () => null, props.hook)
+        handleDropFolder(e, props.data.id, () => null, props.hook)
     }
 
     useEffect(() => {
@@ -85,9 +86,9 @@ export default function useItem(props) {
             ref.current?.removeEventListener('dragover', onDragOver)
             ref.current?.removeEventListener('dblclick', onDoubleClick)
         }
-    }, [props.data, ref, props.openEngineFile])
+    }, [props.data, ref])
     const handleDrag = (event) => {
-        if(event.ctrlKey){
+        if (event.ctrlKey) {
             const selected = props.selected.map(s => {
                 return props.hook.items.find(i => i.id === s)
             }).filter(e => e && !e.isFolder && e.type === 'mesh')
@@ -95,8 +96,7 @@ export default function useItem(props) {
 
             event.dataTransfer.setDragImage(images.multi, 0, 0)
             event.dataTransfer.setData('text', JSON.stringify(selected.map(s => s.registryID)))
-        }
-        else {
+        } else {
             event.dataTransfer.setDragImage(images.single, 0, 0)
             event.dataTransfer.setData('text', JSON.stringify([props.type === 1 ? props.data.registryID : props.data.id]))
         }

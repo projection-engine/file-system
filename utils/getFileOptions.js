@@ -113,7 +113,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             label: 'New Material',
             icon: <span className={'material-icons-round'}>texture</span>,
             onClick: async () => {
-                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New Material', '.material')
+                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New MaterialView', '.material')
                 hook.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
                         hook.refreshFiles()
@@ -125,7 +125,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             label: 'New Blueprint',
             icon: <span className={'material-icons-round'}>code</span>,
             onClick: async () => {
-                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New Blueprint', FILE_TYPES.SCRIPT)
+                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New BlueprintView', FILE_TYPES.SCRIPT)
 
                 hook.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
@@ -161,10 +161,10 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
         },
         {
             requiredTrigger: 'data-folder-wrapper',
-            label: 'New raw Blueprint',
+            label: 'New raw BlueprintView',
             icon: <span className={'material-icons-round'}>code</span>,
             onClick: async () => {
-                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New Raw Blueprint', '.flowRaw')
+                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New Raw BlueprintView', '.flowRaw')
 
                 hook.fileSystem.writeAsset(path, template)
                     .then(() => {

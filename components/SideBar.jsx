@@ -1,12 +1,11 @@
 import PropTypes from "prop-types";
-import React, {useContext, useMemo} from "react";
+import React, {useMemo} from "react";
 import TreeView from "../../../../components/tree/TreeView";
 import mapToView from "../utils/mapToView";
 import getDirectoryOptions from "../utils/getDirectoryOptions";
 import handleDropFolder from "../utils/handleDropFolder";
 import handleRename from "../utils/handleRename";
 import styles from '../styles/Directories.module.css'
-import LoaderProvider from "../../../../components/loader/LoaderProvider";
 import FileSystem from "../../../utils/files/FileSystem";
 
 export default function SideBar(props) {
@@ -47,22 +46,16 @@ export default function SideBar(props) {
             }
         ]
     }, [props.hook.items, props.bookmarksHook.bookmarks])
-    console.log(props.hook.currentDirectory)
-
-    const load = useContext(LoaderProvider)
-
     const options = useMemo(() => {
-        return getDirectoryOptions(props, load)
-    }, [props, load])
+        return getDirectoryOptions(props)
+    }, [props])
 
     return (
        <>
            <div className={styles.wrapper}>
                <TreeView
                    contextTriggers={[
-                       'data-directories-wrapper',
-                       'data-folder',
-                       'data-root',
+                       'data-node',
                        'data-self'
                    ]}
                    options={options}
@@ -73,15 +66,13 @@ export default function SideBar(props) {
                    onDragStart={(e, t) => e.dataTransfer.setData('text', JSON.stringify([t]))}
                    selected={props.hook.currentDirectory.id}
                    nodes={[directoriesToRender[0]]} className={styles.accordion}
-                   handleRename={(folder, newName) => handleRename(folder, newName, props.hook, undefined, props.bookmarksHook)}
+                   handleRename={(item, name) => handleRename(item, name, props.hook, undefined, props.bookmarksHook)}
                />
 
            </div>
            <div className={styles.wrapper}>
                <TreeView
                    contextTriggers={[
-                       'data-directories-wrapper',
-                       'data-folder',
                        'data-root',
                        'data-self'
                    ]}
