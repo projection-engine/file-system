@@ -61,8 +61,15 @@ export default function getIcon({
             )
         case 'folder': {
             return (
-                <div className={styles.icon} data-size={`${visualization}`}>
-                    <span className={'material-icons-round'}>{childrenQuantity > 0 ? 'source' : 'folder_open'}</span>
+                <div className={styles.icon} data-size={`${visualization}`} >
+                    <span className={'material-icons-round'} style={{color: '#ccad63'}}>folder</span>
+                    <div
+                        title={'Files'}
+                         className={styles.floatingIconWrapper}
+                         style={{display: visualization === 2 ? 'none' : undefined}}>
+                        {childrenQuantity}
+                    </div>
+
                 </div>
             )
         }

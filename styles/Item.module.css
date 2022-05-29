@@ -64,11 +64,11 @@
     border-radius: 5px;
 }
 
-.icon[data-size='0'] > * {
+.icon[data-size='0'] > span {
     font-size: 3.5rem !important;
 }
 
-.icon[data-size='1'] > * {
+.icon[data-size='1'] > span {
     font-size: 2.5rem !important;
 }
 
@@ -76,7 +76,7 @@
     width: fit-content;
 }
 
-.icon[data-size='2'] > * {
+.icon[data-size='2'] > span {
     font-size: 1.75rem !important;
 }
 
@@ -97,6 +97,7 @@
     width: 1.3rem;
     height: 1.3rem;
     border-radius: 3px;
+    font-size: .7rem !important;
 
 }
 .floatingIcon {

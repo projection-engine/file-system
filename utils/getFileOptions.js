@@ -160,6 +160,14 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             }
         },
         {
+            requiredTrigger: 'data-folder',
+            label: 'Open with explorer',
+            icon: <span className={'material-icons-round'}>open_in_new</span>,
+            onClick: (node) => {
+                shell.showItemInFolder(hook.path + FileSystem.sep +  node.getAttribute('data-folder') + FileSystem.sep)
+            }
+        },
+        {
             requiredTrigger: 'data-folder-wrapper',
             label: 'New raw BlueprintView',
             icon: <span className={'material-icons-round'}>code</span>,
