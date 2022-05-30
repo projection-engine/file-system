@@ -86,7 +86,7 @@ export default function useItem(props) {
             ref.current?.removeEventListener('dragover', onDragOver)
             ref.current?.removeEventListener('dblclick', onDoubleClick)
         }
-    }, [props.data, ref])
+    }, [props.data, ref, openFiles])
     const handleDrag = (event) => {
         if (event.ctrlKey) {
             const selected = props.selected.map(s => {

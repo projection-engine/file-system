@@ -113,7 +113,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             label: 'New Material',
             icon: <span className={'material-icons-round'}>texture</span>,
             onClick: async () => {
-                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New MaterialView', '.material')
+                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New Material', '.material')
                 hook.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
                         hook.refreshFiles()
