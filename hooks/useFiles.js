@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 
-import QuickAccessProvider from "../../../hooks/QuickAccessProvider";
+import QuickAccessProvider from "../../../utils/hooks/QuickAccessProvider";
 import {AlertProvider} from "@f-ui/core";
-import EntitiesProvider from "../../../hooks/EntitiesProvider";
+import EntitiesProvider from "../../../utils/hooks/EntitiesProvider";
 import LoaderProvider from "../../../../components/loader/LoaderProvider";
 import AsyncFS from "../../../utils/AsyncFS";
 import FileSystem from "../../../utils/files/FileSystem";

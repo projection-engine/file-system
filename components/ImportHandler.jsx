@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import styles from "../styles/Control.module.css";
 import {Button, Checkbox, Modal} from "@f-ui/core";
-import QuickAccessProvider from "../../../hooks/QuickAccessProvider";
+import QuickAccessProvider from "../../../utils/hooks/QuickAccessProvider";
 import {useContext, useState} from "react";
 
 const path = window.require("path");

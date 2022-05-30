@@ -4,7 +4,7 @@ import handleDropFolder from "../utils/handleDropFolder";
 import dragImageMulti from '../../../../static/table.svg'
 import dragImageSingle from '../../../../static/file.svg'
 import FileSystem from "../../../utils/files/FileSystem";
-import OpenFileProvider from "../../../hooks/OpenFileProvider";
+import OpenFileProvider from "../../../utils/hooks/OpenFileProvider";
 import openFile from "../../../utils/openFile";
 
 const {shell} = window.require('electron')
