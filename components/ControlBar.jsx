@@ -1,11 +1,11 @@
-import PropTypes from "prop-types";
-import styles from '../styles/Control.module.css'
-import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
-import React, {useMemo} from "react";
-import Search from "../../../../components/search/Search";
-import ImportHandler from "./ImportHandler";
-import AsyncFS from "../../../utils/AsyncFS";
-import FileSystem from "../../../utils/files/FileSystem";
+import PropTypes from "prop-types"
+import styles from "../styles/Control.module.css"
+import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core"
+import React, {useMemo} from "react"
+import Search from "../../../../components/search/Search"
+import ImportHandler from "./ImportHandler"
+import AsyncFS from "../../../utils/AsyncFS"
+import FileSystem from "../../../utils/files/FileSystem"
 
 export default function ControlBar(props) {
     const disabled = useMemo(() => {

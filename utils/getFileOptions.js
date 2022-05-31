@@ -1,9 +1,9 @@
-import React from "react";
-import {onCreate} from "./getDirectoryOptions";
-import handleDelete from "./handleDelete";
-import AsyncFS from "../../../utils/AsyncFS";
-import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES";
-import FileSystem from "../../../utils/files/FileSystem";
+import React from "react"
+import {onCreate} from "./getDirectoryOptions"
+import handleDelete from "./handleDelete"
+import AsyncFS from "../../../utils/AsyncFS"
+import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES"
+import FileSystem from "../../../utils/files/FileSystem"
 
 const template = `
 class YourClassName{
@@ -125,7 +125,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             label: 'New Blueprint',
             icon: <span className={'material-icons-round'}>code</span>,
             onClick: async () => {
-                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New BlueprintView', FILE_TYPES.SCRIPT)
+                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New ScriptView', FILE_TYPES.SCRIPT)
 
                 hook.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
@@ -169,10 +169,10 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
         },
         {
             requiredTrigger: 'data-folder-wrapper',
-            label: 'New raw BlueprintView',
+            label: 'New raw ScriptView',
             icon: <span className={'material-icons-round'}>code</span>,
             onClick: async () => {
-                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New Raw BlueprintView', '.flowRaw')
+                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New Raw ScriptView', '.flowRaw')
 
                 hook.fileSystem.writeAsset(path, template)
                     .then(() => {

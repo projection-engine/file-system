@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react";
-import FileSystem from "../../../utils/files/FileSystem";
+import {useEffect, useState} from "react"
+import FileSystem from "../../../utils/files/FileSystem"
 
 export default function useBookmarks(fileSystem) {
     const [bookmarks, setBookmarks] = useState([])

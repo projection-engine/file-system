@@ -1,11 +1,11 @@
-import {useContext, useEffect, useMemo, useRef, useState} from "react";
-import styles from "../styles/Item.module.css";
-import handleDropFolder from "../utils/handleDropFolder";
-import dragImageMulti from '../../../../static/table.svg'
-import dragImageSingle from '../../../../static/file.svg'
-import FileSystem from "../../../utils/files/FileSystem";
-import OpenFileProvider from "../../../utils/hooks/OpenFileProvider";
-import openFile from "../../../utils/openFile";
+import {useContext, useEffect, useMemo, useRef, useState} from "react"
+import styles from "../styles/Item.module.css"
+import handleDropFolder from "../utils/handleDropFolder"
+import dragImageMulti from "../../../../static/table.svg"
+import dragImageSingle from "../../../../static/file.svg"
+import FileSystem from "../../../utils/files/FileSystem"
+import OpenFileProvider from "../../../utils/hooks/OpenFileProvider"
+import openFile from "../../../utils/openFile"
 
 const {shell} = window.require('electron')
 export default function useItem(props) {

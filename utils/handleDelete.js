@@ -1,4 +1,4 @@
-import FileSystem from "../../../utils/files/FileSystem";
+import FileSystem from "../../../utils/files/FileSystem"
 
 export default function handleDelete(entries, hook, bookmarksHook) {
     const ee = !Array.isArray(entries) ? [entries] : entries

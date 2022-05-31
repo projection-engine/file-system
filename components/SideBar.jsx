@@ -1,12 +1,12 @@
-import PropTypes from "prop-types";
-import React, {useMemo} from "react";
-import TreeView from "../../../../components/tree/TreeView";
-import mapToView from "../utils/mapToView";
-import getDirectoryOptions from "../utils/getDirectoryOptions";
-import handleDropFolder from "../utils/handleDropFolder";
-import handleRename from "../utils/handleRename";
-import styles from '../styles/Directories.module.css'
-import FileSystem from "../../../utils/files/FileSystem";
+import PropTypes from "prop-types"
+import React, {useMemo} from "react"
+import TreeView from "../../../../components/tree/TreeView"
+import mapToView from "../utils/mapToView"
+import getDirectoryOptions from "../utils/getDirectoryOptions"
+import handleDropFolder from "../utils/handleDropFolder"
+import handleRename from "../utils/handleRename"
+import styles from "../styles/Directories.module.css"
+import FileSystem from "../../../utils/files/FileSystem"
 
 export default function SideBar(props) {
 

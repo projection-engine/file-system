@@ -1,11 +1,11 @@
-import PropTypes from "prop-types";
-import styles from '../styles/Item.module.css'
-import React, {useMemo} from "react";
-import getIcon from "../utils/getIcon";
-import useItem from "../hooks/useItem";
-import ItemTooltip from "./ItemTooltip";
-import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES";
-import FileSystem from "../../../utils/files/FileSystem";
+import PropTypes from "prop-types"
+import styles from "../styles/Item.module.css"
+import React, {useMemo} from "react"
+import getIcon from "../utils/getIcon"
+import useItem from "../hooks/useItem"
+import ItemTooltip from "./ItemTooltip"
+import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES"
+import FileSystem from "../../../utils/files/FileSystem"
 
 export default function Item(props) {
 

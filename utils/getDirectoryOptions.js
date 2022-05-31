@@ -1,7 +1,7 @@
-import React from "react";
-import handleDelete from "./handleDelete";
-import AsyncFS from "../../../utils/AsyncFS";
-import FileSystem from "../../../utils/files/FileSystem";
+import React from "react"
+import handleDelete from "./handleDelete"
+import AsyncFS from "../../../utils/AsyncFS"
+import FileSystem from "../../../utils/files/FileSystem"
 
 export default function getDirectoryOptions(props) {
 

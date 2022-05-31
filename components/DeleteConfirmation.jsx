@@ -1,10 +1,10 @@
-import PropTypes from "prop-types";
-import {deleteData} from "../utils/handleDelete";
-import {useContext, useEffect, useState} from "react";
-import {Button, Modal, ToolTip} from "@f-ui/core";
-import styles from '../styles/DeleteConfirmation.module.css'
-import QuickAccessProvider from "../../../utils/hooks/QuickAccessProvider";
-import KEYS from "../../../engine/templates/KEYS";
+import PropTypes from "prop-types"
+import {deleteData} from "../utils/handleDelete"
+import {useContext, useEffect, useState} from "react"
+import {Button, Modal, ToolTip} from "@f-ui/core"
+import styles from "../styles/DeleteConfirmation.module.css"
+import QuickAccessProvider from "../../../utils/hooks/QuickAccessProvider"
+import KEYS from "../../../engine/templates/KEYS"
 
 export default function DeleteConfirmation(props) {
     const [open, setOpen] = useState(false)

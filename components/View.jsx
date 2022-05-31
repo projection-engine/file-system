@@ -1,11 +1,11 @@
-import PropTypes from "prop-types";
-import styles from '../styles/Cards.module.css'
-import React, {useMemo} from "react";
-import Item from "./Item";
-import useItems from "../hooks/useItems";
-import {ContextMenu} from "@f-ui/core";
-import SelectBox from "../../../../components/selectbox/SelectBox";
-import handleRename from "../utils/handleRename";
+import PropTypes from "prop-types"
+import styles from "../styles/Cards.module.css"
+import React, {useMemo} from "react"
+import Item from "./Item"
+import useItems from "../hooks/useItems"
+import {ContextMenu} from "@f-ui/core"
+import SelectBox from "../../../../components/selectbox/SelectBox"
+import handleRename from "../utils/handleRename"
 
 export default function View(props) {
     const {

@@ -1,16 +1,16 @@
-import styles from './styles/Explorer.module.css'
-import PropTypes from "prop-types";
-import React, {useMemo, useState} from "react";
-import SideBar from "./components/SideBar";
-import View from "./components/View";
-import ControlBar from "./components/ControlBar";
-import useFiles from "./hooks/useFiles";
+import styles from "./styles/Explorer.module.css"
+import PropTypes from "prop-types"
+import React, {useMemo, useState} from "react"
+import SideBar from "./components/SideBar"
+import View from "./components/View"
+import ControlBar from "./components/ControlBar"
+import useFiles from "./hooks/useFiles"
 
 
-import ResizableBar from "../../../components/resizable/ResizableBar";
-import DeleteConfirmation from "./components/DeleteConfirmation";
-import useBookmarks from "./hooks/useBookmarks";
-import FileSystem from "../../utils/files/FileSystem";
+import ResizableBar from "../../../components/resizable/ResizableBar"
+import DeleteConfirmation from "./components/DeleteConfirmation"
+import useBookmarks from "./hooks/useBookmarks"
+import FileSystem from "../../utils/files/FileSystem"
 
 
 export default function FilesView(props) {

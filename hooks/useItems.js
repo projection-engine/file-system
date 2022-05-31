@@ -1,7 +1,7 @@
-import {useEffect, useMemo, useRef, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react"
 
-import getFileOptions from "../utils/getFileOptions";
-import FileSystem from "../../../utils/files/FileSystem";
+import getFileOptions from "../utils/getFileOptions"
+import FileSystem from "../../../utils/files/FileSystem"
 
 export default function useItems({hook, accept, searchString, bookmarksHook}) {
     const [currentItem, setCurrentItem] = useState()
