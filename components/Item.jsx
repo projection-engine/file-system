@@ -19,8 +19,8 @@ export default function Item(props) {
 
     const icon = useMemo(() => {
         return getIcon({
-            path: props.hook.fileSystem.path + FileSystem.sep + 'previews' +FileSystem.sep +  props.data.registryID + FILE_TYPES.PREVIEW,
-            type: props.data.type ? '.' + props.data.type : 'folder',
+            path: props.hook.fileSystem.path + FileSystem.sep + "previews" +FileSystem.sep +  props.data.registryID + FILE_TYPES.PREVIEW,
+            type: props.data.type ? "." + props.data.type : "folder",
 
             visualization: props.visualizationType,
             childrenQuantity: props.childrenQuantity
@@ -37,7 +37,7 @@ export default function Item(props) {
             draggable={!currentlyOnRename}
             onClick={props.setSelected}
             style={{
-                background: selected ? 'var(--fabric-accent-color)' : props.visualizationType === 2 ? (props.index % 2 === 0 ? 'var(--fabric-background-secondary)' : 'var(--fabric-background-tertiary)') : undefined
+                background: selected ? "var(--fabric-accent-color)" : props.visualizationType === 2 ? (props.index % 2 === 0 ? "var(--fabric-background-secondary)" : "var(--fabric-background-tertiary)") : undefined
             }}
             className={styles.file}
         >
@@ -57,7 +57,7 @@ export default function Item(props) {
                 <input
                     className={styles.input}
                     onKeyPress={key => {
-                        if (key.code === 'Enter')
+                        if (key.code === "Enter")
                             props.submitRename(currentLabel)
                     }}
                     onBlur={() => {
@@ -67,7 +67,7 @@ export default function Item(props) {
                     value={currentLabel}
                 />
                 :
-                <div className={[styles.label, styles.overflow].join(' ')}>
+                <div className={[styles.label, styles.overflow].join(" ")}>
                     {currentLabel}
                 </div>
             }

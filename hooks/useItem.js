@@ -7,14 +7,14 @@ import FileSystem from "../../../utils/files/FileSystem"
 import OpenFileProvider from "../../../utils/hooks/OpenFileProvider"
 import openFile from "../../../utils/openFile"
 
-const {shell} = window.require('electron')
+const {shell} = window.require("electron")
 export default function useItem(props) {
     const ref = useRef()
     const [images, setImages] = useState({
         single: new Image(),
         multi: new Image()
     })
-    const {openFiles, setOpenFiles, openTab, setOpenTab} = useContext(OpenFileProvider);
+    const {openFiles, setOpenFiles, openTab, setOpenTab} = useContext(OpenFileProvider)
     useEffect(() => {
         setImages(prev => {
             prev.single.src = dragImageSingle
@@ -25,9 +25,9 @@ export default function useItem(props) {
     }, [])
     useEffect(() => {
         if (props.type === 0)
-            ref.current.setAttribute('data-folder', props.data.id)
+            ref.current.setAttribute("data-folder", props.data.id)
         else
-            ref.current.setAttribute('data-file', props.data.id)
+            ref.current.setAttribute("data-file", props.data.id)
     }, [props.type])
 
     const currentlyOnRename = useMemo(() => {
@@ -45,9 +45,9 @@ export default function useItem(props) {
     const onDoubleClick = () => {
 
         if (props.type === 1) {
-            if (props.data.type === 'material' || props.data.type === 'flow' || props.data.type === 'ui')
+            if (props.data.type === "material" || props.data.type === "flow" || props.data.type === "ui")
                 openFile(openFiles, setOpenTab, setOpenFiles, props.data.registryID, currentLabel, props.data.type)
-            else if (props.data.type === 'flowRaw')
+            else if (props.data.type === "flowRaw")
                 shell.openPath(props.hook.path + FileSystem.sep + props.data.id).catch()
             else
                 props.setSelected(props.data.id)
@@ -75,30 +75,30 @@ export default function useItem(props) {
     }
 
     useEffect(() => {
-        ref.current?.addEventListener('drop', onDrop)
-        ref.current?.addEventListener('dragleave', onDragLeave)
-        ref.current?.addEventListener('dragover', onDragOver)
-        ref.current?.addEventListener('dblclick', onDoubleClick)
+        ref.current?.addEventListener("drop", onDrop)
+        ref.current?.addEventListener("dragleave", onDragLeave)
+        ref.current?.addEventListener("dragover", onDragOver)
+        ref.current?.addEventListener("dblclick", onDoubleClick)
 
         return () => {
-            ref.current?.removeEventListener('drop', onDrop)
-            ref.current?.removeEventListener('dragleave', onDragLeave)
-            ref.current?.removeEventListener('dragover', onDragOver)
-            ref.current?.removeEventListener('dblclick', onDoubleClick)
+            ref.current?.removeEventListener("drop", onDrop)
+            ref.current?.removeEventListener("dragleave", onDragLeave)
+            ref.current?.removeEventListener("dragover", onDragOver)
+            ref.current?.removeEventListener("dblclick", onDoubleClick)
         }
     }, [props.data, ref, openFiles])
     const handleDrag = (event) => {
         if (event.ctrlKey) {
             const selected = props.selected.map(s => {
                 return props.hook.items.find(i => i.id === s)
-            }).filter(e => e && !e.isFolder && e.type === 'mesh')
+            }).filter(e => e && !e.isFolder && e.type === "mesh")
 
 
             event.dataTransfer.setDragImage(images.multi, 0, 0)
-            event.dataTransfer.setData('text', JSON.stringify(selected.map(s => s.registryID)))
+            event.dataTransfer.setData("text", JSON.stringify(selected.map(s => s.registryID)))
         } else {
             event.dataTransfer.setDragImage(images.single, 0, 0)
-            event.dataTransfer.setData('text', JSON.stringify([props.type === 1 ? props.data.registryID : props.data.id]))
+            event.dataTransfer.setData("text", JSON.stringify([props.type === 1 ? props.data.registryID : props.data.id]))
         }
 
     }
