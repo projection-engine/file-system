@@ -18,7 +18,7 @@ export default function FilesView(props) {
     const bookmarksHook = useBookmarks(hook.fileSystem)
     const [selected, setSelected] = useState([])
     const [hidden, setHidden] = useState(false)
-    const [searchString, setSearchString] = useState('')
+    const [searchString, setSearchString] = useState("")
     const [visualizationType, setVisualizationType] = useState(0)
 
     const findParent = (searchFor, searchBase) => {
@@ -34,7 +34,7 @@ export default function FilesView(props) {
 
     const path = useMemo(() => {
         let response = [{
-            name: 'Assets',
+            name: "Assets",
             path: FileSystem.sep
         }]
 
@@ -64,16 +64,16 @@ export default function FilesView(props) {
 
         <div className={styles.wrapper} ref={hook.ref}>
             <DeleteConfirmation hook={hook}/>
-            <div className={styles.content} style={{width: '20%',     borderRadius: '0 5px 5px 0'}}>
+            <div className={styles.content} style={{width: "20%",     borderRadius: "0 5px 5px 0"}}>
                 <div className={styles.header}>
                     <label className={styles.overflow}>Content browser</label>
                 </div>
                 {hidden ? null : <SideBar hook={hook} bookmarksHook={bookmarksHook} {...props}/>}
             </div>
-            <ResizableBar type={'width'}/>
-            <div className={styles.content} id={props.id + '-files'}>
+            <ResizableBar type={"width"}/>
+            <div className={styles.content} id={props.id + "-files"}>
                 <ControlBar
-                    {...props}
+                    setAlert={props.setAlert}
                     bookmarksHook={bookmarksHook}
                     searchString={searchString}
                     visualizationType={visualizationType}

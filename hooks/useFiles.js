@@ -1,13 +1,12 @@
-import React, {useContext, useEffect, useRef, useState} from "react"
+import {useContext, useEffect, useRef, useState} from "react"
 
 import QuickAccessProvider from "../../../utils/hooks/QuickAccessProvider"
 import {AlertProvider} from "@f-ui/core"
 import EntitiesProvider from "../../../utils/hooks/EntitiesProvider"
 import LoaderProvider from "../../../../components/loader/LoaderProvider"
-import AsyncFS from "../../../utils/AsyncFS"
+import {getCall} from "../../../utils/AsyncFS"
 import FileSystem from "../../../utils/files/FileSystem"
 
-const pathRequire = window.require('path')
 export default function useFiles() {
     const [openModal, setOpenModal] = useState(false)
     const load = useContext(LoaderProvider)
@@ -20,118 +19,61 @@ export default function useFiles() {
     const [currentDirectory, setCurrentDirectory] = useState({
         id: FileSystem.sep
     })
-
+    const [navHistory, setNavHistory] = useState([])
+    const [navIndex, setNavIndex] = useState(0)
     const [createTerrain, setCreateTerrain] = useState(false)
     const [toDelete, setToDelete] = useState({})
     const quickAccess = useContext(QuickAccessProvider)
-    const path = (quickAccess.fileSystem.path + FileSystem.sep + 'assets')
+    const path = (quickAccess.fileSystem.path + FileSystem.sep + "assets")
     const {entities, removeEntities} = useContext(EntitiesProvider)
+    const [loading, setLoading] = useState(false)
 
+    const refreshFiles = async () => {
+        setLoading(true)
 
-    useEffect(() => {
-        if (!initialized) {
-            refreshFiles()
-        }
-    }, [])
-
-    const parsePath = async (p, registryData) => {
-        const [e, stat] = await AsyncFS.lstat(p)
-        if (!e) {
-            const split = p.split(FileSystem.sep )
-            let parent = [...split]
-            parent.pop()
-
-            parent = parent.join(FileSystem.sep ).replace(path, '')
-            const currentPath = p.replace(path, '')
-            if (stat && stat.isDirectory) {
-                return {
-                    isFolder: true,
-                    name: [...split].pop(),
-                    creationDate: new Date(stat.birthtime).toDateString(),
-                    id: currentPath,
-
-                    parent: split[split.length - 2] === 'assets' ? undefined : parent
-                }
-            } else {
-
-                const parsedPath = pathRequire.resolve(path + currentPath).replace(path +FileSystem.sep , '')
-                return {
-                    isFolder: false,
-                    name: [...split].pop().split(/\.([a-zA-Z0-9]+)$/)[0],
-                    type: p.split('.').pop(),
-                    fileType: '.' + p.split('.').pop(),
-                    creationDate: new Date(stat.birthtime).toDateString(),
-                    id: currentPath,
-                    size: stat.size,
-                    registryID: registryData.find(reg => {
-                        return reg.path === parsedPath || reg.path === currentPath
-                    })?.id,
-                    parent: split[split.length - 2] === 'assets' ? undefined : parent
-                }
-            }
-        }
-    }
-
-
-    const refreshFiles = () => {
         quickAccess.refresh()
-        let promises = [], creationPromises = [new Promise(resolve => {
-            quickAccess.fileSystem.readRegistry()
-                .then(res => {
-                    resolve(res)
-                })
-        })]
-
-        Promise.all(creationPromises)
-            .then(async registryData => {
-                const rD = registryData.flat().filter(reg => reg !== undefined)
-                const res = await quickAccess.fileSystem.dirStructure(path)
-                res.forEach(f => {
-                    promises.push(parsePath(f, rD))
-                })
-                const promiseRes = await Promise.all(promises)
-                if (!initialized) setInitialized(true)
-                setItems(promiseRes.filter(p => p).sort((a, b) => {
-                    if (a.name < b.name) return -1
-                    if (a.name > b.name) return 1
-                    return 0
-                }))
-
+        if (!initialized) setInitialized(true)
+        getCall("refresh-files", {pathName: path})
+            .then(done => {
+                setLoading(false)
+                setItems(done)
             })
     }
-    const [navHistory, setNavHistory] = useState([])
-    const [navIndex, setNavIndex] = useState(0)
+    
+    useEffect(() => {
+        if (!initialized)
+            refreshFiles().catch()
+    }, [])
+
     useEffect(() => {
         if (navHistory.length > 0) setNavIndex(navHistory.length - 1)
     }, [navHistory])
 
-    const returnDir = () => {
-        if (navIndex > 0 && navHistory[navIndex - 1]) {
-
-            setNavIndex(n => {
-                return n - 1
-            })
-            setCurrentDirectory(navHistory[navIndex])
-        }
-    }
-    const forwardDir = () => {
-        if (navIndex < 10 && navHistory[navIndex + 1]) {
-            setNavIndex(n => {
-                return n + 1
-            })
-            setCurrentDirectory(navHistory[navIndex])
-        }
-    }
     return {
         toDelete,
         setToDelete,
         removeEntities,
         refreshFiles,
         fileSystem: quickAccess.fileSystem,
-
+        loading,
         navIndex,
-        returnDir,
-        forwardDir,
+        returnDir:() => {
+            if (navIndex > 0 && navHistory[navIndex - 1]) {
+
+                setNavIndex(n => {
+                    return n - 1
+                })
+                setCurrentDirectory(navHistory[navIndex])
+            }
+        },
+        forwardDir:() => {
+            if (navIndex < 10 && navHistory[navIndex + 1]) {
+                setNavIndex(n => {
+                    return n + 1
+                })
+                setCurrentDirectory(navHistory[navIndex])
+            }
+        },
 
         navHistory,
         setNavHistory,
