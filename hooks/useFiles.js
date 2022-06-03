@@ -28,16 +28,15 @@ export default function useFiles() {
     const {entities, removeEntities} = useContext(EntitiesProvider)
     const [loading, setLoading] = useState(false)
 
-    const refreshFiles = async () => {
+    async function refreshFiles(){
         setLoading(true)
 
         quickAccess.refresh()
         if (!initialized) setInitialized(true)
-        getCall("refresh-files", {pathName: path})
-            .then(done => {
-                setLoading(false)
-                setItems(done)
-            })
+        const done = await getCall("refresh-files", {pathName: path})
+        console.log(done)
+        setLoading(false)
+        setItems(done)
     }
     
     useEffect(() => {
