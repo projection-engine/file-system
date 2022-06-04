@@ -5,15 +5,13 @@ export default function useBookmarks(fileSystem) {
     const [bookmarks, setBookmarks] = useState([])
     useEffect(() => {
 
-            fileSystem.readFile(fileSystem.path + FileSystem.sep + 'bookmarks.meta', 'json')
-                .then(res => {
-                    if (res)
-                        setBookmarks(res)
-                })
+        fileSystem.readFile(fileSystem.path + FileSystem.sep + "bookmarks.meta", "json")
+            .then(res => {
+                if (res)
+                    setBookmarks(res)
+            })
 
     }, [])
-
-
 
     const addBookmark = (id) => {
         setBookmarks(prev => {
@@ -21,14 +19,14 @@ export default function useBookmarks(fileSystem) {
                 name: id.split(FileSystem.sep ).pop(),
                 path: id
             }]
-            fileSystem.writeFile(FileSystem.sep + 'bookmarks.meta', JSON.stringify(n)).then(e => console.log(e))
+            fileSystem.writeFile(FileSystem.sep + "bookmarks.meta", JSON.stringify(n)).then(e => console.log(e))
             return n
         })
     }
     const removeBookmark = (id) => {
         setBookmarks(prev => {
             const n = prev.filter(i => i.path !== id)
-            fileSystem.writeFile(FileSystem.sep + 'bookmarks.meta', JSON.stringify(n)).catch()
+            fileSystem.writeFile(FileSystem.sep + "bookmarks.meta", JSON.stringify(n)).catch()
             return n
         })
     }
@@ -39,14 +37,14 @@ export default function useBookmarks(fileSystem) {
                 name: newPath.split(FileSystem.sep).pop(),
                 path: newPath
             }]
-            fileSystem.writeFile(FileSystem.sep + 'bookmarks.meta', JSON.stringify(n)).catch()
+            fileSystem.writeFile(FileSystem.sep + "bookmarks.meta", JSON.stringify(n)).catch()
             return n
         })
     }
     const removeBlock = (v) => {
         setBookmarks(prev => {
             const n = prev.filter(i => !v.includes(i.path))
-            fileSystem.writeFile(FileSystem.sep + 'bookmarks.meta', JSON.stringify(n)).catch()
+            fileSystem.writeFile(FileSystem.sep + "bookmarks.meta", JSON.stringify(n)).catch()
             return n
         })
     }

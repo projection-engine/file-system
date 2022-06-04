@@ -1,7 +1,7 @@
 import React from "react"
 import {onCreate} from "./getDirectoryOptions"
 import handleDelete from "./handleDelete"
-import AsyncFS from "../../../utils/AsyncFS"
+import AsyncFS from "../../../templates/AsyncFS"
 import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES"
 import FileSystem from "../../../utils/files/FileSystem"
 
@@ -47,7 +47,7 @@ class YourClassName{
     }
 }
 `
-const {shell} = window.require('electron')
+const {shell} = window.require("electron")
 export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
     const check = async (path, ext) => {
         let n = path + ext
@@ -62,46 +62,46 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
     }
     return [
         {
-            requiredTrigger: 'data-folder',
-            label: 'Delete',
-            icon: <span className={'material-icons-round'}>delete</span>,
-            onClick: (node) => handleDelete(node.getAttribute('data-folder'), hook, bookmarksHook)
+            requiredTrigger: "data-folder",
+            label: "Delete",
+            icon: <span className={"material-icons-round"}>delete</span>,
+            onClick: (node) => handleDelete(node.getAttribute("data-folder"), hook, bookmarksHook)
         },
         {
-            requiredTrigger: 'data-folder',
-            label: 'New sub-folder',
-            icon: <span className={'material-icons-round'}>create_new_folder</span>,
-            onClick: (node) => onCreate(node.getAttribute('data-folder'), hook).catch()
+            requiredTrigger: "data-folder",
+            label: "New sub-folder",
+            icon: <span className={"material-icons-round"}>create_new_folder</span>,
+            onClick: (node) => onCreate(node.getAttribute("data-folder"), hook).catch()
         },
         {
-            requiredTrigger: 'data-folder',
-            label: 'Rename',
-            icon: <span className={'material-icons-round'}>edit</span>,
+            requiredTrigger: "data-folder",
+            label: "Rename",
+            icon: <span className={"material-icons-round"}>edit</span>,
             onClick: (node) => {
-                setCurrentItem(node.getAttribute('data-folder'))
+                setCurrentItem(node.getAttribute("data-folder"))
             }
         },
         {
-            requiredTrigger: 'data-file',
-            label: 'Rename',
-            icon: <span className={'material-icons-round'}>edit</span>,
+            requiredTrigger: "data-file",
+            label: "Rename",
+            icon: <span className={"material-icons-round"}>edit</span>,
             onClick: (node) => {
-                setCurrentItem(node.getAttribute('data-file'))
+                setCurrentItem(node.getAttribute("data-file"))
             }
         },
         {
-            requiredTrigger: 'data-file',
-            label: 'Delete',
-            icon: <span className={'material-icons-round'}>delete</span>,
-            onClick: (node) => handleDelete(node.getAttribute('data-file'), hook)
+            requiredTrigger: "data-file",
+            label: "Delete",
+            icon: <span className={"material-icons-round"}>delete</span>,
+            onClick: (node) => handleDelete(node.getAttribute("data-file"), hook)
 
         },
         {
-            requiredTrigger: 'data-folder-wrapper',
-            label: 'New UI Frame',
-            icon: <span className={'material-icons-round'}>wysiwyg</span>,
+            requiredTrigger: "data-folder-wrapper",
+            label: "New UI Frame",
+            icon: <span className={"material-icons-round"}>wysiwyg</span>,
             onClick: async () => {
-                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New UI Frame', '.ui')
+                let path = await check(hook.currentDirectory.id + FileSystem.sep + "New UI Frame", ".ui")
                 hook.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
                         hook.refreshFiles()
@@ -109,11 +109,11 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             }
         },
         {
-            requiredTrigger: 'data-folder-wrapper',
-            label: 'New Material',
-            icon: <span className={'material-icons-round'}>texture</span>,
+            requiredTrigger: "data-folder-wrapper",
+            label: "New Material",
+            icon: <span className={"material-icons-round"}>texture</span>,
             onClick: async () => {
-                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New Material', '.material')
+                let path = await check(hook.currentDirectory.id + FileSystem.sep + "New Material", ".material")
                 hook.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
                         hook.refreshFiles()
@@ -121,11 +121,11 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             }
         },
         {
-            requiredTrigger: 'data-folder-wrapper',
-            label: 'New Blueprint',
-            icon: <span className={'material-icons-round'}>code</span>,
+            requiredTrigger: "data-folder-wrapper",
+            label: "New Blueprint",
+            icon: <span className={"material-icons-round"}>code</span>,
             onClick: async () => {
-                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New ScriptView', FILE_TYPES.SCRIPT)
+                let path = await check(hook.currentDirectory.id + FileSystem.sep + "New ScriptView", FILE_TYPES.SCRIPT)
 
                 hook.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
@@ -135,16 +135,16 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
         },
 
         {
-            requiredTrigger: 'data-folder-wrapper',
-            label: 'New sub-folder',
-            icon: <span className={'material-icons-round'}>create_new_folder</span>,
+            requiredTrigger: "data-folder-wrapper",
+            label: "New sub-folder",
+            icon: <span className={"material-icons-round"}>create_new_folder</span>,
             onClick: async () => {
 
-                let path = hook.currentDirectory.id + FileSystem.sep + 'New folder'
+                let path = hook.currentDirectory.id + FileSystem.sep + "New folder"
 
                 const existing = await hook.fileSystem.foldersFromDirectory(hook.path + hook.currentDirectory.id)
                 if (existing.length > 0)
-                    path += ' - ' + existing.length
+                    path += " - " + existing.length
 
                 const [e] = await AsyncFS.mkdir(hook.path + path, {})
                 if (!e)
@@ -152,27 +152,27 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             }
         },
         {
-            requiredTrigger: 'data-folder-wrapper',
-            label: 'Open with explorer',
-            icon: <span className={'material-icons-round'}>open_in_new</span>,
+            requiredTrigger: "data-folder-wrapper",
+            label: "Open with explorer",
+            icon: <span className={"material-icons-round"}>open_in_new</span>,
             onClick: () => {
                 shell.showItemInFolder(hook.path + FileSystem.sep +  hook.currentDirectory.id)
             }
         },
         {
-            requiredTrigger: 'data-folder',
-            label: 'Open with explorer',
-            icon: <span className={'material-icons-round'}>open_in_new</span>,
+            requiredTrigger: "data-folder",
+            label: "Open with explorer",
+            icon: <span className={"material-icons-round"}>open_in_new</span>,
             onClick: (node) => {
-                shell.showItemInFolder(hook.path + FileSystem.sep +  node.getAttribute('data-folder') + FileSystem.sep)
+                shell.showItemInFolder(hook.path + FileSystem.sep +  node.getAttribute("data-folder") + FileSystem.sep)
             }
         },
         {
-            requiredTrigger: 'data-folder-wrapper',
-            label: 'New raw ScriptView',
-            icon: <span className={'material-icons-round'}>code</span>,
+            requiredTrigger: "data-folder-wrapper",
+            label: "New raw ScriptView",
+            icon: <span className={"material-icons-round"}>code</span>,
             onClick: async () => {
-                let path = await check(hook.currentDirectory.id + FileSystem.sep + 'New Raw ScriptView', '.flowRaw')
+                let path = await check(hook.currentDirectory.id + FileSystem.sep + "New Raw ScriptView", ".flowRaw")
 
                 hook.fileSystem.writeAsset(path, template)
                     .then(() => {

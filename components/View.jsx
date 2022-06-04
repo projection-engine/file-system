@@ -6,6 +6,7 @@ import useItems from "../hooks/useItems"
 import {ContextMenu} from "@f-ui/core"
 import SelectBox from "../../../../components/selectbox/SelectBox"
 import handleRename from "../utils/handleRename"
+import useShortcuts from "../hooks/useShortcuts"
 
 export default function View(props) {
     const {
@@ -16,21 +17,22 @@ export default function View(props) {
     } = useItems(props)
     const cardSize = useMemo(() => {
         switch (props.visualizationType){
-            case 1:
-                return '75px'
-            case 2:
-                return '100%'
-            default:
-                return '115px'
+        case 1:
+            return "75px"
+        case 2:
+            return "100%"
+        default:
+            return "115px"
         }
     }, [props.visualizationType])
+    useShortcuts(props.hook, props.bookmarksHook, props.selected, props.setSelected)
 
 
     return (
         <div
+            id={"content-browser"}
             ref={ref}
             className={styles.content}
-            style={{display: props.hidden ? 'none' : undefined}}
             data-folder-wrapper={props.hook.currentDirectory}
 
         >
@@ -38,20 +40,20 @@ export default function View(props) {
             <ContextMenu
                 options={options}
                 onContext={(node) => {
-                    if (node !== undefined && node !== null && (node.getAttribute('data-file') || node.getAttribute('data-folder'))) {
-                        const attr = node.getAttribute('data-file') ? node.getAttribute('data-file') : node.getAttribute('data-folder')
+                    if (node !== undefined && node !== null && (node.getAttribute("data-file") || node.getAttribute("data-folder"))) {
+                        const attr = node.getAttribute("data-file") ? node.getAttribute("data-file") : node.getAttribute("data-folder")
                         props.setSelected([attr])
                     }
                 }}
                 className={styles.filesWrapper}
                 styles={{
-                    '--card_size': cardSize,
-                    padding: props.visualizationType === 2 ? '0' : undefined, gap: props.visualizationType === 2 ? '0' : undefined,
+                    "--card_size": cardSize,
+                    padding: props.visualizationType === 2 ? "0" : undefined, gap: props.visualizationType === 2 ? "0" : undefined,
                 }}
                 triggers={[
-                    'data-folder-wrapper',
-                    'data-file',
-                    'data-folder'
+                    "data-folder-wrapper",
+                    "data-file",
+                    "data-folder"
                 ]}
             >
                 <SelectBox nodes={props.hook.items} selected={props.selected} setSelected={props.setSelected}/>
@@ -66,10 +68,14 @@ export default function View(props) {
                                 childrenQuantity={child.children}
                                 selected={props.selected}
                                 setSelected={(e) => props.setSelected(prev => {
-                                    if(e.ctrlKey)
-                                        return [...prev, child.id]
+                                    if(e) {
+                                        if (e.ctrlKey)
+                                            return [...prev, child.id]
+                                        else
+                                            return [child.id]
+                                    }
                                     else
-                                        return  [child.id]
+                                        return  []
                                 })}
                                 hook={props.hook}
                                 onRename={currentItem}
@@ -82,8 +88,8 @@ export default function View(props) {
 
                     :
                     <div className={styles.empty}>
-                        <span className={'material-icons-round'} style={{fontSize: '100px'}}>folder</span>
-                        <div style={{fontSize: '.8rem'}}>
+                        <span className={"material-icons-round"} style={{fontSize: "100px"}}>folder</span>
+                        <div style={{fontSize: ".8rem"}}>
                             Empty folder
                         </div>
                     </div>}
@@ -100,7 +106,6 @@ View.propTypes = {
     searchString: PropTypes.string,
     selected: PropTypes.array,
     setSelected: PropTypes.func,
-    accept: PropTypes.array,
     hook: PropTypes.object.isRequired,
     setAlert: PropTypes.func.isRequired
 }

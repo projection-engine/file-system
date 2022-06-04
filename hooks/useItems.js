@@ -15,7 +15,7 @@ export default function useItems({hook, accept, searchString, bookmarksHook}) {
 
                     return {
                         ...e, children: e.isFolder ? hook.items.filter(i => {
-                            return typeof i.parent === 'string' && i.parent === e.id
+                            return typeof i.parent === "string" && i.parent === e.id
                         }).length : 0,
 
                     }
@@ -27,7 +27,7 @@ export default function useItems({hook, accept, searchString, bookmarksHook}) {
                     return {
                         ...e,
                         children: e.isFolder ? hook.items.filter(i => {
-                            return typeof i.parent === 'string' && i.parent === e.id
+                            return typeof i.parent === "string" && i.parent === e.id
                         }).length : 0,
                     }
                 })
@@ -37,14 +37,14 @@ export default function useItems({hook, accept, searchString, bookmarksHook}) {
 
     const onDrop = e => {
         hook.setAlert({
-            type: 'info',
-            message: 'Moving files.'
+            type: "info",
+            message: "Moving files."
         })
         e.preventDefault()
 
         let files = Array.from(e.dataTransfer.items)
         if (files.length > 0) {
-            files = files.filter(f => f.kind === 'file')
+            files = files.filter(f => f.kind === "file")
             files = files.map(f => f.getAsFile())
             files = files.filter(f => {
                 let valid = true
@@ -63,11 +63,11 @@ export default function useItems({hook, accept, searchString, bookmarksHook}) {
         }
     }
     useEffect(() => {
-        ref.current?.addEventListener('drop', onDrop)
-        ref.current?.addEventListener('dragover', onDragOver)
+        ref.current?.addEventListener("drop", onDrop)
+        ref.current?.addEventListener("dragover", onDragOver)
         return () => {
-            ref.current?.removeEventListener('drop', onDrop)
-            ref.current?.removeEventListener('dragover', onDragOver)
+            ref.current?.removeEventListener("drop", onDrop)
+            ref.current?.removeEventListener("dragover", onDragOver)
         }
     }, [ref, hook, accept, searchString])
 
@@ -75,11 +75,7 @@ export default function useItems({hook, accept, searchString, bookmarksHook}) {
         return getFileOptions(hook, setCurrentItem, bookmarksHook)
     }, [hook, accept, searchString])
 
-
     return {
         currentItem, setCurrentItem,
-        filesToRender, ref,
-        options ,
-
-    }
+        filesToRender, ref, options }
 }

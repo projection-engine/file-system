@@ -1,17 +1,16 @@
 import {useContext, useEffect, useRef, useState} from "react"
 
-import QuickAccessProvider from "../../../utils/hooks/QuickAccessProvider"
+import QuickAccessProvider from "../../../hooks/QuickAccessProvider"
 import {AlertProvider} from "@f-ui/core"
-import EntitiesProvider from "../../../utils/hooks/EntitiesProvider"
+import EntitiesProvider from "../../../hooks/EntitiesProvider"
 import LoaderProvider from "../../../../components/loader/LoaderProvider"
-import {getCall} from "../../../utils/AsyncFS"
+import {getCall} from "../../../templates/AsyncFS"
 import FileSystem from "../../../utils/files/FileSystem"
 
 export default function useFiles() {
     const [openModal, setOpenModal] = useState(false)
     const load = useContext(LoaderProvider)
     const alert = useContext(AlertProvider)
-    const ref = useRef()
     const uploadRef = useRef()
     const [onRename, setOnRename] = useState({})
     const [initialized, setInitialized] = useState(false)
@@ -30,11 +29,9 @@ export default function useFiles() {
 
     async function refreshFiles(){
         setLoading(true)
-
         quickAccess.refresh()
         if (!initialized) setInitialized(true)
         const done = await getCall("refresh-files", {pathName: path})
-        console.log(done)
         setLoading(false)
         setItems(done)
     }
@@ -79,7 +76,6 @@ export default function useFiles() {
 
         path,
         load,
-        ref,
         currentDirectory,
         setCurrentDirectory: v => {
             setNavHistory(prev => {

@@ -4,17 +4,17 @@ import handleDropFolder from "../utils/handleDropFolder"
 import dragImageMulti from "../../../../static/table.svg"
 import dragImageSingle from "../../../../static/file.svg"
 import FileSystem from "../../../utils/files/FileSystem"
-import OpenFileProvider from "../../../utils/hooks/OpenFileProvider"
+import OpenFileProvider from "../../../hooks/OpenFileProvider"
 import openFile from "../../../utils/openFile"
 
-const {shell} = window.require("electron")
+
 export default function useItem(props) {
     const ref = useRef()
     const [images, setImages] = useState({
         single: new Image(),
         multi: new Image()
     })
-    const {openFiles, setOpenFiles, openTab, setOpenTab} = useContext(OpenFileProvider)
+
     useEffect(() => {
         setImages(prev => {
             prev.single.src = dragImageSingle
@@ -42,18 +42,6 @@ export default function useItem(props) {
 
     }, [props.selected])
 
-    const onDoubleClick = () => {
-
-        if (props.type === 1) {
-            if (props.data.type === "material" || props.data.type === "flow" || props.data.type === "ui")
-                openFile(openFiles, setOpenTab, setOpenFiles, props.data.registryID, currentLabel, props.data.type)
-            else if (props.data.type === "flowRaw")
-                shell.openPath(props.hook.path + FileSystem.sep + props.data.id).catch()
-            else
-                props.setSelected(props.data.id)
-        } else
-            props.hook.setCurrentDirectory(props.data)
-    }
 
     const onDragOver = e => {
         if (props.type === 0) {
@@ -78,15 +66,13 @@ export default function useItem(props) {
         ref.current?.addEventListener("drop", onDrop)
         ref.current?.addEventListener("dragleave", onDragLeave)
         ref.current?.addEventListener("dragover", onDragOver)
-        ref.current?.addEventListener("dblclick", onDoubleClick)
 
         return () => {
             ref.current?.removeEventListener("drop", onDrop)
             ref.current?.removeEventListener("dragleave", onDragLeave)
             ref.current?.removeEventListener("dragover", onDragOver)
-            ref.current?.removeEventListener("dblclick", onDoubleClick)
         }
-    }, [props.data, ref, openFiles])
+    }, [props.data, ref])
     const handleDrag = (event) => {
         if (event.ctrlKey) {
             const selected = props.selected.map(s => {

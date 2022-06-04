@@ -24,8 +24,8 @@ export default function handleDelete(entries, hook, bookmarksHook) {
 export function deleteData(id, hook) {
     return new Promise(resolve => {
         hook.setAlert({
-            type: 'info',
-            message: 'Deleting files.'
+            type: "info",
+            message: "Deleting files."
         })
         hook.fileSystem.deleteFile(hook.path +FileSystem.sep + id, true, {recursive: true, force: true}).then(() => {
             if (hook.currentDirectory.id === id)

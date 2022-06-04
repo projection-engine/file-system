@@ -4,7 +4,7 @@ import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core"
 import React, {useMemo} from "react"
 import Search from "../../../../components/search/Search"
 import ImportHandler from "./ImportHandler"
-import AsyncFS from "../../../utils/AsyncFS"
+import AsyncFS from "../../../templates/AsyncFS"
 import FileSystem from "../../../utils/files/FileSystem"
 
 export default function ControlBar(props) {
@@ -50,6 +50,7 @@ export default function ControlBar(props) {
                 <Button
                     className={styles.settingsButton}
                     styles={{borderRadius: 0}}
+                    disabled={hook.currentDirectory.id === FileSystem.sep}
                     onClick={() => {
                         const found = hook.currentDirectory.id
                         if (found) {
