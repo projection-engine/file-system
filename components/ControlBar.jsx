@@ -6,6 +6,7 @@ import Search from "../../../../components/search/Search"
 import ImportHandler from "./ImportHandler"
 import AsyncFS from "../../../templates/AsyncFS"
 import FileSystem from "../../../utils/files/FileSystem"
+import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES"
 
 export default function ControlBar(props) {
     const  {
@@ -98,6 +99,7 @@ export default function ControlBar(props) {
             <Button
                 className={styles.settingsButton}
                 variant={starred ? "filled" : undefined}
+                styles={{border: "none"}}
                 onClick={() => {
                     if (starred)
                         bookmarksHook.removeBookmark(hook.currentDirectory.id)
@@ -107,7 +109,32 @@ export default function ControlBar(props) {
             >
                 <span className={"material-icons-round"}>star</span>
             </Button>
-
+            <Dropdown
+                disabled={hook.loading} hideArrow={true}
+                className={styles.settingsButton}
+                styles={{border: "none"}}
+                onClick={() => {
+                    hook.refreshFiles().catch()
+                }}
+                variant={props.fileType !== undefined ? "filled": undefined}
+            >
+                <span className={"material-icons-round"}>filter_alt</span>
+                <DropdownOptions>
+                    {Object.keys(FILE_TYPES).map((k, i) => (
+                        <React.Fragment key={k + "-filter-key-" + i}>
+                            <DropdownOption
+                                option={{
+                                    label: k.toLowerCase().replace("_", " "),
+                                    icon: props.fileType === FILE_TYPES[k] ? <span className={"material-icons-round"}>check</span> : undefined,
+                                    onClick: () => props.setFileType(props.fileType === FILE_TYPES[k] ? undefined : FILE_TYPES[k]),
+                                    keepAlive: false    ,
+                                }}
+                                className={styles.fileType}
+                            />
+                        </React.Fragment>
+                    ))}
+                </DropdownOptions>
+            </Dropdown>
             <div className={styles.pathWrapper}>
                 {path.map((p, i) => (
                     <React.Fragment key={p.path}>
@@ -171,6 +198,9 @@ export default function ControlBar(props) {
 }
 
 ControlBar.propTypes = {
+    fileType: PropTypes.string,
+    setFileType: PropTypes.func,
+
     visualizationType: PropTypes.number,
     setVisualizationType: PropTypes.func,
 

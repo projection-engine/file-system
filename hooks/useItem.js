@@ -1,28 +1,10 @@
-import {useContext, useEffect, useMemo, useRef, useState} from "react"
+import {useEffect, useMemo, useRef, useState} from "react"
 import styles from "../styles/Item.module.css"
 import handleDropFolder from "../utils/handleDropFolder"
-import dragImageMulti from "../../../../static/table.svg"
-import dragImageSingle from "../../../../static/file.svg"
-import FileSystem from "../../../utils/files/FileSystem"
-import OpenFileProvider from "../../../hooks/OpenFileProvider"
-import openFile from "../../../utils/openFile"
-
 
 export default function useItem(props) {
     const ref = useRef()
-    const [images, setImages] = useState({
-        single: new Image(),
-        multi: new Image()
-    })
 
-    useEffect(() => {
-        setImages(prev => {
-            prev.single.src = dragImageSingle
-            prev.multi.src = dragImageMulti
-
-            return prev
-        })
-    }, [])
     useEffect(() => {
         if (props.type === 0)
             ref.current.setAttribute("data-folder", props.data.id)
@@ -79,13 +61,9 @@ export default function useItem(props) {
                 return props.hook.items.find(i => i.id === s)
             }).filter(e => e && !e.isFolder && e.type === "mesh")
 
-
-            event.dataTransfer.setDragImage(images.multi, 0, 0)
             event.dataTransfer.setData("text", JSON.stringify(selected.map(s => s.registryID)))
-        } else {
-            event.dataTransfer.setDragImage(images.single, 0, 0)
+        } else
             event.dataTransfer.setData("text", JSON.stringify([props.type === 1 ? props.data.registryID : props.data.id]))
-        }
 
     }
 

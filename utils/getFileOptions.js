@@ -69,7 +69,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
         },
         {
             requiredTrigger: "data-folder",
-            label: "New sub-folder",
+            label: "New Folder",
             icon: <span className={"material-icons-round"}>create_new_folder</span>,
             onClick: (node) => onCreate(node.getAttribute("data-folder"), hook).catch()
         },
@@ -122,10 +122,10 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
         },
         {
             requiredTrigger: "data-folder-wrapper",
-            label: "New Blueprint",
+            label: "New Blueprint script",
             icon: <span className={"material-icons-round"}>code</span>,
             onClick: async () => {
-                let path = await check(hook.currentDirectory.id + FileSystem.sep + "New ScriptView", FILE_TYPES.SCRIPT)
+                let path = await check(hook.currentDirectory.id + FileSystem.sep + "New script", FILE_TYPES.SCRIPT)
 
                 hook.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
@@ -136,7 +136,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
 
         {
             requiredTrigger: "data-folder-wrapper",
-            label: "New sub-folder",
+            label: "New Folder",
             icon: <span className={"material-icons-round"}>create_new_folder</span>,
             onClick: async () => {
 
@@ -169,10 +169,10 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
         },
         {
             requiredTrigger: "data-folder-wrapper",
-            label: "New raw ScriptView",
+            label: "New raw script",
             icon: <span className={"material-icons-round"}>code</span>,
             onClick: async () => {
-                let path = await check(hook.currentDirectory.id + FileSystem.sep + "New Raw ScriptView", ".flowRaw")
+                let path = await check(hook.currentDirectory.id + FileSystem.sep + "New script", ".flowRaw")
 
                 hook.fileSystem.writeAsset(path, template)
                     .then(() => {

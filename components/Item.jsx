@@ -28,7 +28,7 @@ export default function Item(props) {
             else
                 props.setSelected(props.data.id)
         } else {
-            props.setSelected(undefined)
+            props.reset()
             props.hook.setCurrentDirectory(props.data)
         }
     }
@@ -104,7 +104,7 @@ Item.propTypes = {
     index: PropTypes.number,
     visualizationType: PropTypes.number,
     childrenQuantity: PropTypes.number,
-
+    reset: PropTypes.func,
     type: PropTypes.oneOf([0, 1]),
     data: PropTypes.object,
     selected: PropTypes.array,

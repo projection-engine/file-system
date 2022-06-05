@@ -3,35 +3,37 @@ import {useEffect, useMemo, useRef, useState} from "react"
 import getFileOptions from "../utils/getFileOptions"
 import FileSystem from "../../../utils/files/FileSystem"
 
-export default function useItems({hook, accept, searchString, bookmarksHook}) {
+export default function useItems({hook, accept, searchString, bookmarksHook, fileType}) {
     const [currentItem, setCurrentItem] = useState()
-
+    function map(arr){
+        return   arr.map(e => {
+            return {
+                ...e, children: e.isFolder ? hook.items.filter(i => {
+                    return typeof i.parent === "string" && i.parent === e.id
+                }).length : 0,
+            }
+        })
+    }
 
     const filesToRender = useMemo(() => {
+        console.log(hook.items)
+        let type = fileType?.split("")
+        if(type) {
+            type.shift()
+            type= type.join("")
+        }
+        if(searchString || fileType)
+            return  map(hook.items
+                .filter(file => (searchString.length > 0 && file.name.toLowerCase().includes(searchString)  || type && file.type === type && !file.isFolder)))
+
         if(hook.currentDirectory.id !== FileSystem.sep )
-            return hook.items
-                .filter(file => file.parent === hook.currentDirectory.id && (searchString.length > 0 ? file.name.toLowerCase().includes(searchString) : true))
-                .map(e => {
-
-                    return {
-                        ...e, children: e.isFolder ? hook.items.filter(i => {
-                            return typeof i.parent === "string" && i.parent === e.id
-                        }).length : 0,
-
-                    }
-                })
+            return map(hook.items
+                .filter(file => file.parent === hook.currentDirectory.id))
         else
-            return hook.items
-                .filter(file => !file.parent && (searchString.length > 0 ? file.name.toLowerCase().includes(searchString) : true))
-                .map(e => {
-                    return {
-                        ...e,
-                        children: e.isFolder ? hook.items.filter(i => {
-                            return typeof i.parent === "string" && i.parent === e.id
-                        }).length : 0,
-                    }
-                })
-    }, [hook.items, hook.currentDirectory, searchString])
+            return map(hook.items
+                .filter(file => !file.parent))
+    }, [hook.items, hook.currentDirectory, searchString, fileType])
+
     const ref = useRef()
     const onDragOver = e => e.preventDefault()
 

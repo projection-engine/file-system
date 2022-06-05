@@ -1,159 +1,141 @@
-
 .button {
-    padding: 0 2px !important;
-    height: 100%;
-    gap: 4px;
-
-    overflow: hidden;
-    max-width: 100%;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-    font-size: .7rem;
-    color: var(--fabric-color-tertiary);
-    background: transparent;
-    outline: none;
-    border: none;
-    cursor: pointer;
+  padding: 0 2px !important;
+  height: 100%;
+  gap: 4px;
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.7rem;
+  color: var(--fabric-color-tertiary);
+  background: transparent;
+  outline: none;
+  border: none;
+  cursor: pointer;
 }
-.button:hover{
-    color: var(--fabric-accent-color);
+
+.button:hover {
+  color: var(--fabric-accent-color);
 }
 
 .settingsButton {
-    height: 25px;
-    min-width: 25px;
-
-    padding: 0 2px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: .7rem;
-
-    background: var(--fabric-border-primary);
-    border-right: var(--fabric-background-secondary) 1px solid;
+  height: 25px;
+  min-width: 25px;
+  padding: 0 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  background: var(--fabric-border-primary);
+  border-right: var(--fabric-background-secondary) 1px solid;
 }
 
 .settingsButton > * {
-    font-size: 1.1rem !important;
+  font-size: 1.1rem !important;
 }
-.settingsButton:disabled{
-    color: #999999;
+
+.settingsButton:disabled {
+  color: #999;
 }
 
 .pathWrapper {
-
-    max-width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 0;
-
-    background: var(--fabric-background-tertiary);
-    border: var(--fabric-border-primary) 1px solid;
-    border-radius:5px;
-
-    height: 25px;
-    overflow-y: hidden;
-    overflow-x: auto;
-    width: 100%;
-
-    padding: 2px;
-    font-weight: normal;
-    color: var(--fabric-color-secondary);
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+  background: var(--fabric-background-tertiary);
+  border: var(--fabric-border-primary) 1px solid;
+  border-radius: 5px;
+  height: 25px;
+  overflow-y: hidden;
+  overflow-x: auto;
+  width: 100%;
+  padding: 2px;
+  font-weight: normal;
+  color: var(--fabric-color-secondary);
 }
 
 .divider {
-    width: 2px;
-    height: 20px;
-    min-width: 2px;
-    background: var(--fabric-border-primary);
-
-
+  width: 2px;
+  height: 20px;
+  min-width: 2px;
+  background: var(--fabric-border-primary);
 }
 
 .importHeader {
-    font-weight: 550;
+  font-weight: 550;
 }
 
 .modal {
-    color: var(--fabric-color-secondary);
-    display: flex;
-    flex-direction: column;
-    /*align-content: flex-start;*/
+  color: var(--fabric-color-secondary);
+  display: flex;
+  flex-direction: column;
 
-    gap: 16px;
+  /* align-content: flex-start; */
 
-    background: var(--fabric-background-primary);
-    width: 35%;
-    height: fit-content;
-    max-height: 75%;
-
-    border-radius: 5px;
-    padding: 8px;
-
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-
+  gap: 16px;
+  background: var(--fabric-background-primary);
+  width: 35%;
+  height: fit-content;
+  max-height: 75%;
+  border-radius: 5px;
+  padding: 8px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-
 .toImport {
-    height: 100%;
-
-    display: grid;
-    align-items: flex-start;
-    align-content: start;
-
-    overflow-y: auto;
+  height: 100%;
+  display: grid;
+  align-items: flex-start;
+  align-content: start;
+  overflow-y: auto;
 }
 
 .toolTip {
-    display: grid;
-    justify-content: flex-start;
-    text-align: left;
-    width: 100%;
+  display: grid;
+  justify-content: flex-start;
+  text-align: left;
+  width: 100%;
 }
 
 .icon {
-    width: fit-content;
+  width: fit-content;
 }
 
 .image {
-    width: 100%;
-    border-radius: 5px;
-
+  width: 100%;
+  border-radius: 5px;
 }
 
 .input {
-
-    display: grid;
-    align-items: center;
-    gap: 8px;
-
-    white-space: nowrap;
-    font-size: .7rem;
-    font-weight: 500;
-    width: 100%;
-
+  display: grid;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-size: 0.7rem;
+  font-weight: 500;
+  width: 100%;
 }
 
-.wrapper{
-    height: 100%;
-    padding: 0 4px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    max-height: 35px;
+.wrapper {
+  height: 100%;
+  padding: 0 4px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-height: 35px;
 }
-.buttonGroup{
-    display: flex;
-    align-items: center;
 
+.buttonGroup {
+  display: flex;
+  align-items: center;
+}
+
+.fileType > * {
+  text-transform: capitalize;
 }

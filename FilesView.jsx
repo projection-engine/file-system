@@ -16,7 +16,7 @@ export default function FilesView(props) {
     const hook = useFiles(props.setAlert)
     const bookmarksHook = useBookmarks(hook.fileSystem)
     const [selected, setSelected] = useState([])
-
+    const [fileType, setFileType] = useState()
     const [searchString, setSearchString] = useState("")
     const [visualizationType, setVisualizationType] = useState(0)
 
@@ -60,6 +60,8 @@ export default function FilesView(props) {
             <ResizableBar type={"width"}/>
             <div className={styles.content} id={props.id + "-files"}>
                 <ControlBar
+                    fileType={fileType}
+                    setFileType={setFileType}
                     setAlert={props.setAlert}
                     bookmarksHook={bookmarksHook}
                     searchString={searchString}
@@ -73,6 +75,9 @@ export default function FilesView(props) {
                 />
 
                 <View
+                    setSearchString={setSearchString}
+                    fileType={fileType}
+                    setFileType={setFileType}
                     bookmarksHook={bookmarksHook}
                     setAlert={props.setAlert}
                     hook={hook}

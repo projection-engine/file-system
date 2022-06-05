@@ -4,7 +4,7 @@ import React, {useMemo} from "react"
 import Item from "./Item"
 import useItems from "../hooks/useItems"
 import {ContextMenu} from "@f-ui/core"
-import SelectBox from "../../../../components/selectbox/SelectBox"
+import SelectBox from "../../../../components/select-box/SelectBox"
 import handleRename from "../utils/handleRename"
 import useShortcuts from "../hooks/useShortcuts"
 
@@ -13,8 +13,8 @@ export default function View(props) {
         setCurrentItem, currentItem,
         filesToRender, ref,
         options ,
-
     } = useItems(props)
+
     const cardSize = useMemo(() => {
         switch (props.visualizationType){
         case 1:
@@ -62,7 +62,11 @@ export default function View(props) {
                         <React.Fragment key={child.id}>
                             <Item
                                 index={index}
-
+                                reset={() => {
+                                    props.setSelected([])
+                                    props.setSearchString("")
+                                    props.setFileType(undefined)
+                                }}
                                 type={child.isFolder ? 0 : 1}
                                 data={child}
                                 childrenQuantity={child.children}
@@ -100,10 +104,16 @@ export default function View(props) {
 }
 
 View.propTypes = {
+    fileType: PropTypes.string,
+    setFileType: PropTypes.func,
+
+    searchString: PropTypes.string,
+    setSearchString: PropTypes.func,
+
+
     visualizationType: PropTypes.number,
 
     bookmarksHook: PropTypes.object,
-    searchString: PropTypes.string,
     selected: PropTypes.array,
     setSelected: PropTypes.func,
     hook: PropTypes.object.isRequired,
