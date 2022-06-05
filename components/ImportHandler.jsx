@@ -75,7 +75,7 @@ export default function ImportHandler(props) {
                     <Button
                         variant={"filled"}
                         className={styles.settingsButton}
-                        styles={{"--fabric-accent-color": "#ff5555", width: "100px"}}
+                        styles={{"--pj-accent-color": "#ff5555", width: "100px"}}
                         onClick={() => {
                             setFilesToImport([])
                             setAsHeightMap(false)
@@ -84,7 +84,7 @@ export default function ImportHandler(props) {
                     </Button>
                     <Button
                         variant={"filled"}
-                        styles={{"--fabric-accent-color": "#0095ff", width: "100px"}}
+                        styles={{"--pj-accent-color": "#0095ff", width: "100px"}}
                         className={styles.settingsButton}
                         onClick={async () => {
                             props.setAlert({message: "Loading scene", type: "info"})

@@ -8,6 +8,7 @@ import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES"
 import FileSystem from "../../../utils/files/FileSystem"
 import openFile from "../../../utils/openFile"
 import OpenFileProvider from "../../../hooks/OpenFileProvider"
+
 const {shell} = window.require("electron")
 export default function Item(props) {
 
@@ -53,7 +54,7 @@ export default function Item(props) {
             draggable={!currentlyOnRename}
             onClick={props.setSelected}
             style={{
-                background: selected ? "var(--fabric-accent-color)" : props.visualizationType === 2 ? (props.index % 2 === 0 ? "var(--fabric-background-secondary)" : "var(--fabric-background-tertiary)") : undefined
+                background: selected ? "var(--pj-accent-color)" : props.visualizationType === 2 ? (props.index % 2 === 0 ? "var(--pj-background-secondary)" : "var(--pj-background-tertiary)") : undefined
             }}
             className={styles.file}
         >

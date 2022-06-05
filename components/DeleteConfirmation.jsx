@@ -63,7 +63,7 @@ export default function DeleteConfirmation(props) {
                     <div className={styles.toBeDeleted}
                          style={{display: props.hook.toDelete.relatedEntities.length === 0 && props.hook.toDelete.relatedFiles?.length === 0 ? 'none' : undefined}}>
                         <div className={styles.row}
-                             style={{borderBottom: 'var(--fabric-border-primary) 1px solid', marginBottom: '4px'}}>
+                             style={{borderBottom: 'var(--pj-border-primary) 1px solid', marginBottom: '4px'}}>
                             <div style={{display: props.hook.toDelete.relatedEntities > 0 ? undefined : 'none'}}
                                  className={styles.overflow}>
                                 Entity
@@ -104,7 +104,7 @@ export default function DeleteConfirmation(props) {
                     </div>
 
                     <div className={styles.options}>
-                        <Button styles={{'--fabric-accent-color': '#ff5555'}} onClick={() => submit()}
+                        <Button styles={{'--pj-accent-color': '#ff5555'}} onClick={() => submit()}
                                 variant={'filled'}>
                             Delete permanently
                         </Button>

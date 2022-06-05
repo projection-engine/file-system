@@ -67,13 +67,10 @@ export default function FilesView(props) {
                     searchString={searchString}
                     visualizationType={visualizationType}
                     setVisualizationType={setVisualizationType}
-                    setSearchString={v => {
-                        setSearchString(v)
-                    }}
+                    setSearchString={setSearchString}
                     hook={hook}
                     path={path}
                 />
-
                 <View
                     setSearchString={setSearchString}
                     fileType={fileType}

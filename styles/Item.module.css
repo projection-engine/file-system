@@ -1,24 +1,24 @@
 .hovered {
-    border-color: var(--fabric-accent-color);
+    border-color: var(--pj-accent-color);
 }
 
 .input {
-    color: var(--fabric-color-secondary);
+    color: var(--pj-color-secondary);
     outline: none;
-    background-color: var(--fabric-background-tertiary);
+    background-color: var(--pj-background-tertiary);
     border-radius: 5px;
-    border: var(--fabric-border-primary) 1px solid;
+    border: var(--pj-border-primary) 1px solid;
     padding: 4px 2px;
     max-width: 100%;
 }
 
 .input:focus {
-    border-color: var(--fabric-accent-color);
+    border-color: var(--pj-accent-color);
 }
 
 
 .toolTip {
-    box-shadow: var(--fabric-boxshadow);
+    box-shadow: var(--pj-boxshadow);
     width: 250px;
     border-radius: 5px;
     padding: 4px;
@@ -53,7 +53,7 @@
 
 .icon {
     position: relative;
-    color: var(--fabric-color-secondary);
+    color: var(--pj-color-secondary);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -88,7 +88,7 @@
     align-items: center;
     justify-content: center;
 
-    background: var(--fabric-background-tertiary);
+    background: var(--pj-background-tertiary);
 
     position: absolute;
     bottom: 4px;
@@ -102,7 +102,7 @@
 }
 .floatingIcon {
 
-    color: var(--fabric-color-secondary);
+    color: var(--pj-color-secondary);
     font-size: 1.1rem !important;
 
 }
@@ -125,7 +125,7 @@
 
 .type {
     font-size: .75rem;
-    color: var(--fabric-color-quaternary);
+    color: var(--pj-color-quaternary);
 }
 
 .overflow {
@@ -140,7 +140,7 @@
     position: relative;
     overflow: hidden;
     border-radius: 5px;
-    color: var(--fabric-color-secondary);
+    color: var(--pj-color-secondary);
     gap: 4px;
 
     display: flex;
@@ -176,7 +176,7 @@
 
 .file:hover, .file:active {
     border-color: transparent;
-    background: var(--fabric-background-primary);
+    background: var(--pj-background-primary);
 }
 
 
@@ -186,7 +186,7 @@
     justify-content: center;
     gap: 4px;
 
-    color: var(--fabric-color-secondary);
+    color: var(--pj-color-secondary);
     font-size: .75rem;
 
     text-align: center;
@@ -195,8 +195,8 @@
     width: 115px !important;
 
     overflow: hidden;
-    background-color: var(--fabric-border-primary);
-    box-shadow: var(--fabric-boxshadow);
+    background-color: var(--pj-border-primary);
+    box-shadow: var(--pj-boxshadow);
     border-radius: 5px;
     padding: 4px;
 }

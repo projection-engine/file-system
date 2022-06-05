@@ -8,7 +8,7 @@
 
     display: flex;
     flex-direction: column;
-    background-color: var(--fabric-background-primary);
+    background-color: var(--pj-background-primary);
     border-radius: 5px;
 }
 
@@ -44,10 +44,10 @@
 
     font-size: .8rem;
     font-weight: 600;
-    color: var(--fabric-color-tertiary);
+    color: var(--pj-color-tertiary);
 
     box-sizing: border-box !important;
-    border-bottom: var(--fabric-border-primary) 1px solid;
+    border-bottom: var(--pj-border-primary) 1px solid;
 
     overflow: hidden;
 }
@@ -73,7 +73,7 @@
 }
 .header{
     padding: 4px;
-    color: var(--fabric-color-primary);
+    color: var(--pj-color-primary);
     display: flex;
     align-items: center;
     justify-content: flex-start;

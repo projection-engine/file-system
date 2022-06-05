@@ -5,6 +5,7 @@ import handleDelete from "../utils/handleDelete"
 import FileSystem from "../../../utils/files/FileSystem"
 import openFile from "../../../utils/openFile"
 import OpenFileProvider from "../../../hooks/OpenFileProvider"
+
 const {shell} = window.require("electron")
 export default function useShortcuts(hook, bookmarksHook, selected, setSelected) {
     const {openFiles, setOpenFiles, setOpenTab} = useContext(OpenFileProvider)

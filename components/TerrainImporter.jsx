@@ -30,7 +30,7 @@ export default function TerrainImporter(props) {
         <div className={styles.toImport}>
             <img src={img} ref={imgRef} alt={'Image'} className={styles.image}/>
             <div className={styles.buttonGroup}
-                 style={{background: 'var(--fabric-background-primary)', padding: '4px'}}>
+                 style={{background: 'var(--pj-background-primary)', padding: '4px'}}>
                 <div className={styles.input}>
                     <label>Height basis</label>
                     <Range
