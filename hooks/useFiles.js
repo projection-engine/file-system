@@ -41,9 +41,7 @@ export default function useFiles() {
             refreshFiles().catch()
     }, [])
 
-    useEffect(() => {
-        if (navHistory.length > 0) setNavIndex(navHistory.length - 1)
-    }, [navHistory])
+
 
     return {
         toDelete,
@@ -81,8 +79,11 @@ export default function useFiles() {
             setNavHistory(prev => {
                 const c = [...prev, v]
                 if (c.length > 10) c.shift()
+
+                setNavIndex(c.length -1 )
                 return c
             })
+
             setCurrentDirectory(v)
         },
         items,

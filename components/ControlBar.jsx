@@ -21,13 +21,14 @@ export default function ControlBar(props) {
     } = props
     const disabled = useMemo(() => {
         return {
-            backwards: hook.navIndex === 0,
+            backwards: hook.navIndex === 0 ,
             forward: hook.navIndex === 9 || hook.navHistory[hook.navIndex + 1] === undefined
         }
     }, [hook.navHistory, hook.navIndex])
     const starred = useMemo(() => {
         return bookmarksHook.bookmarks.find(b => b.path === hook.currentDirectory.id) !== undefined
     }, [hook.currentDirectory, bookmarksHook.bookmarks])
+    console.log(hook.navHistory)
     return (
         <div className={styles.wrapper} style={{border: hidden ? "none" : undefined}}>
             <div className={styles.buttonGroup}>

@@ -11,8 +11,6 @@ import ResizableBar from "../../../components/resizable/ResizableBar"
 import DeleteConfirmation from "./components/DeleteConfirmation"
 import useBookmarks from "./hooks/useBookmarks"
 import FileSystem from "../../utils/files/FileSystem"
-import useShortcuts from "./hooks/useShortcuts"
-
 
 export default function FilesView(props) {
     const hook = useFiles(props.setAlert)
