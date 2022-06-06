@@ -1,4 +1,3 @@
-import React from "react"
 import {onCreate} from "./getDirectoryOptions"
 import handleDelete from "./handleDelete"
 import AsyncFS from "../../../templates/AsyncFS"
@@ -61,30 +60,42 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
         return n
     }
     return [
+
+        // FOLDER
         {
             requiredTrigger: "data-folder",
             label: "Delete",
-            icon: <span className={"material-icons-round"}>delete</span>,
+            icon: "delete",
             onClick: (node) => handleDelete(node.getAttribute("data-folder"), hook, bookmarksHook)
         },
         {
             requiredTrigger: "data-folder",
             label: "New Folder",
-            icon: <span className={"material-icons-round"}>create_new_folder</span>,
+            icon: "create_new_folder",
             onClick: (node) => onCreate(node.getAttribute("data-folder"), hook).catch()
         },
         {
             requiredTrigger: "data-folder",
             label: "Rename",
-            icon: <span className={"material-icons-round"}>edit</span>,
+            icon: "edit",
             onClick: (node) => {
                 setCurrentItem(node.getAttribute("data-folder"))
             }
         },
         {
+            requiredTrigger: "data-folder",
+            label: "Open with explorer",
+            icon: "open_in_new",
+            onClick: (node) => {
+                shell.showItemInFolder(hook.path + FileSystem.sep +  node.getAttribute("data-folder") + FileSystem.sep)
+            }
+        },
+
+        // FILE
+        {
             requiredTrigger: "data-file",
             label: "Rename",
-            icon: <span className={"material-icons-round"}>edit</span>,
+            icon: "edit",
             onClick: (node) => {
                 setCurrentItem(node.getAttribute("data-file"))
             }
@@ -92,14 +103,16 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
         {
             requiredTrigger: "data-file",
             label: "Delete",
-            icon: <span className={"material-icons-round"}>delete</span>,
+            icon: "delete",
             onClick: (node) => handleDelete(node.getAttribute("data-file"), hook)
 
         },
+
+        // WRAPPER
         {
-            requiredTrigger: "data-folder-wrapper",
+            requiredTrigger: "data-wrapper",
             label: "New UI Frame",
-            icon: <span className={"material-icons-round"}>wysiwyg</span>,
+            icon: "wysiwyg",
             onClick: async () => {
                 let path = await check(hook.currentDirectory.id + FileSystem.sep + "New UI Frame", ".ui")
                 hook.fileSystem.writeAsset(path, JSON.stringify({}))
@@ -109,9 +122,9 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             }
         },
         {
-            requiredTrigger: "data-folder-wrapper",
+            requiredTrigger: "data-wrapper",
             label: "New Material",
-            icon: <span className={"material-icons-round"}>texture</span>,
+            icon: "texture",
             onClick: async () => {
                 let path = await check(hook.currentDirectory.id + FileSystem.sep + "New Material", ".material")
                 hook.fileSystem.writeAsset(path, JSON.stringify({}))
@@ -121,9 +134,9 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             }
         },
         {
-            requiredTrigger: "data-folder-wrapper",
+            requiredTrigger: "data-wrapper",
             label: "New Blueprint script",
-            icon: <span className={"material-icons-round"}>code</span>,
+            icon: "code",
             onClick: async () => {
                 let path = await check(hook.currentDirectory.id + FileSystem.sep + "New script", FILE_TYPES.SCRIPT)
 
@@ -135,9 +148,9 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
         },
 
         {
-            requiredTrigger: "data-folder-wrapper",
+            requiredTrigger: "data-wrapper",
             label: "New Folder",
-            icon: <span className={"material-icons-round"}>create_new_folder</span>,
+            icon: "create_new_folder",
             onClick: async () => {
 
                 let path = hook.currentDirectory.id + FileSystem.sep + "New folder"
@@ -152,25 +165,18 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             }
         },
         {
-            requiredTrigger: "data-folder-wrapper",
+            requiredTrigger: "data-wrapper",
             label: "Open with explorer",
-            icon: <span className={"material-icons-round"}>open_in_new</span>,
+            icon: "open_in_new",
             onClick: () => {
                 shell.showItemInFolder(hook.path + FileSystem.sep +  hook.currentDirectory.id)
             }
         },
+
         {
-            requiredTrigger: "data-folder",
-            label: "Open with explorer",
-            icon: <span className={"material-icons-round"}>open_in_new</span>,
-            onClick: (node) => {
-                shell.showItemInFolder(hook.path + FileSystem.sep +  node.getAttribute("data-folder") + FileSystem.sep)
-            }
-        },
-        {
-            requiredTrigger: "data-folder-wrapper",
+            requiredTrigger: "data-wrapper",
             label: "New raw script",
-            icon: <span className={"material-icons-round"}>code</span>,
+            icon: "code",
             onClick: async () => {
                 let path = await check(hook.currentDirectory.id + FileSystem.sep + "New script", ".flowRaw")
 

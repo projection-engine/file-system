@@ -10,7 +10,7 @@ import openFile from "../../../utils/openFile"
 import OpenFileProvider from "../../../hooks/OpenFileProvider"
 
 const {shell} = window.require("electron")
-export default function Item(props) {
+export default function File(props) {
 
     const {
         ref,
@@ -47,6 +47,9 @@ export default function Item(props) {
 
         <div
             ref={ref}
+            onContextMenu={() => {
+                props.setSelected(props.data.id)
+            }}
             onDoubleClick={onDoubleClick}
             id={props.data.id}
             data-size={props.visualizationType}
@@ -58,17 +61,7 @@ export default function Item(props) {
             }}
             className={styles.file}
         >
-            {/*<DragDrop*/}
-            {/**/}
-            {/*    dragIdentifier={'file-item-' + props.data.type}*/}
-            {/*    dragData={props.data}*/}
-            {/*    dragImage={(*/}
-            {/*        <div className={styles.dragImage}>*/}
-            {/*            {icon}*/}
-            {/*            {currentLabel}*/}
-            {/*        </div>*/}
-            {/*    )}*/}
-            {/*/>*/}
+
             {icon}
             {currentlyOnRename ?
                 <input
@@ -101,7 +94,7 @@ export default function Item(props) {
     )
 }
 
-Item.propTypes = {
+File.propTypes = {
     index: PropTypes.number,
     visualizationType: PropTypes.number,
     childrenQuantity: PropTypes.number,

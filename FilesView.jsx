@@ -2,7 +2,7 @@ import styles from "./styles/Explorer.module.css"
 import PropTypes from "prop-types"
 import React, {useMemo, useState} from "react"
 import SideBar from "./components/SideBar"
-import View from "./components/View"
+import Files from "./components/Files"
 import ControlBar from "./components/ControlBar"
 import useFiles from "./hooks/useFiles"
 
@@ -51,7 +51,7 @@ export default function FilesView(props) {
     return (
         <div className={styles.wrapper}>
             <DeleteConfirmation hook={hook}/>
-            <div className={styles.content} style={{width: "20%",     borderRadius: "0 5px 5px 0"}}>
+            <div className={styles.content} style={{width: "20%", borderRadius: "0 5px 5px 0"}}>
                 <div className={styles.header}>
                     <label className={styles.overflow}>Content browser</label>
                 </div>
@@ -71,7 +71,7 @@ export default function FilesView(props) {
                     hook={hook}
                     path={path}
                 />
-                <View
+                <Files
                     setSearchString={setSearchString}
                     fileType={fileType}
                     setFileType={setFileType}

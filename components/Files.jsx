@@ -1,20 +1,27 @@
 import PropTypes from "prop-types"
 import styles from "../styles/Cards.module.css"
 import React, {useMemo} from "react"
-import Item from "./Item"
+import File from "./File"
 import useItems from "../hooks/useItems"
-import {ContextMenu} from "@f-ui/core"
 import SelectBox from "../../../../components/select-box/SelectBox"
 import handleRename from "../utils/handleRename"
 import useShortcuts from "../hooks/useShortcuts"
+import useContextTarget from "../../../../components/context/hooks/useContextTarget"
+import getFileOptions from "../utils/getFileOptions"
 
-export default function View(props) {
+const TRIGGERS = [
+    "data-wrapper",
+    "data-file",
+    "data-folder"
+]
+export default function Files(props) {
     const {
         setCurrentItem, currentItem,
-        filesToRender, ref,
-        options ,
+        filesToRender, 
     } = useItems(props)
-
+    const options = useMemo(() => {
+        return getFileOptions(props.hook, setCurrentItem, props.bookmarksHook)
+    }, [props.hook.items, props.hook.currentDirectory, props.searchString])
     const cardSize = useMemo(() => {
         switch (props.visualizationType){
         case 1:
@@ -27,40 +34,29 @@ export default function View(props) {
     }, [props.visualizationType])
     useShortcuts(props.hook, props.bookmarksHook, props.selected, props.setSelected)
 
-
+    useContextTarget(
+        {id: "content-browser", label: "Content Browser", icon: "folder"},
+        options,
+        TRIGGERS
+    )
     return (
         <div
             id={"content-browser"}
-            ref={ref}
             className={styles.content}
-            data-folder-wrapper={props.hook.currentDirectory}
-
+            data-wrapper={"WRAPPER"}
         >
-
-            <ContextMenu
-                options={options}
-                onContext={(node) => {
-                    if (node !== undefined && node !== null && (node.getAttribute("data-file") || node.getAttribute("data-folder"))) {
-                        const attr = node.getAttribute("data-file") ? node.getAttribute("data-file") : node.getAttribute("data-folder")
-                        props.setSelected([attr])
-                    }
-                }}
+            <div
                 className={styles.filesWrapper}
-                styles={{
+                style={{
                     "--card_size": cardSize,
                     padding: props.visualizationType === 2 ? "0" : undefined, gap: props.visualizationType === 2 ? "0" : undefined,
                 }}
-                triggers={[
-                    "data-folder-wrapper",
-                    "data-file",
-                    "data-folder"
-                ]}
             >
                 <SelectBox nodes={props.hook.items} selected={props.selected} setSelected={props.setSelected}/>
                 {filesToRender.length > 0 ?
                     filesToRender.map((child, index) => (
                         <React.Fragment key={child.id}>
-                            <Item
+                            <File
                                 index={index}
                                 reset={() => {
                                     props.setSelected([])
@@ -89,21 +85,20 @@ export default function View(props) {
                             />
                         </React.Fragment>
                     ))
-
                     :
                     <div className={styles.empty}>
                         <span className={"material-icons-round"} style={{fontSize: "100px"}}>folder</span>
                         <div style={{fontSize: ".8rem"}}>
                             Empty folder
                         </div>
-                    </div>}
-
-            </ContextMenu>
+                    </div>
+                }
+            </div>
         </div>
     )
 }
 
-View.propTypes = {
+Files.propTypes = {
     fileType: PropTypes.string,
     setFileType: PropTypes.func,
 

@@ -9,13 +9,13 @@ export default function getDirectoryOptions(props) {
         {
             requiredTrigger: "data-node",
             label: "Delete",
-            icon: <span className={"material-icons-round"}>delete</span>,
+            icon: "delete",
             onClick: (node) => handleDelete(node.getAttribute("data-node"), props.hook, props.bookmarksHook)
         },
         {
             requiredTrigger: "data-node",
             label: "Rename",
-            icon: <span className={"material-icons-round"}>edit</span>,
+            icon: "edit",
             onClick: (node) => {
                 const target = document.getElementById(node.getAttribute("data-node"))
 
@@ -31,20 +31,20 @@ export default function getDirectoryOptions(props) {
         },
         {
             requiredTrigger: "data-self",
-            label: "New sub-folder",
-            icon: <span className={"material-icons-round"}>create_new_folder</span>,
+            label: "New folder",
+            icon: "create_new_folder",
             onClick: () => onCreate("", props.hook).catch()
         },
         {
             requiredTrigger: "data-node",
-            label: "New sub-folder",
-            icon: <span className={"material-icons-round"}>create_new_folder</span>,
+            label: "New folder",
+            icon: "create_new_folder",
             onClick: (node) => onCreate(node.getAttribute("data-node"), props.hook).catch()
         },
         {
             requiredTrigger: "data-root",
-            label: "New sub-folder",
-            icon: <span className={"material-icons-round"}>create_new_folder</span>,
+            label: "New folder",
+            icon: "create_new_folder",
             onClick: () => onCreate("", props.hook).catch()
         }
     ]
