@@ -19,7 +19,7 @@ export default function useBookmarks(fileSystem) {
                 name: id.split(FileSystem.sep ).pop(),
                 path: id
             }]
-            fileSystem.writeFile(FileSystem.sep + "bookmarks.meta", JSON.stringify(n)).then(e => console.log(e))
+            fileSystem.writeFile(FileSystem.sep + "bookmarks.meta",JSON.stringify(n))
             return n
         })
     }

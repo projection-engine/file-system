@@ -29,7 +29,7 @@ export default function ControlBar(props) {
     const starred = useMemo(() => {
         return bookmarksHook.bookmarks.find(b => b.path === hook.currentDirectory.id) !== undefined
     }, [hook.currentDirectory, bookmarksHook.bookmarks])
-    console.log(hook.navHistory)
+
     return (
         <div className={styles.wrapper} style={{border: hidden ? "none" : undefined}}>
             <div className={styles.buttonGroup}>
