@@ -7,6 +7,7 @@ import handleDropFolder from "../utils/handleDropFolder"
 import handleRename from "../utils/handleRename"
 import styles from "../styles/Directories.module.css"
 import FileSystem from "../../../utils/files/FileSystem"
+
 const ASSETS_TRIGGERS = [
     "data-node",
     "data-self"
