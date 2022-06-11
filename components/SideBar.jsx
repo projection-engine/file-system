@@ -24,7 +24,7 @@ export default function SideBar(props) {
             assets: [{
                 id: FileSystem.sep,
                 label: "Assets",
-                phantomNode: true,
+
                 onClick: () => {
                     props.hook.setCurrentDirectory({
                         id: FileSystem.sep
@@ -36,13 +36,12 @@ export default function SideBar(props) {
 
                 icon: <span style={{fontSize: "1rem"}}
                     className={"material-icons-round"}>inventory_2</span>,
-                attributes: {"data-root": "root"},
-                parent: undefined
+                attributes: {"data-root": "root"}
             }],
             bookmarks: [ {
                 id: "bk",
                 label: "Bookmarks",
-                phantomNode: true,
+                disabled: true,
 
                 children: props.bookmarksHook.bookmarks.map(f => {
                     return mapToView(f, props.hook, true)
@@ -50,8 +49,7 @@ export default function SideBar(props) {
 
                 icon: <span style={{fontSize: "1rem"}}
                     className={"material-icons-round"}>star</span>,
-                attributes: {"data-root": "root"},
-                parent: undefined
+                attributes: {"data-root": "root"}
             }]
         }
     }, [props.hook.items, props.bookmarksHook.bookmarks])
