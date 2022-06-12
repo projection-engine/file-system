@@ -53,12 +53,10 @@ export default function SideBar(props) {
             }]
         }
     }, [props.hook.items, props.bookmarksHook.bookmarks])
-    const options = useMemo(() => {
-        return getDirectoryOptions(props)
-    }, [])
+    const options = useMemo(() => getDirectoryOptions(props), [])
 
     return (
-        <>
+        <div style={{padding: "4px", display: "grid", gap: "4px"}}>
             <div className={styles.wrapper}>
                 <TreeView
                     contextTriggers={ASSETS_TRIGGERS}
@@ -89,7 +87,7 @@ export default function SideBar(props) {
                 />
 
             </div>
-        </>
+        </div>
     )
 }
 

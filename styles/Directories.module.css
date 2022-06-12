@@ -1,67 +1,58 @@
 .wrapper {
-    display: flex;
-    flex-direction: column;
-    max-height: 100%;
-    overflow-y: auto;
-    /*align-items: flex-start;*/
-    height: 100%;
-    gap: 4px;
-    padding: 0 4px 4px;
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  overflow-y: auto;
+  height: 100%;
+  gap: 4px;
+  padding: 4px;
+  background: var(--background-input);
+  border-radius: 3px;
 }
-
 
 .accordion {
-    border-radius: 5px;
-    background-color: var(--pj-border-primary) !important;
-
-
+  border-radius: 5px;
+  background-color: var(--pj-border-primary) !important;
 }
 
-
 .button {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 4px;
-    background-color: var(--pj-background-primary);
-
-    width: fit-content;
-    height: 25px;
-
-    font-size: .75rem;
-
-    overflow: hidden;
-    max-width: 100%;
-
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+  background-color: var(--pj-background-primary);
+  width: fit-content;
+  height: 25px;
+  font-size: 0.75rem;
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .overflow {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .row {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 4px;
-
-    width: 100%;
-    font-size: .7rem;
-    font-weight: 550;
-    padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+  width: 100%;
+  font-size: 0.7rem;
+  font-weight: 550;
+  padding: 4px;
 }
 
 .empty {
-
-    overflow: hidden;
-    font-size: .75rem;
-    text-align: center;
-    padding: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
+  overflow: hidden;
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
 }
