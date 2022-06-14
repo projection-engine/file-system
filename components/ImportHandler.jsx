@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "../styles/Control.module.css"
-import {Button, Checkbox, Modal} from "@f-ui/core"
+import {Button, Checkbox, Icon, Modal} from "@f-ui/core"
 import QuickAccessProvider from "../../../hooks/QuickAccessProvider"
 import React, {useContext, useState} from "react"
 import EntitiesProvider from "../../../hooks/EntitiesProvider"
@@ -87,7 +87,7 @@ export default function ImportHandler(props) {
                         styles={{"--pj-accent-color": "#0095ff", width: "100px"}}
                         className={styles.settingsButton}
                         onClick={async () => {
-                            props.setAlert({message: "Loading scene", type: "info"})
+                            alert.pushAlert( "Loading scene",  "info")
                             const result = await fileSystem.importFile(settings, props.hook.path + props.hook.currentDirectory.id, filesToImport)
                             let newEntities = [], newMeshes = []
                             for(let i in result) {
@@ -98,7 +98,7 @@ export default function ImportHandler(props) {
                                         const {
                                             meshes,
                                             entities
-                                        } = await importScene(fileSystem, engine, res, props.setAlert, true)
+                                        } = await importScene(fileSystem, engine, res, true)
                                         newEntities.push(...entities)
                                         newMeshes.push(...meshes)
                                         for(let m in entities){
@@ -114,7 +114,7 @@ export default function ImportHandler(props) {
                             }
                             engine.setMeshes(prev => [...prev, ...newMeshes])
                             engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: newEntities})
-                            props.setAlert({message: "Scene loaded", type: "success"})
+                            alert.pushAlert("Scene loaded",  "success")
                             props.hook.refreshFiles()
                             setFilesToImport([])
                         }}>
@@ -137,7 +137,7 @@ export default function ImportHandler(props) {
                     }
                 }}
             >
-                <span className={"material-icons-round"} style={{fontSize: "1rem"}}>open_in_new</span>
+                <Icon  styles={{fontSize: "1rem"}}>open_in_new</Icon>
                 Import
             </Button>
         </>
@@ -146,6 +146,5 @@ export default function ImportHandler(props) {
 
 
 ImportHandler.propTypes = {
-    setAlert: PropTypes.func,
     hook: PropTypes.object.isRequired,
 }

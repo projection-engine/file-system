@@ -27,10 +27,9 @@ export default async function handleRename(item, newName, hook, setCurrentItem, 
                     .rename(hook.path + item.id, targetPath)
                 hook.refreshFiles().catch()
             } else
-                hook.setAlert({
-                    type: "error",
-                    message: "Item already exists."
-                })
+                alert.pushAlert("error",
+                    "Item already exists."
+                )
         }
         setCurrentItem(undefined)
     }

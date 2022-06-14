@@ -1,7 +1,7 @@
 import PropTypes from "prop-types"
 import {deleteData} from "../utils/handleDelete"
-import {useContext, useEffect, useState} from "react"
-import {Button, Modal, ToolTip} from "@f-ui/core"
+import React, {useContext, useEffect, useState} from "react"
+import {Button, Icon, Modal, ToolTip} from "@f-ui/core"
 import styles from "../styles/DeleteConfirmation.module.css"
 import QuickAccessProvider from "../../../hooks/QuickAccessProvider"
 import KEYS from "../../../engine/templates/KEYS"
@@ -43,13 +43,13 @@ export default function DeleteConfirmation(props) {
     }
     useEffect(() => {
         if (open)
-            document.addEventListener('keydown', handleKey, {once: true})
-        return () => document.removeEventListener('keydown', handleKey)
+            document.addEventListener("keydown", handleKey, {once: true})
+        return () => document.removeEventListener("keydown", handleKey)
     }, [open])
 
 
     return (
-        <Modal open={open} blurIntensity={'1px'} handleClose={() => null} className={styles.modal}>
+        <Modal open={open} blurIntensity={"1px"} handleClose={() => null} className={styles.modal}>
             {open ?
                 <>
                     <div className={styles.warning}>
@@ -57,15 +57,15 @@ export default function DeleteConfirmation(props) {
                     </div>
                     <div className={styles.message}>
                         {props.hook.toDelete.relatedEntities?.length > 0 ?
-                            'The following entities depend on the files to be deleted, do you want to continue ?' : 'Do you want to permanently delete these files ?'
+                            "The following entities depend on the files to be deleted, do you want to continue ?" : "Do you want to permanently delete these files ?"
                         }
                     </div>
                     <div className={styles.toBeDeleted}
-                         style={{display: props.hook.toDelete.relatedEntities.length === 0 && props.hook.toDelete.relatedFiles?.length === 0 ? 'none' : undefined}}>
+                        style={{display: props.hook.toDelete.relatedEntities.length === 0 && props.hook.toDelete.relatedFiles?.length === 0 ? "none" : undefined}}>
                         <div className={styles.row}
-                             style={{borderBottom: 'var(--pj-border-primary) 1px solid', marginBottom: '4px'}}>
-                            <div style={{display: props.hook.toDelete.relatedEntities > 0 ? undefined : 'none'}}
-                                 className={styles.overflow}>
+                            style={{borderBottom: "var(--pj-border-primary) 1px solid", marginBottom: "4px"}}>
+                            <div style={{display: props.hook.toDelete.relatedEntities > 0 ? undefined : "none"}}
+                                className={styles.overflow}>
                                 Entity
                             </div>
 
@@ -74,13 +74,13 @@ export default function DeleteConfirmation(props) {
                             </div>
                         </div>
                         {props.hook.toDelete.relatedEntities.map((e, i) => (
-                            <div key={e.name + '-' + i} className={styles.row}>
-                                <div className={[styles.overflow, styles.row].join(' ')} style={{gap: '4px'}}>
+                            <div key={e.name + "-" + i} className={styles.row}>
+                                <div className={[styles.overflow, styles.row].join(" ")} style={{gap: "4px"}}>
                                     {e.name}
                                     <ToolTip>
                                         {e.name}
                                     </ToolTip>
-                                    <span className={'material-icons-round'}>navigate_next</span>
+                                    <Icon >navigate_next</Icon>
                                 </div>
 
                                 <div className={styles.overflow}>
@@ -92,8 +92,8 @@ export default function DeleteConfirmation(props) {
                             </div>
                         ))}
                         {props.hook.toDelete.relatedEntities.length === 0 ? props.hook.toDelete.relatedFiles.map((e, i) => (
-                            <div key={e + '-file-' + i} className={styles.row}>
-                                <div className={[styles.overflow, styles.row].join(' ')} style={{gap: '4px'}}>
+                            <div key={e + "-file-" + i} className={styles.row}>
+                                <div className={[styles.overflow, styles.row].join(" ")} style={{gap: "4px"}}>
                                     {e}
                                     <ToolTip>
                                         {e}
@@ -104,11 +104,11 @@ export default function DeleteConfirmation(props) {
                     </div>
 
                     <div className={styles.options}>
-                        <Button styles={{'--pj-accent-color': '#ff5555'}} onClick={() => submit()}
-                                variant={'filled'}>
+                        <Button styles={{"--pj-accent-color": "#ff5555"}} onClick={() => submit()}
+                            variant={"filled"}>
                             Delete permanently
                         </Button>
-                        <Button variant={'outlined'} onClick={() => {
+                        <Button variant={"outlined"} onClick={() => {
                             setOpen(false)
                             props.hook.setToDelete({})
                         }}>

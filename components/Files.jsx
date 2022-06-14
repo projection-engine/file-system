@@ -8,6 +8,7 @@ import handleRename from "../utils/handleRename"
 import useShortcuts from "../hooks/useShortcuts"
 import useContextTarget from "../../../../components/context/hooks/useContextTarget"
 import getFileOptions from "../utils/getFileOptions"
+import {Icon} from "@f-ui/core"
 
 const TRIGGERS = [
     "data-wrapper",
@@ -87,7 +88,7 @@ export default function Files(props) {
                     ))
                     :
                     <div className={styles.empty}>
-                        <span className={"material-icons-round"} style={{fontSize: "100px"}}>folder</span>
+                        <Icon styles={{fontSize: "100px"}}>folder</Icon>
                         <div style={{fontSize: ".8rem"}}>
                             Empty folder
                         </div>
@@ -111,6 +112,5 @@ Files.propTypes = {
     bookmarksHook: PropTypes.object,
     selected: PropTypes.array,
     setSelected: PropTypes.func,
-    hook: PropTypes.object.isRequired,
-    setAlert: PropTypes.func.isRequired
+    hook: PropTypes.object.isRequired
 }

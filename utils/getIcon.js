@@ -2,6 +2,7 @@ import styles from "../styles/Item.module.css"
 import Preview from "../../../../components/preview/Preview"
 import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES"
 import React from "react"
+import {Icon} from "@f-ui/core"
 
 export default function getIcon({
     path,
@@ -20,7 +21,7 @@ export default function getIcon({
             >
                 <div className={styles.floatingIconWrapper}
                     style={{display: visualization === 2 ? "none" : undefined}}>
-                    <span className={["material-icons-round", styles.floatingIcon].join(" ")}>{t}</span>
+                    <Icon className={  styles.floatingIcon }>{t}</Icon>
                 </div>
             </Preview>
         </div>
@@ -37,19 +38,19 @@ export default function getIcon({
     case FILE_TYPES.UI:
         return (
             <div className={styles.icon} data-size={`${visualization}`}>
-                <span className={"material-icons-round"}>wysiwyg</span>
+                <Icon >wysiwyg</Icon>
             </div>
         )
     case FILE_TYPES.SCRIPT:
         return (
             <div className={styles.icon} data-size={`${visualization}`}>
-                <span className={"material-icons-round"}>code</span>
+                <Icon >code</Icon>
             </div>
         )
     case FILE_TYPES.RAW_SCRIPT:
         return (
             <div className={styles.icon} data-size={`${visualization}`}>
-                <span className={"material-icons-round"}>javascript</span>
+                <Icon >javascript</Icon>
             </div>
         )
 
@@ -57,13 +58,13 @@ export default function getIcon({
     case FILE_TYPES.SCENE:
         return (
             <div className={styles.icon} data-size={`${visualization}`}>
-                <span className={"material-icons-round"}>inventory_2</span>
+                <Icon >inventory_2</Icon>
             </div>
         )
     case "folder": {
         return (
             <div className={styles.icon} data-size={`${visualization}`} >
-                <span className={"material-icons-round"} style={{color: "var(--folder-color)"}}>folder</span>
+                <Icon  style={{color: "var(--folder-color)"}}>folder</Icon>
                 <div
                     title={"Files"}
                     className={styles.floatingIconWrapper}
@@ -77,7 +78,7 @@ export default function getIcon({
     default:
         return (
             <div className={styles.icon} data-size={`${visualization}`}>
-                <span className={"material-icons-round"}>description</span>
+                <Icon >description</Icon>
             </div>
         )
     }

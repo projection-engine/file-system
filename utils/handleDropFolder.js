@@ -1,12 +1,13 @@
 import AsyncFS from "../../../templates/AsyncFS"
 import FileSystem from "../../../utils/files/FileSystem"
 
-const pathResolve = window.require('path')
-export default async function handleDropFolder(event, target, setAlert, hook) {
+const pathResolve = window.require("path")
+export default async function handleDropFolder(event, target, hook) {
     let entities = []
     try {
-        entities = JSON.parse(event.dataTransfer.getData('text'))
+        entities = JSON.parse(event.dataTransfer.getData("text"))
     } catch (e) {
+        console.error(e)
     }
 
     for (let i = 0; i < entities.length; i++) {
@@ -19,9 +20,7 @@ export default async function handleDropFolder(event, target, setAlert, hook) {
 
                 if (reg) from = reg.path
                 else {
-                    setAlert({
-                        type: 'error', message: 'Could not find file.'
-                    })
+                    alert.pushAlert( "Could not find file.", "error")
                     return
                 }
 
@@ -35,7 +34,7 @@ export default async function handleDropFolder(event, target, setAlert, hook) {
             if (from !== to && toItem && toItem.id !== from && fromItem && fromItem.parent !== to && toItem.isFolder) {
                 hook.fileSystem
                     .rename(pathResolve.resolve(hook.path + FileSystem.sep + from), pathResolve.resolve(hook.path + to))
-                    .then(error => {
+                    .then(() => {
                         if (from === hook.currentDirectory.id) hook.setCurrentDirectory(prev => {
                             return {
                                 ...prev, id: to
@@ -49,18 +48,18 @@ export default async function handleDropFolder(event, target, setAlert, hook) {
             const newPath = hook.path + FileSystem.sep + textData.split(FileSystem.sep).pop()
             if (!(await AsyncFS.exists(newPath))) hook.fileSystem
                 .rename(pathResolve.resolve(hook.path + FileSystem.sep + textData), pathResolve.resolve(newPath))
-                .then(error => {
+                .then(() => {
                     if (textData === hook.currentDirectory.id) hook.setCurrentDirectory(prev => {
                         return {
-                            ...prev, id: newPath.replace(hook.path, '')
+                            ...prev, id: newPath.replace(hook.path, "")
                         }
                     })
 
                     hook.refreshFiles()
                 })
-            else setAlert({
-                type: 'error', message: 'Folder already exists.'
-            })
+            else alert.pushAlert(
+                   "Folder already exists.", "error"
+            )
         }
 
     }

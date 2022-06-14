@@ -13,7 +13,7 @@ import useBookmarks from "./hooks/useBookmarks"
 import FileSystem from "../../utils/files/FileSystem"
 
 export default function FilesView(props) {
-    const hook = useFiles(props.setAlert)
+    const hook = useFiles()
     const bookmarksHook = useBookmarks(hook.fileSystem)
     const [selected, setSelected] = useState([])
     const [fileType, setFileType] = useState()
@@ -43,7 +43,6 @@ export default function FilesView(props) {
                 name: hook.currentDirectory.name,
                 path: hook.currentDirectory.id
             })
-
         return response
     }, [hook.currentDirectory, hook.items])
 
@@ -62,7 +61,6 @@ export default function FilesView(props) {
                 <ControlBar
                     fileType={fileType}
                     setFileType={setFileType}
-                    setAlert={props.setAlert}
                     bookmarksHook={bookmarksHook}
                     searchString={searchString}
                     visualizationType={visualizationType}
@@ -76,7 +74,6 @@ export default function FilesView(props) {
                     fileType={fileType}
                     setFileType={setFileType}
                     bookmarksHook={bookmarksHook}
-                    setAlert={props.setAlert}
                     hook={hook}
                     visualizationType={visualizationType}
                     searchString={searchString}
@@ -91,6 +88,5 @@ export default function FilesView(props) {
 
 FilesView.propTypes = {
     id: PropTypes.string,
-    label: PropTypes.string,
-    setAlert: PropTypes.func.isRequired
+    label: PropTypes.string
 }

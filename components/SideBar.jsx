@@ -7,6 +7,7 @@ import handleDropFolder from "../utils/handleDropFolder"
 import handleRename from "../utils/handleRename"
 import styles from "../styles/Directories.module.css"
 import FileSystem from "../../../utils/files/FileSystem"
+import {Icon} from "@f-ui/core"
 
 const ASSETS_TRIGGERS = [
     "data-node",
@@ -34,8 +35,8 @@ export default function SideBar(props) {
                     return mapToView(f, props.hook)
                 }),
 
-                icon: <span style={{fontSize: "1rem"}}
-                    className={"material-icons-round"}>inventory_2</span>,
+                icon: <Icon styles={{fontSize: "1rem"}}
+                >inventory_2</Icon>,
                 attributes: {"data-root": "root"}
             }],
             bookmarks: [ {
@@ -47,8 +48,8 @@ export default function SideBar(props) {
                     return mapToView(f, props.hook, true)
                 }),
 
-                icon: <span style={{fontSize: "1rem"}}
-                    className={"material-icons-round"}>star</span>,
+                icon: <Icon styles={{fontSize: "1rem"}}
+                >star</Icon>,
                 attributes: {"data-root": "root"}
             }]
         }
@@ -62,7 +63,7 @@ export default function SideBar(props) {
                     contextTriggers={ASSETS_TRIGGERS}
                     options={options}
                     draggable={true}
-                    onDrop={(event, target) => handleDropFolder(event, target, props.setAlert, props.hook)}
+                    onDrop={(event, target) => handleDropFolder(event, target, props.hook)}
                     onDragLeave={(event) => event.preventDefault()}
                     onDragOver={(event) => event.preventDefault()}
                     onDragStart={(e, t) => e.dataTransfer.setData("text", JSON.stringify([t]))}
@@ -77,7 +78,7 @@ export default function SideBar(props) {
                     contextTriggers={BOOKMARKS_TRIGGERS}
                     options={options}
                     draggable={true}
-                    onDrop={(event, target) => handleDropFolder(event, target, props.setAlert, props.hook)}
+                    onDrop={(event, target) => handleDropFolder(event, target, props.hook)}
                     onDragLeave={(event) => event.preventDefault()}
                     onDragOver={(event) => event.preventDefault()}
                     onDragStart={(e, t) => e.dataTransfer.setData("text", JSON.stringify([t]))}
@@ -93,6 +94,5 @@ export default function SideBar(props) {
 
 SideBar.propTypes = {
     bookmarksHook: PropTypes.object,
-    hook: PropTypes.object.isRequired,
-    setAlert: PropTypes.func.isRequired
+    hook: PropTypes.object.isRequired
 }

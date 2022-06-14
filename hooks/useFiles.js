@@ -1,7 +1,5 @@
 import {useContext, useEffect, useRef, useState} from "react"
-
 import QuickAccessProvider from "../../../hooks/QuickAccessProvider"
-import {AlertProvider} from "@f-ui/core"
 import EntitiesProvider from "../../../hooks/EntitiesProvider"
 import LoaderProvider from "../../../../components/loader/LoaderProvider"
 import {getCall} from "../../../templates/AsyncFS"
@@ -10,7 +8,6 @@ import FileSystem from "../../../utils/files/FileSystem"
 export default function useFiles() {
     const [openModal, setOpenModal] = useState(false)
     const load = useContext(LoaderProvider)
-    const alert = useContext(AlertProvider)
     const uploadRef = useRef()
     const [onRename, setOnRename] = useState({})
     const [initialized, setInitialized] = useState(false)
@@ -93,7 +90,6 @@ export default function useFiles() {
         uploadRef,
         onRename,
         setOnRename,
-        setAlert: ({type, message}) => alert.pushAlert(message, type),
         entities,
         createTerrain,
         setCreateTerrain

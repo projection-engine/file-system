@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "../styles/Control.module.css"
-import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core"
+import {Button, Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 import React, {useMemo} from "react"
 import Search from "../../../../components/search/Search"
 import ImportHandler from "./ImportHandler"
@@ -17,8 +17,7 @@ export default function ControlBar(props) {
         path,
         bookmarksHook,
         hook,
-        hidden,
-        setAlert
+        hidden
     } = props
     const disabled = useMemo(() => {
         return {
@@ -39,7 +38,7 @@ export default function ControlBar(props) {
                     styles={{borderRadius: "5px 0 0 5px"}}
                     onClick={() => hook.returnDir()}
                 >
-                    <span className={"material-icons-round"}>arrow_back</span>
+                    <Icon >arrow_back</Icon>
                 </Button>
                 <Button
                     disabled={disabled.forward}
@@ -47,7 +46,7 @@ export default function ControlBar(props) {
                     className={styles.settingsButton}
                     onClick={() => hook.forwardDir()}
                 >
-                    <span className={"material-icons-round"} style={{transform: "rotate(180deg)"}}>arrow_back</span>
+                    <Icon  styles={{transform: "rotate(180deg)"}}>arrow_back</Icon>
                 </Button>
                 <Button
                     className={styles.settingsButton}
@@ -65,19 +64,19 @@ export default function ControlBar(props) {
                         }
                     }}
                 >
-                    <span className={"material-icons-round"}
-                        style={{transform: "rotate(180deg)"}}>subdirectory_arrow_right</span>
+                    <Icon
+                        styles={{transform: "rotate(180deg)"}}>subdirectory_arrow_right</Icon>
                 </Button>
                 <Button
                     disabled={hook.loading}
                     className={styles.settingsButton}
                     styles={{borderRadius: "0 5px 5px 0", border: "none"}}
                     onClick={() => {
-                        setAlert({message: "Refreshing files", type: "info"})
+                        alert.pushAlert("Refreshing files",  "info")
                         hook.refreshFiles().catch()
                     }}
                 >
-                    <span className={"material-icons-round"}>sync</span>
+                    <Icon >sync</Icon>
                 </Button>
             </div>
             <Button
@@ -90,11 +89,11 @@ export default function ControlBar(props) {
                     if (existing.length > 0)
                         path += " - " + existing.length
                     await AsyncFS.mkdir(hook.path + path, {})
-                    hook.refreshFiles()
+                    hook.refreshFiles().catch()
                 }}
 
             >
-                <span className={"material-icons-round"} style={{transform: "rotate(180deg)"}}>create_new_folder</span>
+                <Icon  styles={{transform: "rotate(180deg)"}}>create_new_folder</Icon>
             </Button>
             <Button
                 className={styles.settingsButton}
@@ -107,7 +106,7 @@ export default function ControlBar(props) {
                         bookmarksHook.addBookmark(hook.currentDirectory.id)
                 }}
             >
-                <span className={"material-icons-round"}>star</span>
+                <Icon >star</Icon>
             </Button>
             <Dropdown
                 disabled={hook.loading} hideArrow={true}
@@ -118,14 +117,14 @@ export default function ControlBar(props) {
                 }}
                 variant={props.fileType !== undefined ? "filled": undefined}
             >
-                <span className={"material-icons-round"}>filter_alt</span>
+                <Icon >filter_alt</Icon>
                 <DropdownOptions>
                     {Object.keys(FILE_TYPES).map((k, i) => (
                         <React.Fragment key={k + "-filter-key-" + i}>
                             <DropdownOption
                                 option={{
                                     label: k.toLowerCase().replace("_", " "),
-                                    icon: props.fileType === FILE_TYPES[k] ? <span className={"material-icons-round"}>check</span> : undefined,
+                                    icon: props.fileType === FILE_TYPES[k] ? <Icon >check</Icon> : undefined,
                                     onClick: () => props.setFileType(props.fileType === FILE_TYPES[k] ? undefined : FILE_TYPES[k]),
                                     keepAlive: false    ,
                                 }}
@@ -168,23 +167,23 @@ export default function ControlBar(props) {
                     variant={"outlined"}
                     className={styles.settingsButton}
                 >
-                    <span className={"material-icons-round"} style={{fontSize: "1.1rem"}}>view_headline</span>View
+                    <Icon  styles={{fontSize: "1.1rem"}}>view_headline</Icon>View
                     <DropdownOptions>
                         <DropdownOption option={{
-                            icon: visualizationType === 0 ? <span className={"material-icons-round"}
-                                style={{fontSize: "1.1rem"}}>check</span> : null,
+                            icon: visualizationType === 0 ? <Icon
+                                styles={{fontSize: "1.1rem"}}>check</Icon> : null,
                             label: "Big card",
                             onClick: () => setVisualizationType(0)
                         }}/>
                         <DropdownOption option={{
-                            icon: visualizationType === 1 ? <span className={"material-icons-round"}
-                                style={{fontSize: "1.1rem"}}>check</span> : null,
+                            icon: visualizationType === 1 ? <Icon
+                                styles={{fontSize: "1.1rem"}}>check</Icon> : null,
                             label: "Small card",
                             onClick: () => setVisualizationType(1)
                         }}/>
                         <DropdownOption option={{
-                            icon: visualizationType === 2 ? <span className={"material-icons-round"}
-                                style={{fontSize: "1.1rem"}}>check</span> : null,
+                            icon: visualizationType === 2 ? <Icon
+                                styles={{fontSize: "1.1rem"}}>check</Icon> : null,
                             label: "List",
                             onClick: () => setVisualizationType(2)
                         }}/>
@@ -211,6 +210,5 @@ ControlBar.propTypes = {
 
     bookmarksHook: PropTypes.object,
     hook: PropTypes.object.isRequired,
-    hidden: PropTypes.bool,
-    setAlert: PropTypes.func
+    hidden: PropTypes.bool
 }

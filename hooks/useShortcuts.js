@@ -1,10 +1,10 @@
-import useHotKeys from "../../../hooks/hot-keys/useHotKeys"
 import {useContext, useMemo} from "react"
 import KEYS from "../../../engine/templates/KEYS"
 import handleDelete from "../utils/handleDelete"
 import FileSystem from "../../../utils/files/FileSystem"
 import openFile from "../../../utils/openFile"
 import OpenFileProvider from "../../../hooks/OpenFileProvider"
+import useHotKeys from "../../shortcuts/hooks/useHotKeys"
 
 const {shell} = window.require("electron")
 export default function useShortcuts(hook, bookmarksHook, selected, setSelected) {
