@@ -1,13 +1,10 @@
-import {useContext, useEffect, useRef, useState} from "react"
-import QuickAccessProvider from "../../../hooks/QuickAccessProvider"
+import {useContext, useEffect, useMemo, useRef, useState} from "react"
 import EntitiesProvider from "../../../hooks/EntitiesProvider"
-import LoaderProvider from "../../../../components/loader/LoaderProvider"
 import {getCall} from "../../../templates/AsyncFS"
 import FileSystem from "../../../utils/files/FileSystem"
 
 export default function useFiles() {
     const [openModal, setOpenModal] = useState(false)
-    const load = useContext(LoaderProvider)
     const uploadRef = useRef()
     const [onRename, setOnRename] = useState({})
     const [initialized, setInitialized] = useState(false)
@@ -19,14 +16,16 @@ export default function useFiles() {
     const [navIndex, setNavIndex] = useState(0)
     const [createTerrain, setCreateTerrain] = useState(false)
     const [toDelete, setToDelete] = useState({})
-    const quickAccess = useContext(QuickAccessProvider)
-    const path = (quickAccess.fileSystem.path + FileSystem.sep + "assets")
+
+    const path = useMemo(() => {
+        return document.fileSystem.path + FileSystem.sep + "assets"
+    }, [])
     const {entities, removeEntities} = useContext(EntitiesProvider)
     const [loading, setLoading] = useState(false)
 
     async function refreshFiles(){
         setLoading(true)
-        quickAccess.refresh()
+        document.fileSystem.refresh()
         if (!initialized) setInitialized(true)
         const done = await getCall("refresh-files", {pathName: path})
         setLoading(false)
@@ -45,7 +44,6 @@ export default function useFiles() {
         setToDelete,
         removeEntities,
         refreshFiles,
-        fileSystem: quickAccess.fileSystem,
         loading,
         navIndex,
         returnDir:() => {
@@ -70,7 +68,6 @@ export default function useFiles() {
         setNavHistory,
 
         path,
-        load,
         currentDirectory,
         setCurrentDirectory: v => {
             setNavHistory(prev => {

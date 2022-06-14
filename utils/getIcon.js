@@ -64,7 +64,7 @@ export default function getIcon({
     case "folder": {
         return (
             <div className={styles.icon} data-size={`${visualization}`} >
-                <Icon  style={{color: "var(--folder-color)"}}>folder</Icon>
+                <Icon  styles={{color: "var(--folder-color)"}}>folder</Icon>
                 <div
                     title={"Files"}
                     className={styles.floatingIconWrapper}

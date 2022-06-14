@@ -52,7 +52,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
         let n = path + ext
         let it = 0
 
-        while (await hook.fileSystem.assetExists(n)) {
+        while (await document.fileSystem.assetExists(n)) {
             it++
             n = path + `(${it})` + ext
         }
@@ -115,7 +115,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             icon: "wysiwyg",
             onClick: async () => {
                 let path = await check(hook.currentDirectory.id + FileSystem.sep + "New UI Frame", ".ui")
-                hook.fileSystem.writeAsset(path, JSON.stringify({}))
+                document.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
                         hook.refreshFiles()
                     })
@@ -127,7 +127,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             icon: "texture",
             onClick: async () => {
                 let path = await check(hook.currentDirectory.id + FileSystem.sep + "New Material", ".material")
-                hook.fileSystem.writeAsset(path, JSON.stringify({}))
+                document.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
                         hook.refreshFiles()
                     })
@@ -140,7 +140,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             onClick: async () => {
                 let path = await check(hook.currentDirectory.id + FileSystem.sep + "New script", FILE_TYPES.SCRIPT)
 
-                hook.fileSystem.writeAsset(path, JSON.stringify({}))
+                document.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
                         hook.refreshFiles()
                     })
@@ -155,7 +155,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
 
                 let path = hook.currentDirectory.id + FileSystem.sep + "New folder"
 
-                const existing = await hook.fileSystem.foldersFromDirectory(hook.path + hook.currentDirectory.id)
+                const existing = await document.fileSystem.foldersFromDirectory(hook.path + hook.currentDirectory.id)
                 if (existing.length > 0)
                     path += " - " + existing.length
 
@@ -180,7 +180,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             onClick: async () => {
                 let path = await check(hook.currentDirectory.id + FileSystem.sep + "New script", ".flowRaw")
 
-                hook.fileSystem.writeAsset(path, template)
+                document.fileSystem.writeAsset(path, template)
                     .then(() => {
                         hook.refreshFiles()
                     })

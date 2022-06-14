@@ -4,7 +4,7 @@ import FileSystem from "../../../utils/files/FileSystem"
 export default async function handleRename(item, newName, hook, setCurrentItem, bookmarksHook) {
     if (item.isFolder) {
         const newNamePath = (item.parent ? item.parent + FileSystem.sep +  newName : FileSystem.sep + newName)
-        await hook.fileSystem
+        await document.fileSystem
             .rename(hook.path + item.id, hook.path + newNamePath)
 
         if (item.id === hook.currentDirectory.id)
@@ -22,7 +22,7 @@ export default async function handleRename(item, newName, hook, setCurrentItem, 
             const targetPath = hook.path + (item.parent ? item.parent + FileSystem.sep  : FileSystem.sep) + nameToApply
 
             if (!(await AsyncFS.exists(targetPath))) {
-                await hook
+                await document
                     .fileSystem
                     .rename(hook.path + item.id, targetPath)
                 hook.refreshFiles().catch()

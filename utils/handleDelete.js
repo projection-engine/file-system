@@ -26,7 +26,7 @@ export function deleteData(id, hook) {
         alert.pushAlert(
             "info",
             "Deleting files.")
-        hook.fileSystem.deleteFile(hook.path +FileSystem.sep + id, true, {recursive: true, force: true}).then(() => {
+        document.fileSystem.deleteFile(hook.path +FileSystem.sep + id, true, {recursive: true, force: true}).then(() => {
             if (hook.currentDirectory.id === id)
                 hook.setCurrentDirectory({id: FileSystem.sep })
             resolve(Object.keys(hook.toDelete).length > 0 ? [...hook.toDelete.relatedFiles, id] : [id])

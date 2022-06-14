@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react"
 import FileSystem from "../../../utils/files/FileSystem"
 
-export default function useBookmarks(fileSystem) {
+export default function useBookmarks( ) {
     const [bookmarks, setBookmarks] = useState([])
     useEffect(() => {
 
-        fileSystem.readFile(fileSystem.path + FileSystem.sep + "bookmarks.meta", "json")
+        document.fileSystem.readFile(document.fileSystem.path + FileSystem.sep + "bookmarks.meta", "json")
             .then(res => {
                 if (res)
                     setBookmarks(res)
@@ -19,14 +19,14 @@ export default function useBookmarks(fileSystem) {
                 name: id.split(FileSystem.sep ).pop(),
                 path: id
             }]
-            fileSystem.writeFile(FileSystem.sep + "bookmarks.meta",JSON.stringify(n))
+            document.fileSystem.writeFile(FileSystem.sep + "bookmarks.meta",JSON.stringify(n)).catch()
             return n
         })
     }
     const removeBookmark = (id) => {
         setBookmarks(prev => {
             const n = prev.filter(i => i.path !== id)
-            fileSystem.writeFile(FileSystem.sep + "bookmarks.meta", JSON.stringify(n)).catch()
+            document.fileSystem.writeFile(FileSystem.sep + "bookmarks.meta", JSON.stringify(n)).catch()
             return n
         })
     }
@@ -37,14 +37,14 @@ export default function useBookmarks(fileSystem) {
                 name: newPath.split(FileSystem.sep).pop(),
                 path: newPath
             }]
-            fileSystem.writeFile(FileSystem.sep + "bookmarks.meta", JSON.stringify(n)).catch()
+            document.fileSystem.writeFile(FileSystem.sep + "bookmarks.meta", JSON.stringify(n)).catch()
             return n
         })
     }
     const removeBlock = (v) => {
         setBookmarks(prev => {
             const n = prev.filter(i => !v.includes(i.path))
-            fileSystem.writeFile(FileSystem.sep + "bookmarks.meta", JSON.stringify(n)).catch()
+            document.fileSystem.writeFile(FileSystem.sep + "bookmarks.meta", JSON.stringify(n)).catch()
             return n
         })
     }

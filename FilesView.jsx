@@ -14,7 +14,7 @@ import FileSystem from "../../utils/files/FileSystem"
 
 export default function FilesView(props) {
     const hook = useFiles()
-    const bookmarksHook = useBookmarks(hook.fileSystem)
+    const bookmarksHook = useBookmarks( )
     const [selected, setSelected] = useState([])
     const [fileType, setFileType] = useState()
     const [searchString, setSearchString] = useState("")

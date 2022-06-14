@@ -35,7 +35,7 @@ export default function File(props) {
     }
     const icon = useMemo(() => {
         return getIcon({
-            path: props.hook.fileSystem.path + FileSystem.sep + "previews" +FileSystem.sep +  props.data.registryID + FILE_TYPES.PREVIEW,
+            path: document.fileSystem.path + FileSystem.sep + "previews" +FileSystem.sep +  props.data.registryID + FILE_TYPES.PREVIEW,
             type: props.data.type ? "." + props.data.type : "folder",
 
             visualization: props.visualizationType,

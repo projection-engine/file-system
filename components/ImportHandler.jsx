@@ -1,7 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "../styles/Control.module.css"
 import {Button, Checkbox, Icon, Modal} from "@f-ui/core"
-import QuickAccessProvider from "../../../hooks/QuickAccessProvider"
 import React, {useContext, useState} from "react"
 import EntitiesProvider from "../../../hooks/EntitiesProvider"
 import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
@@ -18,7 +17,6 @@ const DEFAULT_TERRAIN = {
     keepTangents: true
 }
 export default function ImportHandler(props) {
-    const {fileSystem} = useContext(QuickAccessProvider)
     const [asHeightmap, setAsHeightMap] = useState(false)
     const [filesToImport, setFilesToImport] = useState([])
     const [settings, setSettings] = useState(DEFAULT_TERRAIN)
@@ -88,17 +86,17 @@ export default function ImportHandler(props) {
                         className={styles.settingsButton}
                         onClick={async () => {
                             alert.pushAlert( "Loading scene",  "info")
-                            const result = await fileSystem.importFile(settings, props.hook.path + props.hook.currentDirectory.id, filesToImport)
+                            const result = await document.fileSystem.importFile(settings, props.hook.path + props.hook.currentDirectory.id, filesToImport)
                             let newEntities = [], newMeshes = []
                             for(let i in result) {
                                 const current = result[i]
                                 for(let j in current.ids) {
-                                    const res = await fileSystem.readRegistryFile(current.ids[j])
+                                    const res = await document.fileSystem.readRegistryFile(current.ids[j])
                                     if (res) {
                                         const {
                                             meshes,
                                             entities
-                                        } = await importScene(fileSystem, engine, res, true)
+                                        } = await importScene(document.fileSystem, engine, res, true)
                                         newEntities.push(...entities)
                                         newMeshes.push(...meshes)
                                         for(let m in entities){
@@ -106,7 +104,7 @@ export default function ImportHandler(props) {
                                             if(e && e.components[COMPONENTS.MESH]) {
                                                 const mesh = meshes.find(m => m.id === e.components[COMPONENTS.MESH].meshID)
                                                 const preview = engine.renderer.generateMeshPreview(e, mesh)
-                                                fileSystem.writeFile( FileSystem.sep + "previews" + FileSystem.sep + mesh.id + FILE_TYPES.PREVIEW, preview).catch(er => {console.log(er)})
+                                                document.fileSystem.writeFile( FileSystem.sep + "previews" + FileSystem.sep + mesh.id + FILE_TYPES.PREVIEW, preview).catch(er => {console.log(er)})
                                             }
                                         }
                                     }
@@ -127,11 +125,11 @@ export default function ImportHandler(props) {
                 className={styles.settingsButton}
                 variant={"filled"}
                 onClick={async () => {
-                    const toImport = await fileSystem.openDialog()
+                    const toImport = await document.fileSystem.openDialog()
                     if(toImport.filter(e => e.includes("gltf")).length > 0)
                         setFilesToImport(toImport)
                     else {
-                        await fileSystem.importFile(settings, props.hook.path + props.hook.currentDirectory.id, toImport)
+                        await document.fileSystem.importFile(settings, props.hook.path + props.hook.currentDirectory.id, toImport)
                         props.hook.refreshFiles()
                         setFilesToImport([])
                     }
