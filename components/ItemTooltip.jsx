@@ -1,5 +1,5 @@
 import {ToolTip} from "@f-ui/core"
-import styles from "../styles/Item.module.css"
+import styles from "../styles/File.module.css"
 import React, {useMemo} from "react"
 import PropTypes from "prop-types"
 

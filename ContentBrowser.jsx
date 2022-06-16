@@ -1,10 +1,10 @@
-import styles from "./styles/Explorer.module.css"
+import styles from "./styles/ContentBrowser.module.css"
 import PropTypes from "prop-types"
-import React, {useMemo, useState} from "react"
+import React, {useDeferredValue, useMemo, useState} from "react"
 import SideBar from "./components/SideBar"
 import Files from "./components/Files"
 import ControlBar from "./components/ControlBar"
-import useFiles from "./hooks/useFiles"
+import useContentBrowser from "./hooks/useContentBrowser"
 
 
 import ResizableBar from "../../../components/resizable/ResizableBar"
@@ -12,14 +12,14 @@ import DeleteConfirmation from "./components/DeleteConfirmation"
 import useBookmarks from "./hooks/useBookmarks"
 import FileSystem from "../../utils/files/FileSystem"
 
-export default function FilesView(props) {
-    const hook = useFiles()
+export default function ContentBrowser(props) {
+    const hook = useContentBrowser()
     const bookmarksHook = useBookmarks( )
     const [selected, setSelected] = useState([])
     const [fileType, setFileType] = useState()
     const [searchString, setSearchString] = useState("")
     const [visualizationType, setVisualizationType] = useState(0)
-
+    const search = useDeferredValue(searchString)
     const path = useMemo(() => {
         let response = [{
             name: "Assets",
@@ -50,12 +50,7 @@ export default function FilesView(props) {
     return (
         <div className={styles.wrapper}>
             <DeleteConfirmation hook={hook}/>
-            <div className={styles.content} style={{width: "20%", borderRadius: "0 5px 5px 0"}}>
-                <div className={styles.header}>
-                    <label className={styles.overflow}>Content browser</label>
-                </div>
-                <SideBar hook={hook} bookmarksHook={bookmarksHook} {...props}/>
-            </div>
+            <SideBar hook={hook} bookmarksHook={bookmarksHook} {...props}/>
             <ResizableBar type={"width"}/>
             <div className={styles.content} id={props.id + "-files"}>
                 <ControlBar
@@ -76,7 +71,7 @@ export default function FilesView(props) {
                     bookmarksHook={bookmarksHook}
                     hook={hook}
                     visualizationType={visualizationType}
-                    searchString={searchString}
+                    searchString={search}
                     setSelected={setSelected}
                     selected={selected}
                 />
@@ -86,7 +81,7 @@ export default function FilesView(props) {
 
 }
 
-FilesView.propTypes = {
+ContentBrowser.propTypes = {
     id: PropTypes.string,
     label: PropTypes.string
 }

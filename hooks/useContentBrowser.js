@@ -3,7 +3,7 @@ import EntitiesProvider from "../../../hooks/EntitiesProvider"
 import {getCall} from "../../../templates/AsyncFS"
 import FileSystem from "../../../utils/files/FileSystem"
 
-export default function useFiles() {
+export default function useContentBrowser() {
     const [openModal, setOpenModal] = useState(false)
     const uploadRef = useRef()
     const [onRename, setOnRename] = useState({})

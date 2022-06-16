@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import styles from "../styles/Item.module.css"
+import styles from "../styles/File.module.css"
 import React, {useContext, useMemo} from "react"
 import getIcon from "../utils/getIcon"
 import useItem from "../hooks/useItem"

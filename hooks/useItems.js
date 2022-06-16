@@ -1,7 +1,8 @@
 import {useMemo, useState} from "react"
 import FileSystem from "../../../utils/files/FileSystem"
 
-export default function useItems({hook, searchString,  fileType}) {
+export default function useItems(hook, search,  fileType) {
+
     const [currentItem, setCurrentItem] = useState()
     function map(arr){
         return   arr.map(e => {
@@ -19,9 +20,9 @@ export default function useItems({hook, searchString,  fileType}) {
             type.shift()
             type= type.join("")
         }
-        if(searchString || fileType)
+        if(search || fileType)
             return  map(hook.items
-                .filter(file => (searchString.length > 0 && file.name.toLowerCase().includes(searchString)  || type && file.type === type && !file.isFolder)))
+                .filter(file => (search.trim() && file.name.toLowerCase().includes(search)  || type && file.type === type && !file.isFolder)))
 
         if(hook.currentDirectory.id !== FileSystem.sep )
             return map(hook.items
@@ -29,7 +30,7 @@ export default function useItems({hook, searchString,  fileType}) {
         else
             return map(hook.items
                 .filter(file => !file.parent))
-    }, [hook.items, hook.currentDirectory, searchString, fileType])
+    }, [hook.items, hook.currentDirectory, search, fileType])
 
 
 

@@ -5,7 +5,7 @@ import mapToView from "../utils/mapToView"
 import getDirectoryOptions from "../utils/getDirectoryOptions"
 import handleDropFolder from "../utils/handleDropFolder"
 import handleRename from "../utils/handleRename"
-import styles from "../styles/Directories.module.css"
+import styles from "../styles/ContentBrowser.module.css"
 import FileSystem from "../../../utils/files/FileSystem"
 import {Icon} from "@f-ui/core"
 
@@ -57,8 +57,11 @@ export default function SideBar(props) {
     const options = useMemo(() => getDirectoryOptions(props), [])
 
     return (
-        <div style={{padding: "4px", display: "grid", gap: "4px"}}>
-            <div className={styles.wrapper}>
+        <div className={styles.content} style={{width: "20%"}}>
+            <div className={styles.header}>
+                <label className={styles.overflow}>Content browser</label>
+            </div>
+            <div style={{padding: "4px", display: "grid", gap: "4px", height: "100%"}}>
                 <TreeView
                     contextTriggers={ASSETS_TRIGGERS}
                     options={options}
@@ -72,8 +75,6 @@ export default function SideBar(props) {
                     handleRename={(item, name) => handleRename(item, name, props.hook, undefined, props.bookmarksHook)}
                 />
 
-            </div>
-            <div className={styles.wrapper}>
                 <TreeView
                     contextTriggers={BOOKMARKS_TRIGGERS}
                     options={options}
@@ -86,7 +87,6 @@ export default function SideBar(props) {
                     nodes={directoriesToRender.bookmarks} className={styles.accordion}
                     handleRename={(folder, newName) => handleRename(folder, newName, props.hook, undefined, props.bookmarksHook)}
                 />
-
             </div>
         </div>
     )

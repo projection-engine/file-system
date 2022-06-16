@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useRef, useState} from "react"
-import styles from "../styles/Item.module.css"
+import styles from "../styles/File.module.css"
 import handleDropFolder from "../utils/handleDropFolder"
 
 export default function useItem(props) {

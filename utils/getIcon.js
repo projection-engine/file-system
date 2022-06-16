@@ -1,4 +1,4 @@
-import styles from "../styles/Item.module.css"
+import styles from "../styles/File.module.css"
 import Preview from "../../../../components/preview/Preview"
 import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES"
 import React from "react"

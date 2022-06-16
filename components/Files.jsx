@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import styles from "../styles/Cards.module.css"
+import styles from "../styles/Files.module.css"
 import React, {useMemo} from "react"
 import File from "./File"
 import useItems from "../hooks/useItems"
@@ -19,10 +19,11 @@ export default function Files(props) {
     const {
         setCurrentItem, currentItem,
         filesToRender, 
-    } = useItems(props)
+    } = useItems(props.hook, props.searchString, props.fileType)
+
     const options = useMemo(() => {
         return getFileOptions(props.hook, setCurrentItem, props.bookmarksHook)
-    }, [props.hook.items, props.hook.currentDirectory, props.searchString])
+    }, [props.hook.items, props.hook.currentDirectory ])
     const cardSize = useMemo(() => {
         switch (props.visualizationType){
         case 1:
