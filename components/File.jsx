@@ -4,7 +4,7 @@ import React, {useContext, useMemo} from "react"
 import getIcon from "../utils/getIcon"
 import useItem from "../hooks/useItem"
 import ItemTooltip from "./ItemTooltip"
-import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES"
+import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 import FileSystem from "../../../utils/files/FileSystem"
 import openFile from "../../../utils/openFile"
 import OpenFileProvider from "../../../hooks/OpenFileProvider"
@@ -22,9 +22,9 @@ export default function File(props) {
     const {openFiles, setOpenFiles, setOpenTab} = useContext(OpenFileProvider)
     const onDoubleClick = () => {
         if (props.type === 1) {
-            if (props.data.type === "material" || props.data.type === "flow" || props.data.type === "ui")
+            if (props.data.type === "material")
                 openFile(openFiles, setOpenTab, setOpenFiles, props.data.registryID, currentLabel, props.data.type)
-            else if (props.data.type === "flowRaw")
+            else if (props.data.type === FILE_TYPES.SCRIPT.replace(".", ""))
                 shell.openPath(props.hook.path + FileSystem.sep + props.data.id).catch()
             else
                 props.setSelected(props.data.id)

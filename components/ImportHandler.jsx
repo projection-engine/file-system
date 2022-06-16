@@ -7,7 +7,7 @@ import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import FileSystem from "../../../utils/files/FileSystem"
 import importScene from "../../../utils/importer/importScene"
-import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES"
+import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 
 const path = window.require("path")
 
@@ -85,6 +85,7 @@ export default function ImportHandler(props) {
                         styles={{"--pj-accent-color": "#0095ff", width: "100px"}}
                         className={styles.settingsButton}
                         onClick={async () => {
+
                             alert.pushAlert( "Loading scene",  "info")
                             const result = await document.fileSystem.importFile(settings, props.hook.path + props.hook.currentDirectory.id, filesToImport)
                             let newEntities = [], newMeshes = []
@@ -96,7 +97,7 @@ export default function ImportHandler(props) {
                                         const {
                                             meshes,
                                             entities
-                                        } = await importScene(document.fileSystem, engine, res, true)
+                                        } = await importScene(engine, res, true)
                                         newEntities.push(...entities)
                                         newMeshes.push(...meshes)
                                         for(let m in entities){
@@ -112,8 +113,8 @@ export default function ImportHandler(props) {
                             }
                             engine.setMeshes(prev => [...prev, ...newMeshes])
                             engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: newEntities})
-                            alert.pushAlert("Scene loaded",  "success")
                             props.hook.refreshFiles()
+                            alert.pushAlert("Files imported (" + filesToImport.length + ")", "success")
                             setFilesToImport([])
                         }}>
                         Accept
@@ -126,11 +127,14 @@ export default function ImportHandler(props) {
                 variant={"filled"}
                 onClick={async () => {
                     const toImport = await document.fileSystem.openDialog()
+
                     if(toImport.filter(e => e.includes("gltf")).length > 0)
                         setFilesToImport(toImport)
                     else {
+                        alert.pushAlert("Loading files", "info")
                         await document.fileSystem.importFile(settings, props.hook.path + props.hook.currentDirectory.id, toImport)
                         props.hook.refreshFiles()
+                        alert.pushAlert("Files imported (" + filesToImport.length + ")", "success")
                         setFilesToImport([])
                     }
                 }}

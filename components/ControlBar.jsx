@@ -6,7 +6,7 @@ import Search from "../../../../components/search/Search"
 import ImportHandler from "./ImportHandler"
 import AsyncFS from "../../../templates/AsyncFS"
 import FileSystem from "../../../utils/files/FileSystem"
-import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES"
+import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 
 export default function ControlBar(props) {
     const  {

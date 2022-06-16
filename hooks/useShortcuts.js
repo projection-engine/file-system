@@ -5,6 +5,7 @@ import FileSystem from "../../../utils/files/FileSystem"
 import openFile from "../../../utils/openFile"
 import OpenFileProvider from "../../../hooks/OpenFileProvider"
 import useHotKeys from "../../shortcuts/hooks/useHotKeys"
+import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 
 const {shell} = window.require("electron")
 export default function useShortcuts(hook, bookmarksHook, selected, setSelected) {
@@ -35,9 +36,9 @@ export default function useShortcuts(hook, bookmarksHook, selected, setSelected)
                 disabled: selected.length === 0 || sel?.type === "mesh",
                 callback: () => {
                     if (!sel.isFolder) {
-                        if (sel.type === "material" || sel.type === "flow" || sel.type === "ui")
+                        if (sel.type === "material")
                             openFile(openFiles, setOpenTab, setOpenFiles, sel.registryID, sel.name, sel.type)
-                        else if (sel.type === "flowRaw")
+                        else if (sel.type === FILE_TYPES.SCRIPT.replace(".", ""))
                             shell.openPath(hook.path + FileSystem.sep + sel.id).catch()
                         else
                             setSelected([sel.id])

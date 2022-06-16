@@ -1,51 +1,11 @@
 import {onCreate} from "./getDirectoryOptions"
 import handleDelete from "./handleDelete"
 import AsyncFS from "../../../templates/AsyncFS"
-import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES"
+import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 import FileSystem from "../../../utils/files/FileSystem"
+import SCRIPT_TEMPLATE from "../../../templates/SCRIPT_TEMPLATE"
 
-const template = `
-class YourClassName{
-    state = {} // Your system state here
-    
-    constructor(){
-        // Do your initialization state here
-    }
-    
-    execute(params){
-        // Called every frame
-        
-        // TEMPLATES    
-        this.eventTick(params)
-        // Some key pressed (example with KeyA)
-        if(params.pressedKeys.KeyA && !this.state.pressedKeyA){
-                this.state.pressedKeyA = true
-                this.onKeyDown(params)
-        }
-        else if(params.pressedKeys.KeyA && this.state.pressedKeyA)
-            this.onHold(params)
-                
-        else if(!params.pressedKeys.KeyA && this.state.pressedKeyA){
-            this.state.pressedKeyA = false
-            this.onRelease(params)
-       }
-    }
-    
-    // Templates
-    eventTick(params){
-        // Do things here
-    }
-    onHold(params){
-        // Do things here
-    }
-    onKeyDown(params){
-        // Do things here
-    }
-    onRelease(params){
-        // Do things here
-    }
-}
-`
+
 const {shell} = window.require("electron")
 export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
     const check = async (path, ext) => {
@@ -178,9 +138,9 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             label: "New raw script",
             icon: "code",
             onClick: async () => {
-                let path = await check(hook.currentDirectory.id + FileSystem.sep + "New script", ".flowRaw")
+                let path = await check(hook.currentDirectory.id + FileSystem.sep + "New script", FILE_TYPES.SCRIPT)
 
-                document.fileSystem.writeAsset(path, template)
+                document.fileSystem.writeAsset(path, SCRIPT_TEMPLATE)
                     .then(() => {
                         hook.refreshFiles()
                     })

@@ -1,6 +1,6 @@
 import styles from "../styles/File.module.css"
 import Preview from "../../../../components/preview/Preview"
-import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES"
+import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 import React from "react"
 import {Icon} from "@f-ui/core"
 
@@ -31,30 +31,15 @@ export default function getIcon({
         return common("image")
     case FILE_TYPES.MATERIAL:
         return common("texture")
-    case FILE_TYPES.TERRAIN :
-        return common("terrain")
     case FILE_TYPES.MESH:
         return common("view_in_ar")
-    case FILE_TYPES.UI:
-        return (
-            <div className={styles.icon} data-size={`${visualization}`}>
-                <Icon >wysiwyg</Icon>
-            </div>
-        )
+
     case FILE_TYPES.SCRIPT:
-        return (
-            <div className={styles.icon} data-size={`${visualization}`}>
-                <Icon >code</Icon>
-            </div>
-        )
-    case FILE_TYPES.RAW_SCRIPT:
         return (
             <div className={styles.icon} data-size={`${visualization}`}>
                 <Icon >javascript</Icon>
             </div>
         )
-
-
     case FILE_TYPES.SCENE:
         return (
             <div className={styles.icon} data-size={`${visualization}`}>
