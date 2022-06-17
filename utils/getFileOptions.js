@@ -93,19 +93,6 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
                     })
             }
         },
-        {
-            requiredTrigger: "data-wrapper",
-            label: "New Blueprint script",
-            icon: "code",
-            onClick: async () => {
-                let path = await check(hook.currentDirectory.id + FileSystem.sep + "New script", FILE_TYPES.SCRIPT)
-
-                document.fileSystem.writeAsset(path, JSON.stringify({}))
-                    .then(() => {
-                        hook.refreshFiles()
-                    })
-            }
-        },
 
         {
             requiredTrigger: "data-wrapper",
@@ -121,7 +108,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
 
                 const [e] = await AsyncFS.mkdir(hook.path + path, {})
                 if (!e)
-                    hook.refreshFiles()
+                    hook.refreshFiles().catch()
             }
         },
         {
@@ -135,15 +122,13 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
 
         {
             requiredTrigger: "data-wrapper",
-            label: "New raw script",
+            label: "New script",
             icon: "code",
             onClick: async () => {
                 let path = await check(hook.currentDirectory.id + FileSystem.sep + "New script", FILE_TYPES.SCRIPT)
 
-                document.fileSystem.writeAsset(path, SCRIPT_TEMPLATE)
-                    .then(() => {
-                        hook.refreshFiles()
-                    })
+                await document.fileSystem.writeAsset(path, SCRIPT_TEMPLATE)
+                hook.refreshFiles().catch()
             }
         },
     ]
