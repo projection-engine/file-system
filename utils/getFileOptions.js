@@ -68,19 +68,6 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
 
         },
 
-        // WRAPPER
-        {
-            requiredTrigger: "data-wrapper",
-            label: "New UI Frame",
-            icon: "wysiwyg",
-            onClick: async () => {
-                let path = await check(hook.currentDirectory.id + FileSystem.sep + "New UI Frame", ".ui")
-                document.fileSystem.writeAsset(path, JSON.stringify({}))
-                    .then(() => {
-                        hook.refreshFiles()
-                    })
-            }
-        },
         {
             requiredTrigger: "data-wrapper",
             label: "New Material",

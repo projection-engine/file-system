@@ -7,7 +7,7 @@ export default async function handleDropFolder(event, target, hook) {
     try {
         entities = JSON.parse(event.dataTransfer.getData("text"))
     } catch (e) {
-        console.error(e)
+        alert.pushAlert("Error importing file", "error")
     }
 
     for (let i = 0; i < entities.length; i++) {
