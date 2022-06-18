@@ -3,12 +3,12 @@ import KEYS from "../../../engine/templates/KEYS"
 import handleDelete from "../utils/handleDelete"
 import FileSystem from "../../../utils/files/FileSystem"
 import openFile from "../../../utils/openFile"
-import OpenFileProvider from "../../../hooks/OpenFileProvider"
+import OpenFileProvider from "../../../providers/OpenFileProvider"
 import useHotKeys from "../../shortcuts/hooks/useHotKeys"
 import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 
 const {shell} = window.require("electron")
-export default function useShortcuts(hook, bookmarksHook, selected, setSelected) {
+export default function useShortcuts(hook,  selected, setSelected, entities) {
     const {openFiles, setOpenFiles, setOpenTab} = useContext(OpenFileProvider)
 
     const actions = useMemo(() => {
@@ -55,7 +55,7 @@ export default function useShortcuts(hook, bookmarksHook, selected, setSelected)
                 callback: () => {
                     const s = [...selected]
                     setSelected([])
-                    handleDelete(s, hook, bookmarksHook)
+                    handleDelete(s, hook, entities)
                 }
             }
         ]

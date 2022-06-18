@@ -1,4 +1,3 @@
-import React from "react"
 import handleDelete from "./handleDelete"
 import AsyncFS from "../../../templates/AsyncFS"
 import FileSystem from "../../../utils/files/FileSystem"
@@ -10,7 +9,7 @@ export default function getDirectoryOptions(props) {
             requiredTrigger: "data-node",
             label: "Delete",
             icon: "delete",
-            onClick: (node) => handleDelete(node.getAttribute("data-node"), props.hook, props.bookmarksHook)
+            onClick: (node) => handleDelete(node.getAttribute("data-node"), props.hook, props.bookmarksHook, props.entities)
         },
         {
             requiredTrigger: "data-node",

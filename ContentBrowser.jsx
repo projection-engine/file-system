@@ -1,42 +1,30 @@
 import styles from "./styles/ContentBrowser.module.css"
-import PropTypes from "prop-types"
 import React, {useDeferredValue, useMemo, useState} from "react"
 import SideBar from "./components/SideBar"
 import Files from "./components/Files"
 import ControlBar from "./components/ControlBar"
 import useContentBrowser from "./hooks/useContentBrowser"
-
-
 import ResizableBar from "../../../components/resizable/ResizableBar"
 import DeleteConfirmation from "./components/DeleteConfirmation"
-import useBookmarks from "./hooks/useBookmarks"
 import FileSystem from "../../utils/files/FileSystem"
-export default function ContentBrowser(props) {
+import COMPONENTS from "../../engine/templates/COMPONENTS"
+
+export default function ContentBrowser() {
     const hook = useContentBrowser()
-    const bookmarksHook = useBookmarks( )
     const [selected, setSelected] = useState([])
     const [fileType, setFileType] = useState()
     const [searchString, setSearchString] = useState("")
     const [visualizationType, setVisualizationType] = useState(0)
     const search = useDeferredValue(searchString)
     const path = useMemo(() => {
-        let response = [{
+        const findParent = (node) => {
+            const p = hook.items.find(n => n.id === node.parent)
+            return p ? [findParent(p), {name: p.name, path: p.id}].flat(Number.POSITIVE_INFINITY) : []
+        }
+        const response = [{
             name: "Assets",
             path: FileSystem.sep
-        }]
-
-        const findParent = (node) => {
-            const p = hook.items.find(n => {
-                return n.id === node.parent
-            })
-            let res = []
-
-            if (p)
-                res.push(...findParent(p).flat(), {name: p.name, path: p.id})
-
-            return res
-        }
-        response.push(...findParent(hook.currentDirectory))
+        }, ...findParent(hook.currentDirectory)]
         if (hook.currentDirectory.name)
             response.push({
                 name: hook.currentDirectory.name,
@@ -44,18 +32,27 @@ export default function ContentBrowser(props) {
             })
         return response
     }, [hook.currentDirectory, hook.items])
-
+    const targetEntities = useMemo(() => {
+        return hook.entities.filter(e => {
+            return (e.components.MeshComponent)
+        }).map(e => {
+            return {
+                name: e.name,
+                entity: e.id,
+                mesh: e.components[COMPONENTS.MESH].meshID
+            }
+        })
+    }, [hook.entities])
 
     return (
         <div className={styles.wrapper}>
-            <DeleteConfirmation hook={hook}/>
-            <SideBar hook={hook} bookmarksHook={bookmarksHook} {...props}/>
+            <DeleteConfirmation hook={hook} removeEntity={hook.removeEntity}/>
+            <SideBar entities={targetEntities} hook={hook}/>
             <ResizableBar type={"width"}/>
-            <div className={styles.content} id={props.id + "-files"}>
+            <div className={styles.content}>
                 <ControlBar
                     fileType={fileType}
                     setFileType={setFileType}
-                    bookmarksHook={bookmarksHook}
                     searchString={searchString}
                     visualizationType={visualizationType}
                     setVisualizationType={setVisualizationType}
@@ -64,10 +61,10 @@ export default function ContentBrowser(props) {
                     path={path}
                 />
                 <Files
+                    entities={targetEntities}
                     setSearchString={setSearchString}
                     fileType={fileType}
                     setFileType={setFileType}
-                    bookmarksHook={bookmarksHook}
                     hook={hook}
                     visualizationType={visualizationType}
                     searchString={search}
@@ -77,10 +74,5 @@ export default function ContentBrowser(props) {
             </div>
         </div>
     )
-
 }
 
-ContentBrowser.propTypes = {
-    id: PropTypes.string,
-    label: PropTypes.string
-}

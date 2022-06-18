@@ -25,35 +25,25 @@ export default function SideBar(props) {
             assets: [{
                 id: FileSystem.sep,
                 label: "Assets",
-
                 onClick: () => {
                     props.hook.setCurrentDirectory({
                         id: FileSystem.sep
                     })
                 },
-                children: toFilter.map(f => {
-                    return mapToView(f, props.hook)
-                }),
-
-                icon: <Icon styles={{fontSize: "1rem"}}
-                >inventory_2</Icon>,
+                children: toFilter.map(f => mapToView(f, props.hook)),
+                icon: <Icon styles={{fontSize: "1rem"}}>inventory_2</Icon>,
                 attributes: {"data-root": "root"}
             }],
             bookmarks: [ {
                 id: "bk",
                 label: "Bookmarks",
                 disabled: true,
-
-                children: props.bookmarksHook.bookmarks.map(f => {
-                    return mapToView(f, props.hook, true)
-                }),
-
-                icon: <Icon styles={{fontSize: "1rem"}}
-                >star</Icon>,
+                children: props.hook.bookmarks.map(f => mapToView(f, props.hook, true)),
+                icon: <Icon styles={{fontSize: "1rem"}}>star</Icon>,
                 attributes: {"data-root": "root"}
             }]
         }
-    }, [props.hook.items, props.bookmarksHook.bookmarks])
+    }, [props.hook.items, props.hook.bookmarks])
     const options = useMemo(() => getDirectoryOptions(props), [])
 
     return (
@@ -72,7 +62,7 @@ export default function SideBar(props) {
                     onDragStart={(e, t) => e.dataTransfer.setData("text", JSON.stringify([t]))}
                     selected={props.hook.currentDirectory.id}
                     nodes={directoriesToRender.assets} className={styles.accordion}
-                    handleRename={(item, name) => handleRename(item, name, props.hook, undefined, props.bookmarksHook)}
+                    handleRename={(item, name) => handleRename(item, name, props.hook)}
                 />
 
                 <TreeView
@@ -85,7 +75,7 @@ export default function SideBar(props) {
                     onDragStart={(e, t) => e.dataTransfer.setData("text", JSON.stringify([t]))}
                     selected={props.hook.currentDirectory.id}
                     nodes={directoriesToRender.bookmarks} className={styles.accordion}
-                    handleRename={(folder, newName) => handleRename(folder, newName, props.hook, undefined, props.bookmarksHook)}
+                    handleRename={(folder, newName) => handleRename(folder, newName, props.hook)}
                 />
             </div>
         </div>
@@ -93,6 +83,6 @@ export default function SideBar(props) {
 }
 
 SideBar.propTypes = {
-    bookmarksHook: PropTypes.object,
+    entities: PropTypes.array,
     hook: PropTypes.object.isRequired
 }

@@ -1,30 +1,28 @@
 import PropTypes from "prop-types"
 import {deleteData} from "../utils/handleDelete"
-import React, {useContext, useEffect, useState} from "react"
+import React, {useEffect, useState} from "react"
 import {Button, Icon, Modal, ToolTip} from "@f-ui/core"
 import styles from "../styles/DeleteConfirmation.module.css"
-import QuickAccessProvider from "../../../hooks/QuickAccessProvider"
 import KEYS from "../../../engine/templates/KEYS"
 
 export default function DeleteConfirmation(props) {
     const [open, setOpen] = useState(false)
-
     const submit = () => {
         setOpen(false)
         deleteData(props.hook.toDelete.file, props.hook)
             .then(toRemove => {
-                props.hook.removeEntities(props.hook.toDelete.relatedEntities.map(e => {
-                    return e.entity
-                }))
-
+                props.removeEntity(props.hook.toDelete.relatedEntities.map(e => {return e.entity}))
                 props.hook.setItems(prev => {
                     return prev.filter(p => !toRemove.includes(p.id))
                 })
-                quickAccess.refresh()
+                document.fileSystem.refresh()
                 props.hook.setToDelete({})
+                alert.pushAlert(
+                    "Files deleted.",
+                    "success"
+                )
             })
     }
-
 
     useEffect(() => {
         const notEmpty = Object.keys(props.hook.toDelete).length > 0
@@ -34,9 +32,6 @@ export default function DeleteConfirmation(props) {
         else
             setOpen(notEmpty)
     }, [props.hook.toDelete])
-    const quickAccess = useContext(QuickAccessProvider)
-
-
     const handleKey = (e) => {
         if (e.code === KEYS.Enter)
             submit()
@@ -122,5 +117,6 @@ export default function DeleteConfirmation(props) {
     )
 }
 DeleteConfirmation.propTypes = {
-    hook: PropTypes.object
+    hook: PropTypes.object,
+    removeEntity: PropTypes.func
 }

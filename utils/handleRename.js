@@ -1,7 +1,7 @@
 import AsyncFS from "../../../templates/AsyncFS"
 import FileSystem from "../../../utils/files/FileSystem"
 
-export default async function handleRename(item, newName, hook, setCurrentItem, bookmarksHook) {
+export default async function handleRename(item, newName, hook, setCurrentItem) {
     if (item.isFolder) {
         const newNamePath = (item.parent ? item.parent + FileSystem.sep +  newName : FileSystem.sep + newName)
         await document.fileSystem
@@ -15,7 +15,7 @@ export default async function handleRename(item, newName, hook, setCurrentItem, 
                 }
             })
         hook.refreshFiles().catch()
-        bookmarksHook.renameBookmark(item.id, newNamePath)
+        hook.renameBookmark(item.id, newNamePath)
     } else {
         const nameToApply = newName + "." + item.type
         if (newName !== item.name) {

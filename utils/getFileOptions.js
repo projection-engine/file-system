@@ -7,7 +7,7 @@ import SCRIPT_TEMPLATE from "../../../templates/SCRIPT_TEMPLATE"
 
 
 const {shell} = window.require("electron")
-export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
+export default function getFileOptions(hook, setCurrentItem,  entities) {
     const check = async (path, ext) => {
         let n = path + ext
         let it = 0
@@ -26,7 +26,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             requiredTrigger: "data-folder",
             label: "Delete",
             icon: "delete",
-            onClick: (node) => handleDelete(node.getAttribute("data-folder"), hook, bookmarksHook)
+            onClick: (node) => handleDelete(node.getAttribute("data-folder"), hook, entities)
         },
         {
             requiredTrigger: "data-folder",
@@ -64,7 +64,7 @@ export default function getFileOptions(hook, setCurrentItem, bookmarksHook) {
             requiredTrigger: "data-file",
             label: "Delete",
             icon: "delete",
-            onClick: (node) => handleDelete(node.getAttribute("data-file"), hook)
+            onClick: (node) => handleDelete(node.getAttribute("data-file"), hook, undefined, entities)
 
         },
 

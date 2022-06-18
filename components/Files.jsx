@@ -1,15 +1,24 @@
 import PropTypes from "prop-types"
 import styles from "../styles/Files.module.css"
-import React, {useMemo} from "react"
+import React, {useMemo, useState} from "react"
 import File from "./File"
-import useItems from "../hooks/useItems"
 import SelectBox from "../../../../components/select-box/SelectBox"
 import handleRename from "../utils/handleRename"
 import useShortcuts from "../hooks/useShortcuts"
 import useContextTarget from "../../../../components/context/hooks/useContextTarget"
 import getFileOptions from "../utils/getFileOptions"
 import {Icon} from "@f-ui/core"
+import FileSystem from "../../../utils/files/FileSystem"
 
+function map(arr, items){
+    return   arr.map(e => {
+        return {
+            ...e, children: e.isFolder ? items.filter(i => {
+                return typeof i.parent === "string" && i.parent === e.id
+            }).length : 0,
+        }
+    })
+}
 const TRIGGERS = [
     "data-wrapper",
     "data-file",
@@ -17,15 +26,36 @@ const TRIGGERS = [
 ]
 export default function Files(props) {
     const {
-        setCurrentItem, currentItem,
-        filesToRender, 
-    } = useItems(props.hook, props.searchString, props.fileType)
+        fileType, setFileType,
+        searchString, setSearchString,
+        visualizationType,
+        selected, setSelected, hook, entities
+    } = props
+    const [currentItem, setCurrentItem] = useState()
+    const filesToRender = useMemo(() => {
+        let type = fileType?.split("")
+        if(type) {
+            type.shift()
+            type= type.join("")
+        }
+        if(searchString || fileType)
+            return  map(
+                hook.items.filter(file => (searchString.trim() && file.name.toLowerCase().includes(searchString)  || type && file.type === type && !file.isFolder),
+                    hook.items
+                )
+            )
 
-    const options = useMemo(() => {
-        return getFileOptions(props.hook, setCurrentItem, props.bookmarksHook)
-    }, [props.hook.items, props.hook.currentDirectory ])
+        if(hook.currentDirectory.id !== FileSystem.sep )
+            return map(
+                hook.items
+                    .filter(file => file.parent === hook.currentDirectory.id),
+                hook.items
+            )
+        return map(hook.items.filter(file => !file.parent), hook.items)
+    }, [hook.items, hook.currentDirectory, searchString, fileType])
+    const options = useMemo(() => getFileOptions(hook, setCurrentItem, entities), [hook.items, hook.currentDirectory, entities])
     const cardSize = useMemo(() => {
-        switch (props.visualizationType){
+        switch (visualizationType){
         case 1:
             return "75px"
         case 2:
@@ -33,14 +63,14 @@ export default function Files(props) {
         default:
             return "115px"
         }
-    }, [props.visualizationType])
-    useShortcuts(props.hook, props.bookmarksHook, props.selected, props.setSelected)
-
+    }, [visualizationType])
+    useShortcuts(hook, selected, setSelected)
     useContextTarget(
         {id: "content-browser", label: "Content Browser", icon: "folder"},
         options,
         TRIGGERS
     )
+    
     return (
         <div
             id={"content-browser"}
@@ -51,25 +81,25 @@ export default function Files(props) {
                 className={styles.filesWrapper}
                 style={{
                     "--card_size": cardSize,
-                    padding: props.visualizationType === 2 ? "0" : undefined, gap: props.visualizationType === 2 ? "0" : undefined,
+                    padding: visualizationType === 2 ? "0" : undefined, gap: visualizationType === 2 ? "0" : undefined,
                 }}
             >
-                <SelectBox nodes={props.hook.items} selected={props.selected} setSelected={props.setSelected}/>
+                <SelectBox nodes={hook.items} selected={selected} setSelected={setSelected}/>
                 {filesToRender.length > 0 ?
                     filesToRender.map((child, index) => (
                         <React.Fragment key={child.id}>
                             <File
                                 index={index}
                                 reset={() => {
-                                    props.setSelected([])
-                                    props.setSearchString("")
-                                    props.setFileType(undefined)
+                                    setSelected([])
+                                    setSearchString("")
+                                    setFileType(undefined)
                                 }}
                                 type={child.isFolder ? 0 : 1}
                                 data={child}
                                 childrenQuantity={child.children}
-                                selected={props.selected}
-                                setSelected={(e) => props.setSelected(prev => {
+                                selected={selected}
+                                setSelected={(e) => setSelected(prev => {
                                     if(e) {
                                         if (e.ctrlKey)
                                             return [...prev, child.id]
@@ -79,11 +109,11 @@ export default function Files(props) {
                                     else
                                         return  []
                                 })}
-                                hook={props.hook}
+                                hook={hook}
                                 onRename={currentItem}
 
-                                visualizationType={props.visualizationType}
-                                submitRename={name => handleRename(child, name, props.hook,setCurrentItem, props.bookmarksHook)}
+                                visualizationType={visualizationType}
+                                submitRename={name => handleRename(child, name, hook, setCurrentItem)}
                             />
                         </React.Fragment>
                     ))
@@ -101,16 +131,12 @@ export default function Files(props) {
 }
 
 Files.propTypes = {
+    entities: PropTypes.array,
     fileType: PropTypes.string,
     setFileType: PropTypes.func,
-
     searchString: PropTypes.string,
     setSearchString: PropTypes.func,
-
-
     visualizationType: PropTypes.number,
-
-    bookmarksHook: PropTypes.object,
     selected: PropTypes.array,
     setSelected: PropTypes.func,
     hook: PropTypes.object.isRequired

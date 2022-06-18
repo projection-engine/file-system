@@ -15,7 +15,6 @@ export default function ControlBar(props) {
         searchString,
         setSearchString,
         path,
-        bookmarksHook,
         hook,
         hidden
     } = props
@@ -25,9 +24,7 @@ export default function ControlBar(props) {
             forward: hook.navIndex === 9 || hook.navHistory[hook.navIndex + 1] === undefined
         }
     }, [hook.navHistory, hook.navIndex])
-    const starred = useMemo(() => {
-        return bookmarksHook.bookmarks.find(b => b.path === hook.currentDirectory.id) !== undefined
-    }, [hook.currentDirectory, bookmarksHook.bookmarks])
+    const starred = useMemo(() => hook.bookmarks.find(b => b.path === hook.currentDirectory.id) !== undefined, [hook.currentDirectory, hook.bookmarks])
 
     return (
         <div className={styles.wrapper} style={{border: hidden ? "none" : undefined}}>
@@ -101,9 +98,9 @@ export default function ControlBar(props) {
                 styles={{border: "none"}}
                 onClick={() => {
                     if (starred)
-                        bookmarksHook.removeBookmark(hook.currentDirectory.id)
+                        hook.removeBookmark(hook.currentDirectory.id)
                     else
-                        bookmarksHook.addBookmark(hook.currentDirectory.id)
+                        hook.addBookmark(hook.currentDirectory.id)
                 }}
             >
                 <Icon >star</Icon>
@@ -207,8 +204,6 @@ ControlBar.propTypes = {
     searchString: PropTypes.string,
     setSearchString: PropTypes.func,
     path: PropTypes.arrayOf(PropTypes.object),
-
-    bookmarksHook: PropTypes.object,
     hook: PropTypes.object.isRequired,
     hidden: PropTypes.bool
 }
