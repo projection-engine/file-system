@@ -60,7 +60,6 @@ export default function useItem(props) {
             const selected = props.selected.map(s => {
                 return props.hook.items.find(i => i.id === s)
             }).filter(e => e && !e.isFolder && e.type === "mesh")
-
             event.dataTransfer.setData("text", JSON.stringify(selected.map(s => s.registryID)))
         } else
             event.dataTransfer.setData("text", JSON.stringify([props.type === 1 ? props.data.registryID : props.data.id]))

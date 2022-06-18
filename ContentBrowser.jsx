@@ -11,7 +11,6 @@ import ResizableBar from "../../../components/resizable/ResizableBar"
 import DeleteConfirmation from "./components/DeleteConfirmation"
 import useBookmarks from "./hooks/useBookmarks"
 import FileSystem from "../../utils/files/FileSystem"
-
 export default function ContentBrowser(props) {
     const hook = useContentBrowser()
     const bookmarksHook = useBookmarks( )

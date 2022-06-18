@@ -24,7 +24,7 @@ export default function ItemTooltip(props){
             {props.type === 1 ?
                 <>
                     <div className={styles.infoRow}>
-                            Type:
+                        Type:
                         <div className={styles.infoRowContent}>
                             {props.data.type}
                         </div>
