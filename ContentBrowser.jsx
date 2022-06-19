@@ -8,8 +8,10 @@ import ResizableBar from "../../../components/resizable/ResizableBar"
 import DeleteConfirmation from "./components/DeleteConfirmation"
 import FileSystem from "../../utils/files/FileSystem"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
+import PropTypes from "prop-types"
+import ViewHeader from "../../../components/view/ViewHeader"
 
-export default function ContentBrowser() {
+export default function ContentBrowser(props) {
     const hook = useContentBrowser()
     const [selected, setSelected] = useState([])
     const [fileType, setFileType] = useState()
@@ -45,11 +47,8 @@ export default function ContentBrowser() {
     }, [hook.entities])
 
     return (
-        <div className={styles.wrapper}>
-            <DeleteConfirmation hook={hook} removeEntity={hook.removeEntity}/>
-            <SideBar entities={targetEntities} hook={hook}/>
-            <ResizableBar type={"width"}/>
-            <div className={styles.content}>
+        <>
+            <ViewHeader {...props} title={"Content Browser"} icon={"folder"}>
                 <ControlBar
                     fileType={fileType}
                     setFileType={setFileType}
@@ -60,19 +59,32 @@ export default function ContentBrowser() {
                     hook={hook}
                     path={path}
                 />
-                <Files
-                    entities={targetEntities}
-                    setSearchString={setSearchString}
-                    fileType={fileType}
-                    setFileType={setFileType}
-                    hook={hook}
-                    visualizationType={visualizationType}
-                    searchString={search}
-                    setSelected={setSelected}
-                    selected={selected}
-                />
-            </div>
-        </div>
+            </ViewHeader>
+            {props.hidden ? 
+                null :
+                <div className={styles.wrapper}>
+                    <DeleteConfirmation hook={hook} removeEntity={hook.removeEntity}/>
+                    <SideBar entities={targetEntities} hook={hook}/>
+                    <ResizableBar type={"width"}/>
+                    <Files
+                        entities={targetEntities}
+                        setSearchString={setSearchString}
+                        fileType={fileType}
+                        setFileType={setFileType}
+                        hook={hook}
+                        visualizationType={visualizationType}
+                        searchString={search}
+                        setSelected={setSelected}
+                        selected={selected}
+                    />
+                </div>
+            }
+        </>
     )
 }
 
+ContentBrowser.propTypes={
+    hidden: PropTypes.bool,
+    switchView: PropTypes.func,
+    orientation: PropTypes.string,
+}

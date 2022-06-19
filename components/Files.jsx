@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "../styles/Files.module.css"
-import React, {useMemo, useState} from "react"
+import React, {useId, useMemo, useState} from "react"
 import File from "./File"
 import SelectBox from "../../../../components/select-box/SelectBox"
 import handleRename from "../utils/handleRename"
@@ -31,6 +31,7 @@ export default function Files(props) {
         visualizationType,
         selected, setSelected, hook, entities
     } = props
+    const internalID = useId()
     const [currentItem, setCurrentItem] = useState()
     const filesToRender = useMemo(() => {
         let type = fileType?.split("")
@@ -66,16 +67,16 @@ export default function Files(props) {
     }, [visualizationType])
     useShortcuts(hook, selected, setSelected)
     useContextTarget(
-        {id: "content-browser", label: "Content Browser", icon: "folder"},
+        {id: internalID, label: "Content Browser", icon: "folder"},
         options,
         TRIGGERS
     )
     
     return (
         <div
-            id={"content-browser"}
+            id={internalID}
             className={styles.content}
-            data-wrapper={"WRAPPER"}
+            data-wrapper={internalID}
         >
             <div
                 className={styles.filesWrapper}

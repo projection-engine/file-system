@@ -1,12 +1,10 @@
 import PropTypes from "prop-types"
 import styles from "../styles/File.module.css"
-import React, {useContext, useEffect, useMemo, useState} from "react"
+import React, {useEffect, useMemo, useState} from "react"
 import getIcon from "../utils/getIcon"
 import ItemTooltip from "./ItemTooltip"
 import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 import FileSystem from "../../../utils/files/FileSystem"
-import openFile from "../../../utils/openFile"
-import OpenFileProvider from "../../../providers/OpenFileProvider"
 import handleDropFolder from "../utils/handleDropFolder"
 
 const {shell} = window.require("electron")
@@ -14,7 +12,6 @@ export default function File(props) {
     const [currentLabel, setCurrentLabel] = useState(props.data.name)
     useEffect(() => setCurrentLabel(props.data.name), [props.data.name])
     const selected = useMemo(() => props.selected.includes(props.data.id), [props.selected])
-    const {openFiles, setOpenFiles, setOpenTab} = useContext(OpenFileProvider)
     const icon = useMemo(() => {
         return getIcon({
             path: document.fileSystem.path + FileSystem.sep + "previews" +FileSystem.sep +  props.data.registryID + FILE_TYPES.PREVIEW,
@@ -47,9 +44,7 @@ export default function File(props) {
             data-folder={props.type !== 0 ? undefined : props.data.id}
             onDoubleClick={() => {
                 if (props.type === 1) {
-                    if (props.data.type === "material")
-                        openFile(openFiles, setOpenTab, setOpenFiles, props.data.registryID, currentLabel, props.data.type)
-                    else if (props.data.type === FILE_TYPES.SCRIPT.replace(".", ""))
+                    if (props.data.type === FILE_TYPES.SCRIPT.replace(".", ""))
                         shell.openPath(props.hook.path + FileSystem.sep + props.data.id).catch()
                     else
                         props.setSelected(props.data.id)

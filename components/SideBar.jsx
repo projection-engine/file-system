@@ -47,37 +47,32 @@ export default function SideBar(props) {
     const options = useMemo(() => getDirectoryOptions(props), [])
 
     return (
-        <div className={styles.content} style={{width: "20%"}}>
-            <div className={styles.header}>
-                <label className={styles.overflow}>Content browser</label>
-            </div>
-            <div style={{padding: "4px", display: "grid", gap: "4px", height: "100%"}}>
-                <TreeView
-                    contextTriggers={ASSETS_TRIGGERS}
-                    options={options}
-                    draggable={true}
-                    onDrop={(event, target) => handleDropFolder(event, target, props.hook)}
-                    onDragLeave={(event) => event.preventDefault()}
-                    onDragOver={(event) => event.preventDefault()}
-                    onDragStart={(e, t) => e.dataTransfer.setData("text", JSON.stringify([t]))}
-                    selected={props.hook.currentDirectory.id}
-                    nodes={directoriesToRender.assets} className={styles.accordion}
-                    handleRename={(item, name) => handleRename(item, name, props.hook)}
-                />
+        <div style={{display: "grid", gap: "4px", height: "100%", width: "300px"}}>
+            <TreeView
+                contextTriggers={ASSETS_TRIGGERS}
+                options={options}
+                draggable={true}
+                onDrop={(event, target) => handleDropFolder(event, target, props.hook)}
+                onDragLeave={(event) => event.preventDefault()}
+                onDragOver={(event) => event.preventDefault()}
+                onDragStart={(e, t) => e.dataTransfer.setData("text", JSON.stringify([t]))}
+                selected={props.hook.currentDirectory.id}
+                nodes={directoriesToRender.assets} className={styles.accordion}
+                handleRename={(item, name) => handleRename(item, name, props.hook)}
+            />
 
-                <TreeView
-                    contextTriggers={BOOKMARKS_TRIGGERS}
-                    options={options}
-                    draggable={true}
-                    onDrop={(event, target) => handleDropFolder(event, target, props.hook)}
-                    onDragLeave={(event) => event.preventDefault()}
-                    onDragOver={(event) => event.preventDefault()}
-                    onDragStart={(e, t) => e.dataTransfer.setData("text", JSON.stringify([t]))}
-                    selected={props.hook.currentDirectory.id}
-                    nodes={directoriesToRender.bookmarks} className={styles.accordion}
-                    handleRename={(folder, newName) => handleRename(folder, newName, props.hook)}
-                />
-            </div>
+            <TreeView
+                contextTriggers={BOOKMARKS_TRIGGERS}
+                options={options}
+                draggable={true}
+                onDrop={(event, target) => handleDropFolder(event, target, props.hook)}
+                onDragLeave={(event) => event.preventDefault()}
+                onDragOver={(event) => event.preventDefault()}
+                onDragStart={(e, t) => e.dataTransfer.setData("text", JSON.stringify([t]))}
+                selected={props.hook.currentDirectory.id}
+                nodes={directoriesToRender.bookmarks} className={styles.accordion}
+                handleRename={(folder, newName) => handleRename(folder, newName, props.hook)}
+            />
         </div>
     )
 }
