@@ -9,7 +9,7 @@ import DeleteConfirmation from "./components/DeleteConfirmation"
 import FileSystem from "../../utils/files/FileSystem"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 import PropTypes from "prop-types"
-import ViewHeader from "../../../components/view/ViewHeader"
+import Header from "../../../components/view/components/Header"
 
 export default function ContentBrowser(props) {
     const hook = useContentBrowser()
@@ -48,7 +48,7 @@ export default function ContentBrowser(props) {
 
     return (
         <>
-            <ViewHeader {...props} title={"Content Browser"} icon={"folder"}>
+            <Header {...props} title={"Content Browser"} icon={"folder"}>
                 <ControlBar
                     fileType={fileType}
                     setFileType={setFileType}
@@ -59,7 +59,7 @@ export default function ContentBrowser(props) {
                     hook={hook}
                     path={path}
                 />
-            </ViewHeader>
+            </Header>
             {props.hidden ? 
                 null :
                 <div className={styles.wrapper}>
