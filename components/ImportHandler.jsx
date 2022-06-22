@@ -87,12 +87,12 @@ export default function ImportHandler(props) {
                         onClick={async () => {
 
                             alert.pushAlert( "Loading scene",  "info")
-                            const result = await document.fileSystem.importFile(settings, props.hook.path + props.hook.currentDirectory.id, filesToImport)
+                            const result = await window.fileSystem.importFile(settings, props.hook.path + props.hook.currentDirectory.id, filesToImport)
                             let newEntities = [], newMeshes = []
                             for(let i in result) {
                                 const current = result[i]
                                 for(let j in current.ids) {
-                                    const res = await document.fileSystem.readRegistryFile(current.ids[j])
+                                    const res = await window.fileSystem.readRegistryFile(current.ids[j])
                                     if (res) {
                                         const {
                                             meshes,
@@ -104,8 +104,8 @@ export default function ImportHandler(props) {
                                             const e = entities[m]
                                             if(e && e.components[COMPONENTS.MESH]) {
                                                 const mesh = meshes.find(m => m.id === e.components[COMPONENTS.MESH].meshID)
-                                                const preview = engine.renderer.generateMeshPreview(e, mesh)
-                                                document.fileSystem.writeFile( FileSystem.sep + "previews" + FileSystem.sep + mesh.id + FILE_TYPES.PREVIEW, preview).catch(er => {console.log(er)})
+                                                const preview = window.renderer.generateMeshPreview(e, mesh)
+                                                window.fileSystem.writeFile( FileSystem.sep + "previews" + FileSystem.sep + mesh.id + FILE_TYPES.PREVIEW, preview).catch(er => {console.log(er)})
                                             }
                                         }
                                     }
@@ -126,13 +126,13 @@ export default function ImportHandler(props) {
                 className={styles.settingsButton}
                 variant={"filled"}
                 onClick={async () => {
-                    const toImport = await document.fileSystem.openDialog()
+                    const toImport = await window.fileSystem.openDialog()
 
                     if(toImport.filter(e => e.includes("gltf")).length > 0)
                         setFilesToImport(toImport)
                     else {
                         alert.pushAlert("Loading files", "info")
-                        await document.fileSystem.importFile(settings, props.hook.path + props.hook.currentDirectory.id, toImport)
+                        await window.fileSystem.importFile(settings, props.hook.path + props.hook.currentDirectory.id, toImport)
                         props.hook.refreshFiles()
                         alert.pushAlert("Files imported (" + filesToImport.length + ")", "success")
                         setFilesToImport([])

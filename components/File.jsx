@@ -14,7 +14,7 @@ export default function File(props) {
     const selected = useMemo(() => props.selected.includes(props.data.id), [props.selected])
     const icon = useMemo(() => {
         return getIcon({
-            path: document.fileSystem.path + FileSystem.sep + "previews" +FileSystem.sep +  props.data.registryID + FILE_TYPES.PREVIEW,
+            path: window.fileSystem.path + FileSystem.sep + "previews" +FileSystem.sep +  props.data.registryID + FILE_TYPES.PREVIEW,
             type: props.data.type ? "." + props.data.type : "folder",
 
             visualization: props.visualizationType,

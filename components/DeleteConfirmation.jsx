@@ -15,7 +15,7 @@ export default function DeleteConfirmation(props) {
                 props.hook.setItems(prev => {
                     return prev.filter(p => !toRemove.includes(p.id))
                 })
-                document.fileSystem.refresh()
+                window.fileSystem.refresh()
                 props.hook.setToDelete({})
                 alert.pushAlert(
                     "Files deleted.",

@@ -82,7 +82,7 @@ export default function ControlBar(props) {
                 onClick={async () => {
                     let path = hook.currentDirectory.id + FileSystem.sep + "New folder"
 
-                    const existing = document.fileSystem.foldersFromDirectory(hook.path + hook.currentDirectory.id)
+                    const existing = window.fileSystem.foldersFromDirectory(hook.path + hook.currentDirectory.id)
                     if (existing.length > 0)
                         path += " - " + existing.length
                     await AsyncFS.mkdir(hook.path + path, {})

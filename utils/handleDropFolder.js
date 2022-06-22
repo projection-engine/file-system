@@ -16,7 +16,7 @@ export default async function handleDropFolder(event, target, hook) {
             let from = textData
             if (!from.includes(FileSystem.sep)) {
 
-                const reg = await document.fileSystem.readRegistryFile(from)
+                const reg = await window.fileSystem.readRegistryFile(from)
 
                 if (reg) from = reg.path
                 else {
@@ -32,7 +32,7 @@ export default async function handleDropFolder(event, target, hook) {
                 return f.id === from || (f.registryID === textData && f.registryID !== undefined)
             })
             if (from !== to && toItem && toItem.id !== from && fromItem && fromItem.parent !== to && toItem.isFolder) {
-                document.fileSystem
+                window.fileSystem
                     .rename(pathResolve.resolve(hook.path + FileSystem.sep + from), pathResolve.resolve(hook.path + to))
                     .then(() => {
                         if (from === hook.currentDirectory.id) hook.setCurrentDirectory(prev => {
@@ -46,7 +46,7 @@ export default async function handleDropFolder(event, target, hook) {
             }
         } else if (textData.includes(FileSystem.sep)) {
             const newPath = hook.path + FileSystem.sep + textData.split(FileSystem.sep).pop()
-            if (!(await AsyncFS.exists(newPath))) document.fileSystem
+            if (!(await AsyncFS.exists(newPath))) window.fileSystem
                 .rename(pathResolve.resolve(hook.path + FileSystem.sep + textData), pathResolve.resolve(newPath))
                 .then(() => {
                     if (textData === hook.currentDirectory.id) hook.setCurrentDirectory(prev => {

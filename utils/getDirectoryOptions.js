@@ -50,7 +50,7 @@ export default function getDirectoryOptions(props) {
 }
 
 export async function onCreate(parent, hook) {
-    const directories = await document.fileSystem.foldersFromDirectory(hook.path + parent)
+    const directories = await window.fileSystem.foldersFromDirectory(hook.path + parent)
 
     const getName = async (id) => {
         const index = directories.filter(d => {

@@ -12,7 +12,7 @@ export default function getFileOptions(hook, setCurrentItem,  entities) {
         let n = path + ext
         let it = 0
 
-        while (await document.fileSystem.assetExists(n)) {
+        while (await window.fileSystem.assetExists(n)) {
             it++
             n = path + `(${it})` + ext
         }
@@ -74,7 +74,7 @@ export default function getFileOptions(hook, setCurrentItem,  entities) {
             icon: "texture",
             onClick: async () => {
                 let path = await check(hook.currentDirectory.id + FileSystem.sep + "New Material", ".material")
-                document.fileSystem.writeAsset(path, JSON.stringify({}))
+                window.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
                         hook.refreshFiles()
                     })
@@ -89,7 +89,7 @@ export default function getFileOptions(hook, setCurrentItem,  entities) {
 
                 let path = hook.currentDirectory.id + FileSystem.sep + "New folder"
 
-                const existing = await document.fileSystem.foldersFromDirectory(hook.path + hook.currentDirectory.id)
+                const existing = await window.fileSystem.foldersFromDirectory(hook.path + hook.currentDirectory.id)
                 if (existing.length > 0)
                     path += " - " + existing.length
 
@@ -114,7 +114,7 @@ export default function getFileOptions(hook, setCurrentItem,  entities) {
             onClick: async () => {
                 let path = await check(hook.currentDirectory.id + FileSystem.sep + "New script", FILE_TYPES.SCRIPT)
 
-                await document.fileSystem.writeAsset(path, SCRIPT_TEMPLATE)
+                await window.fileSystem.writeAsset(path, SCRIPT_TEMPLATE)
                 hook.refreshFiles().catch()
             }
         },
