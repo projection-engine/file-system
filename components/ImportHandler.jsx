@@ -105,7 +105,7 @@ export default function ImportHandler(props) {
                                             if(e && e.components[COMPONENTS.MESH]) {
                                                 const mesh = meshes.find(m => m.id === e.components[COMPONENTS.MESH].meshID)
                                                 const preview = window.renderer.generateMeshPreview(e, mesh)
-                                                window.fileSystem.writeFile( FileSystem.sep + "previews" + FileSystem.sep + mesh.id + FILE_TYPES.PREVIEW, preview).catch(er => {console.log(er)})
+                                                window.fileSystem.writeFile( FileSystem.sep + "previews" + FileSystem.sep + mesh.id + FILE_TYPES.PREVIEW, preview).catch(er => console.error(er))
                                             }
                                         }
                                     }

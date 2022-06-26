@@ -22,7 +22,7 @@ export default async function handleRename(item, newName, hook, setCurrentItem) 
             const targetPath = hook.path + (item.parent ? item.parent + FileSystem.sep  : FileSystem.sep) + nameToApply
 
             if (!(await AsyncFS.exists(targetPath))) {
-                await document
+                await window
                     .fileSystem
                     .rename(hook.path + item.id, targetPath)
                 hook.refreshFiles().catch()

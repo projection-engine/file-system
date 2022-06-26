@@ -64,7 +64,7 @@ export default function File(props) {
                 } else
                     event.dataTransfer.setData("text", JSON.stringify([props.type === 1 ? props.data.registryID : props.data.id]))
             }}
-            draggable={!props.onRename === props.data.id}
+            draggable={props.onRename !== props.data.id}
             onClick={props.setSelected}
             style={{
                 background: selected ? "var(--pj-accent-color)" : props.visualizationType === 2 ? (props.index % 2 === 0 ? "var(--pj-background-secondary)" : "var(--pj-background-tertiary)") : undefined
@@ -91,17 +91,9 @@ export default function File(props) {
                     {currentLabel}
                 </div>
             }
-            <ItemTooltip
-                childrenQuantity={props.childrenQuantity}
-                data={props.data}
-                currentLabel={currentLabel}
-                type={props.type}
-            />
-
         </div>
-
-
     )
+    // TODO - FILE PROPERTIES ON NEW WINDOW
 }
 
 File.propTypes = {
