@@ -56,16 +56,11 @@ export default function Files(props) {
     }, [hook.items, hook.currentDirectory, searchString, fileType])
     const options = useMemo(() => getFileOptions(hook, setCurrentItem, entities), [hook.items, hook.currentDirectory, entities])
     const cardSize = useMemo(() => {
-        switch (visualizationType){
-        case 1:
-            return "75px"
-        case 2:
-            return "100%"
-        default:
-            return "115px"
-        }
+        if(visualizationType === 1)
+            return  "75px"
+        return "115px"
     }, [visualizationType])
-    useShortcuts(hook, selected, setSelected)
+    useShortcuts(hook, selected, setSelected, entities)
     useContextTarget(
         {id: internalID, label: "Content Browser", icon: "folder"},
         options,

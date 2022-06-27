@@ -178,12 +178,7 @@ export default function ControlBar(props) {
                             label: "Small card",
                             onClick: () => setVisualizationType(1)
                         }}/>
-                        <DropdownOption option={{
-                            icon: visualizationType === 2 ? <Icon
-                                styles={{fontSize: "1.1rem"}}>check</Icon> : null,
-                            label: "List",
-                            onClick: () => setVisualizationType(2)
-                        }}/>
+
                     </DropdownOptions>
                 </Dropdown>
 

@@ -1,207 +1,158 @@
 .hovered {
-    border-color: var(--pj-accent-color);
+  border-color: var(--pj-accent-color);
 }
 
 .input {
-    color: var(--pj-color-secondary);
-    outline: none;
-    background-color: var(--pj-background-tertiary);
-    border-radius: 5px;
-    border: var(--pj-border-primary) 1px solid;
-    padding: 4px 2px;
-    max-width: 100%;
+  color: var(--pj-color-secondary);
+  outline: none;
+  background-color: var(--pj-background-tertiary);
+  border-radius: 5px;
+  border: var(--pj-border-primary) 1px solid;
+  padding: 4px 2px;
+  max-width: 100%;
 }
 
 .input:focus {
-    border-color: var(--pj-accent-color);
+  border-color: var(--pj-accent-color);
 }
-
 
 .toolTip {
-    box-shadow: var(--pj-boxshadow);
-    width: 250px;
-    border-radius: 5px;
-    padding: 4px;
-
+  box-shadow: var(--pj-boxshadow);
+  width: 250px;
+  border-radius: 5px;
+  padding: 4px;
 }
 
-
 .infoRow {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
-    font-weight: bold;
-    font-size: .8rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  font-weight: bold;
+  font-size: 0.8rem;
 }
 
 .infoRowContent {
-    font-weight: normal;
+  font-weight: normal;
 }
 
 .infoWrapper {
-    display: flex;
-    flex-direction: column;
-
-
-    width: 100%;
-    overflow: hidden;
-    max-width: 100%;
-
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  max-width: 100%;
 }
-
 
 .icon {
-    position: relative;
-    color: var(--pj-color-secondary);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    border-radius: 5px;
+  position: relative;
+  color: var(--pj-color-secondary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 5px;
 }
 
-.icon[data-size='0'] > span {
-    font-size: 3.5rem !important;
+.icon[data-size="0"] > span {
+  font-size: 3.5rem !important;
 }
 
-.icon[data-size='1'] > span {
-    font-size: 2.5rem !important;
+.icon[data-size="1"] > span {
+  font-size: 2.5rem !important;
 }
 
-.icon[data-size='2'] {
-    width: fit-content;
+.floatingIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--pj-background-tertiary);
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 3px;
+  font-size: 0.7rem !important;
 }
 
-.icon[data-size='2'] > span {
-    font-size: 1.75rem !important;
-}
-
-
-
-.floatingIconWrapper{
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: var(--pj-background-tertiary);
-
-    position: absolute;
-    bottom: 4px;
-    right: 4px;
-
-    width: 1.3rem;
-    height: 1.3rem;
-    border-radius: 3px;
-    font-size: .7rem !important;
-
-}
 .floatingIcon {
-
-    color: var(--pj-color-secondary);
-    font-size: 1.1rem !important;
-
+  color: var(--pj-color-secondary);
+  font-size: 1.1rem !important;
 }
-
 
 .image {
-    max-height: 100%;
+  max-height: 100%;
 }
 
 .label {
-    font-size: .75rem;
-
-    padding: 4px 4px 8px;
-
-    text-align: center;
-    line-height: 100%;
-
-    min-height: 20px;
+  font-size: 0.75rem;
+  padding: 4px 4px 8px;
+  text-align: center;
+  line-height: 100%;
+  min-height: 20px;
 }
 
 .type {
-    font-size: .75rem;
-    color: var(--pj-color-quaternary);
+  font-size: 0.75rem;
+  color: var(--pj-color-quaternary);
 }
 
 .overflow {
-
-    overflow: hidden !important;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 100%;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 .file {
-    position: relative;
-    overflow: hidden;
-    border-radius: 5px;
-    color: var(--pj-color-secondary);
-    gap: 4px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    height: 115px;
-    width: 115px;
-
-
-    outline: transparent 2px solid;
-    cursor: pointer;
-
-
-    flex: 1 1 80px;
-
-    padding: 4px 4px 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
+  color: var(--pj-color-secondary);
+  gap: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 115px;
+  width: 115px;
+  outline: transparent 2px solid;
+  cursor: pointer;
+  flex: 1 1 80px;
+  padding: 4px 4px 0;
 }
 
-.file[data-size='1'] {
-    height: 75px;
-    max-width: 75px;
+.file[data-size="1"] {
+  height: 75px;
+  max-width: 75px;
 }
 
-.file[data-size='2'] {
-    height: 30px;
-    width: 100%;
-    flex-direction: row;
-    border-radius: 0;
-    justify-content: flex-start;
-    justify-items: flex-start;
+.file:hover,
+.file:active {
+  border-color: transparent;
+  background: var(--pj-background-primary);
 }
-
-.file:hover, .file:active {
-    border-color: transparent;
-    background: var(--pj-background-primary);
-}
-
 
 .dragImage {
-    display: grid;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 4px;
-
-    color: var(--pj-color-secondary);
-    font-size: .75rem;
-
-    text-align: center;
-
-    height: fit-content;
-    width: 115px !important;
-
-    overflow: hidden;
-    background-color: var(--pj-border-primary);
-    box-shadow: var(--pj-boxshadow);
-    border-radius: 5px;
-    padding: 4px;
+  display: grid;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+  color: var(--pj-color-secondary);
+  font-size: 0.75rem;
+  text-align: center;
+  height: fit-content;
+  width: 115px !important;
+  overflow: hidden;
+  background-color: var(--pj-border-primary);
+  box-shadow: var(--pj-boxshadow);
+  border-radius: 5px;
+  padding: 4px;
 }
 
 .dragImage > * {
-
-    font-size: 1.1rem !important;
+  font-size: 1.1rem !important;
 }
