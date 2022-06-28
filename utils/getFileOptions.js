@@ -64,7 +64,7 @@ export default function getFileOptions(hook, setCurrentItem,  entities) {
             requiredTrigger: "data-file",
             label: "Delete",
             icon: "delete",
-            onClick: (node) => handleDelete(node.getAttribute("data-file"), hook, undefined, entities)
+            onClick: (node) => handleDelete(node.getAttribute("data-file"), hook, entities)
 
         },
 

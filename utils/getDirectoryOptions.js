@@ -9,7 +9,7 @@ export default function getDirectoryOptions(props) {
             requiredTrigger: "data-node",
             label: "Delete",
             icon: "delete",
-            onClick: (node) => handleDelete(node.getAttribute("data-node"), props.hook, props.bookmarksHook, props.entities)
+            onClick: (node) => handleDelete(node.getAttribute("data-node"), props.hook, props.entities)
         },
         {
             requiredTrigger: "data-node",
