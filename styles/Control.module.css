@@ -39,7 +39,6 @@
 }
 
 .pathWrapper {
-  max-width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -51,6 +50,7 @@
   overflow-y: hidden;
   overflow-x: auto;
   width: 100%;
+  max-width: 350px;
   padding: 2px;
   font-weight: normal;
   color: var(--pj-color-secondary);
@@ -71,9 +71,6 @@
   color: var(--pj-color-secondary);
   display: flex;
   flex-direction: column;
-
-  /* align-content: flex-start; */
-
   gap: 16px;
   background: var(--pj-background-primary);
   width: 35%;
@@ -127,6 +124,7 @@
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 4px;
   max-height: 35px;
   border-left: var(--pj-background-tertiary) 2px solid;
