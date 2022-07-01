@@ -22,7 +22,7 @@ export default function handleDelete(entries, hook,  entities) {
 
 export function deleteData(id, hook) {
     return new Promise(resolve => {
-        window.fileSystem.deleteFile(hook.path +FileSystem.sep + id, true, {recursive: true, force: true}).then(() => {
+        window.fileSystem.deleteFile("assets" + FileSystem.sep + id, {recursive: true, force: true}).then(() => {
             if (hook.currentDirectory.id === id)
                 hook.setCurrentDirectory({id: FileSystem.sep })
             resolve(Object.keys(hook.toDelete).length > 0 ? [...hook.toDelete.relatedFiles, id] : [id])
