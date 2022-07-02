@@ -4,7 +4,7 @@ import {Button, Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/cor
 import React, {useMemo} from "react"
 import Search from "../../../../components/search/Search"
 import ImportHandler from "./ImportHandler"
-import AsyncFS from "../../../templates/AsyncFS"
+import AsyncFS from "../../../utils/AsyncFS"
 import FileSystem from "../../../utils/files/FileSystem"
 import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 

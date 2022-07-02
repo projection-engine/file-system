@@ -1,9 +1,9 @@
 import {onCreate} from "./getDirectoryOptions"
 import handleDelete from "./handleDelete"
-import AsyncFS from "../../../templates/AsyncFS"
+import AsyncFS from "../../../utils/AsyncFS"
 import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 import FileSystem from "../../../utils/files/FileSystem"
-import SCRIPT_TEMPLATE from "../../../templates/SCRIPT_TEMPLATE"
+import SCRIPT_TEMPLATE from "../../../../static/misc/SCRIPT_TEMPLATE"
 
 
 const {shell} = window.require("electron")

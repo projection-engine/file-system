@@ -1,4 +1,4 @@
-import AsyncFS from "../../../templates/AsyncFS"
+import AsyncFS from "../../../utils/AsyncFS"
 import FileSystem from "../../../utils/files/FileSystem"
 
 export default async function handleRename(item, newName, hook, setCurrentItem) {
