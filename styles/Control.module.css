@@ -19,8 +19,8 @@
 }
 
 .settingsButton {
-  height: 25px;
-  min-width: 25px;
+  height: 23px;
+  min-width: 23px;
   padding: 0 2px;
   display: flex;
   align-items: center;
@@ -44,9 +44,8 @@
   justify-content: flex-start;
   gap: 0;
   background: var(--pj-background-tertiary);
-  border: var(--pj-border-primary) 1px solid;
-  border-radius: 5px;
-  height: 25px;
+  border-radius: 3px;
+  height: 23px;
   overflow-y: hidden;
   overflow-x: auto;
   width: 100%;

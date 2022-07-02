@@ -21,12 +21,9 @@ export default function ContentBrowser(props) {
     const path = useMemo(() => {
         const findParent = (node) => {
             const p = hook.items.find(n => n.id === node.parent)
-            return p ? [findParent(p), {name: p.name, path: p.id}].flat(Number.POSITIVE_INFINITY) : []
+            return p ? [findParent(p), {name: p.name, path: p.id}] : []
         }
-        const response = [{
-            name: "Assets",
-            path: FileSystem.sep
-        }, ...findParent(hook.currentDirectory)]
+        const response = [{name: "Assets", path: FileSystem.sep}, findParent(hook.currentDirectory)].flat(Number.POSITIVE_INFINITY)
         if (hook.currentDirectory.name)
             response.push({
                 name: hook.currentDirectory.name,
