@@ -6,13 +6,13 @@ import useHotKeys from "../../shortcuts/hooks/useHotKeys"
 import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 
 const {shell} = window.require("electron")
-export default function useShortcuts(hook,  selected, setSelected, entities) {
+export default function useShortcuts(hook,  selected, setSelected, entities, internalID) {
     const actions = useMemo(() => {
         const sel = !selected[0] ? undefined : hook.items.find(i => i.id === selected[0])
         return [
             {
                 disabled: hook.currentDirectory.id === FileSystem.sep,
-                label: "Return",
+                label: "Back",
                 require: [KEYS.Backspace],
                 callback: () => {
                     const found = hook.currentDirectory.id
@@ -51,13 +51,27 @@ export default function useShortcuts(hook,  selected, setSelected, entities) {
                     setSelected([])
                     handleDelete(s, hook, entities)
                 }
+            },
+            {
+                label: "Cut",
+                require: [KEYS.ControlLeft, KEYS.KeyX],
+                callback: () => {
+                    alert.pushAlert("Cutting " + selected.length + " files", "info")
+                    console.log(selected)
+                    hook.setToCut(selected)
+                }
+            },
+            {
+                label: "Paste",
+                require: [KEYS.ControlLeft, KEYS.KeyV],
+                callback: () => hook.paste()
             }
         ]
-    }, [selected, hook.currentDirectory])
+    }, [selected, hook.currentDirectory,hook.toCut])
     useHotKeys({
         focusTargetLabel: "Content browser",
         focusTargetIcon: "folder",
-        focusTarget: "content-browser",
+        focusTarget: internalID,
         actions
     })
 }

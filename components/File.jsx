@@ -36,7 +36,7 @@ export default function File(props) {
             onDrop={e => {
                 e.preventDefault()
                 e.currentTarget.parentNode.classList.remove(styles.hovered)
-                handleDropFolder(e, props.data.id, () => null, props.hook)
+                handleDropFolder(e.dataTransfer.getData("text"), props.data.id, props.hook)
             }}
             onContextMenu={() => props.setSelected(props.data.id)}
             data-file={props.type === 0 ? undefined : props.data.id}

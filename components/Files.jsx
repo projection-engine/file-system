@@ -40,12 +40,7 @@ export default function Files(props) {
             type= type.join("")
         }
         if(searchString || fileType)
-            return  map(
-                hook.items.filter(file => (searchString.trim() && file.name.toLowerCase().includes(searchString)  || type && file.type === type && !file.isFolder),
-                    hook.items
-                )
-            )
-
+            return map(hook.items.filter(file => (searchString.trim() && file.name.toLowerCase().includes(searchString)  || type && file.type === type && !file.isFolder), hook.items))
         if(hook.currentDirectory.id !== FileSystem.sep )
             return map(
                 hook.items
@@ -54,13 +49,11 @@ export default function Files(props) {
             )
         return map(hook.items.filter(file => !file.parent), hook.items)
     }, [hook.items, hook.currentDirectory, searchString, fileType])
-    const options = useMemo(() => getFileOptions(hook, setCurrentItem, entities), [hook.items, hook.currentDirectory, entities])
-    const cardSize = useMemo(() => {
-        if(visualizationType === 1)
-            return  "75px"
-        return "115px"
-    }, [visualizationType])
-    useShortcuts(hook, selected, setSelected, entities)
+    useShortcuts(hook, selected, setSelected, entities, internalID)
+    const options = useMemo(() => {
+        return getFileOptions(hook, setCurrentItem, entities)
+    },
+    [hook.items, hook.currentDirectory?.id, entities, hook.toCut])
     useContextTarget(
         {id: internalID, label: "Content Browser", icon: "folder"},
         options,
@@ -75,10 +68,7 @@ export default function Files(props) {
         >
             <div
                 className={styles.filesWrapper}
-                style={{
-                    "--card_size": cardSize,
-                    padding: visualizationType === 2 ? "0" : undefined, gap: visualizationType === 2 ? "0" : undefined,
-                }}
+                style={{"--card_size": visualizationType === 1 ? "75px": "115px"}}
             >
                 <SelectBox nodes={hook.items} selected={selected} setSelected={setSelected}/>
                 {filesToRender.length > 0 ?
@@ -99,11 +89,9 @@ export default function Files(props) {
                                     if(e) {
                                         if (e.ctrlKey)
                                             return [...prev, child.id]
-                                        else
-                                            return [child.id]
+                                        return [child.id]
                                     }
-                                    else
-                                        return  []
+                                    return  []
                                 })}
                                 hook={hook}
                                 onRename={currentItem}

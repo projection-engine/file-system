@@ -17,10 +17,6 @@ export default function DeleteConfirmation(props) {
                 })
                 window.fileSystem.refresh()
                 props.hook.setToDelete({})
-                alert.pushAlert(
-                    "Files deleted.",
-                    "success"
-                )
             })
     }
 

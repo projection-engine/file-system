@@ -9,7 +9,7 @@ import FileSystem from "../../../utils/files/FileSystem"
 import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 
 export default function ControlBar(props) {
-    const  {
+    const {
         visualizationType,
         setVisualizationType,
         searchString,
@@ -18,12 +18,6 @@ export default function ControlBar(props) {
         hook,
         hidden
     } = props
-    const disabled = useMemo(() => {
-        return {
-            backwards: hook.navIndex === 0 ,
-            forward: hook.navIndex === 9 || hook.navHistory[hook.navIndex + 1] === undefined
-        }
-    }, [hook.navHistory, hook.navIndex])
     const starred = useMemo(() => hook.bookmarks.find(b => b.path === hook.currentDirectory.id) !== undefined, [hook.currentDirectory, hook.bookmarks])
 
     return (
@@ -31,36 +25,24 @@ export default function ControlBar(props) {
             <div className={styles.buttonGroup} style={{gap: "4px"}}>
                 <div className={styles.buttonGroup}>
                     <Button
-                        disabled={disabled.backwards}
                         className={styles.settingsButton}
-                        styles={{borderRadius: "5px 0 0 5px"}}
+                        styles={{borderRadius: "3px 0 0 3px"}}
                         onClick={() => hook.returnDir()}
                     >
-                        <Icon >arrow_back</Icon>
+                        <Icon>arrow_back</Icon>
                     </Button>
                     <Button
-                        disabled={disabled.forward}
                         styles={{borderRadius: 0}}
                         className={styles.settingsButton}
                         onClick={() => hook.forwardDir()}
                     >
-                        <Icon  styles={{transform: "rotate(180deg)"}}>arrow_back</Icon>
+                        <Icon styles={{transform: "rotate(180deg)"}}>arrow_back</Icon>
                     </Button>
                     <Button
                         className={styles.settingsButton}
                         styles={{borderRadius: 0}}
                         disabled={hook.currentDirectory.id === FileSystem.sep}
-                        onClick={() => {
-                            const found = hook.currentDirectory.id
-                            if (found) {
-                                const split = found.split(FileSystem.sep )
-                                split.pop()
-                                if (split.length === 1)
-                                    hook.setCurrentDirectory({id: FileSystem.sep })
-                                else
-                                    hook.setCurrentDirectory({id: split.join(FileSystem.sep)})
-                            }
-                        }}
+                        onClick={hook.goToParent}
                     >
                         <Icon
                             styles={{transform: "rotate(180deg)"}}>subdirectory_arrow_right</Icon>
@@ -68,13 +50,13 @@ export default function ControlBar(props) {
                     <Button
                         disabled={hook.loading}
                         className={styles.settingsButton}
-                        styles={{borderRadius: "0 5px 5px 0", border: "none"}}
+                        styles={{borderRadius: "0 3px 3px 0", border: "none"}}
                         onClick={() => {
-                            alert.pushAlert("Refreshing files",  "info")
+                            alert.pushAlert("Refreshing files", "info")
                             hook.refreshFiles().catch()
                         }}
                     >
-                        <Icon >sync</Icon>
+                        <Icon>sync</Icon>
                     </Button>
                 </div>
                 <Button
@@ -91,7 +73,7 @@ export default function ControlBar(props) {
                     }}
 
                 >
-                    <Icon  styles={{transform: "rotate(180deg)"}}>create_new_folder</Icon>
+                    <Icon styles={{transform: "rotate(180deg)"}}>create_new_folder</Icon>
                 </Button>
                 <Button
                     className={styles.settingsButton}
@@ -104,7 +86,7 @@ export default function ControlBar(props) {
                             hook.addBookmark(hook.currentDirectory.id)
                     }}
                 >
-                    <Icon >star</Icon>
+                    <Icon>star</Icon>
                 </Button>
                 <Dropdown
                     disabled={hook.loading} hideArrow={true}
@@ -113,18 +95,18 @@ export default function ControlBar(props) {
                     onClick={() => {
                         hook.refreshFiles().catch()
                     }}
-                    variant={props.fileType !== undefined ? "filled": undefined}
+                    variant={props.fileType !== undefined ? "filled" : undefined}
                 >
-                    <Icon >filter_alt</Icon>
+                    <Icon>filter_alt</Icon>
                     <DropdownOptions>
                         {Object.keys(FILE_TYPES).map((k, i) => (
                             <React.Fragment key={k + "-filter-key-" + i}>
                                 <DropdownOption
                                     option={{
                                         label: k.toLowerCase().replace("_", " "),
-                                        icon: props.fileType === FILE_TYPES[k] ? <Icon >check</Icon> : undefined,
+                                        icon: props.fileType === FILE_TYPES[k] ? <Icon>check</Icon> : undefined,
                                         onClick: () => props.setFileType(props.fileType === FILE_TYPES[k] ? undefined : FILE_TYPES[k]),
-                                        keepAlive: false    ,
+                                        keepAlive: false,
                                     }}
                                     className={styles.fileType}
                                 />
@@ -135,40 +117,34 @@ export default function ControlBar(props) {
             </div>
 
             <div className={styles.buttonGroup} style={{gap: "4px", width: "100%"}}>
-                <div className={styles.pathWrapper}>
-                    {path.map((p, i) => (
-                        <React.Fragment key={p.path}>
-                            <button
-                                className={styles.button}
-                                onClick={() => {
-                                    const found = hook.items.find(i => i.id === p.path)
-                                    if (found)
-                                        hook.setCurrentDirectory(found)
-                                    else
-                                        hook.setCurrentDirectory({
-                                            id: FileSystem.sep
-                                        })
-                                }}>
-                                {p.name}
-                            </button>
-                            {i < path.length - 1 ? "/" : null}
-                        </React.Fragment>
-                    ))}
-                </div>
+                <Search
+                    width={"100%"}
+                    searchString={hook.currentDirectory.id}
+                    noIcon={true}
+                    noPlaceHolder={true}
+                    noAutoSubmit={true}
+                    setSearchString={async (path) => {
+                        console.log(hook.path + path, await AsyncFS.exists(hook.path + path))
+                        if (await AsyncFS.exists(hook.path + path))
+                            hook.setCurrentDirectory({
+                                id: path
+                            })
+                    }}
+                />
                 <Search
                     searchString={searchString}
                     height={"30px"}
                     setSearchString={setSearchString}
-                    width={"50%"}
+                    width={"25%"}
                 />
             </div>
             <div className={styles.buttonGroup}>
                 <Dropdown
-                    styles={{borderRadius: "5px 0 0 5px"}}
+                    styles={{borderRadius: "3px 0 0 3px"}}
                     variant={"outlined"}
                     className={styles.settingsButton}
                 >
-                    <Icon  styles={{fontSize: "1.1rem"}}>view_headline</Icon>View
+                    <Icon styles={{fontSize: "1.1rem"}}>view_headline</Icon>View
                     <DropdownOptions>
                         <DropdownOption option={{
                             icon: visualizationType === 0 ? <Icon

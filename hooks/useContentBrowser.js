@@ -1,46 +1,79 @@
-import {useContext, useState} from "react"
+import {useContext, useRef, useState} from "react"
 import FileSystem from "../../../utils/files/FileSystem"
 import FilesProvider from "../../../providers/FilesProvider"
+import handleDropFolder from "../utils/handleDropFolder"
 
 export default function useContentBrowser() {
     const [currentDirectory, setCurrentDirectory] = useState({id: FileSystem.sep})
-    const [navHistory, setNavHistory] = useState([])
-    const [navIndex, setNavIndex] = useState(0)
     const [toDelete, setToDelete] = useState({})
     const data = useContext(FilesProvider)
+    const history = useRef({
+        data: [],
+        index: -1
+    })
+    const [toCut, setToCut] = useState([])
 
+    const setDir = (v) => {
+        const historyData = history.current.data
+        historyData.push(currentDirectory.id)
+        if (historyData.length > 10) historyData.shift()
+        history.current.index = historyData.length
+        setCurrentDirectory(v)
+    }
+    
     return {
         ...data,
+        setToCut,
         toDelete,
         setToDelete,
-        navIndex,
+        currentDirectory,
+        setCurrentDirectory: setDir,
+        toCut,
+        paste: (parent) => {
+            console.log(toCut)
+            if(toCut.length > 0){
+                handleDropFolder(
+                    [...toCut],
+                    parent ? parent : currentDirectory.id,  
+                    {
+                        ...data,
+                        setToCut,
+                        toDelete,
+                        setToDelete,
+                        currentDirectory,
+                        setCurrentDirectory: setDir,
+                    }
+                )
+                setToCut([])
+            }
+        },
         returnDir:() => {
-            if (navIndex > 0 && navHistory[navIndex - 1]) {
-                setNavIndex(n => {
-                    return n - 1
+            if (history.current.index > 0 && history.current.data[history.current.index - 1]) {
+                history.current.index -= 1
+                setCurrentDirectory({
+                    id: history.current.data[history.current.index]
                 })
-                setCurrentDirectory(navHistory[navIndex])
             }
         },
         forwardDir:() => {
-            if (navIndex < 10 && navHistory[navIndex + 1]) {
-                setNavIndex(n => {
-                    return n + 1
+            if (history.current.index < 10 && history.current.data[history.current.index + 1]) {
+                history.current.index += 1
+
+                setCurrentDirectory({
+                    id: history.current.data[history.current.index]
                 })
-                setCurrentDirectory(navHistory[navIndex])
             }
         },
-        navHistory,
-        setNavHistory,
-        currentDirectory,
-        setCurrentDirectory: v => {
-            setNavHistory(prev => {
-                const c = [...prev, v]
-                if (c.length > 10) c.shift()
-                setNavIndex(c.length -1 )
-                return c
-            })
-            setCurrentDirectory(v)
+        goToParent: () => {
+            const found = currentDirectory.id
+            if (found) {
+                const split = found.split(FileSystem.sep )
+                split.pop()
+                if (split.length === 1)
+                    setDir({id: FileSystem.sep })
+                else
+                    setDir({id: split.join(FileSystem.sep)})
+            }
         }
     }
 }

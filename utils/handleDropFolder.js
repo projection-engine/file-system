@@ -4,11 +4,14 @@ import FileSystem from "../../../utils/files/FileSystem"
 const pathResolve = window.require("path")
 export default async function handleDropFolder(event, target, hook) {
     let entities = []
-    try {
-        entities = JSON.parse(event.dataTransfer.getData("text"))
-    } catch (e) {
-        alert.pushAlert("Error importing file", "error")
-    }
+    if(Array.isArray( event))
+        entities = event
+    else
+        try {
+            entities = JSON.parse(event)
+        } catch (e) {
+            alert.pushAlert("Error moving file", "error")
+        }
 
     for (let i = 0; i < entities.length; i++) {
         const textData = entities[i]

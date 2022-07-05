@@ -1,78 +1,118 @@
 import PropTypes from "prop-types"
-import React, {useMemo} from "react"
-import TreeView from "../../../../components/tree/TreeView"
-import mapToView from "../utils/mapToView"
-import getDirectoryOptions from "../utils/getDirectoryOptions"
-import handleDropFolder from "../utils/handleDropFolder"
-import handleRename from "../utils/handleRename"
-import styles from "../styles/ContentBrowser.module.css"
-import FileSystem from "../../../utils/files/FileSystem"
+import React, {useId, useMemo} from "react"
+import styles from "../styles/SideBar.module.css"
 import {Icon} from "@f-ui/core"
+import handleDropFolder from "../utils/handleDropFolder"
+import FileSystem from "../../../utils/files/FileSystem"
 
-const ASSETS_TRIGGERS = [
-    "data-node",
-    "data-self"
-]
-const BOOKMARKS_TRIGGERS =[
-    "data-root",
-    "data-self"
-]
 export default function SideBar(props) {
 
-    const directoriesToRender = useMemo(() => {
-        const toFilter = props.hook.items.filter(item => item.isFolder && !item.parent)
-        return {
-            assets: [{
-                id: FileSystem.sep,
-                label: "Assets",
-                onClick: () => {
-                    props.hook.setCurrentDirectory({
-                        id: FileSystem.sep
-                    })
-                },
-                children: toFilter.map(f => mapToView(f, props.hook)),
-                icon: <Icon styles={{fontSize: "1rem"}}>inventory_2</Icon>,
-                attributes: {"data-root": "root"}
-            }],
-            bookmarks: [ {
-                id: "bk",
-                label: "Bookmarks",
-                disabled: true,
-                children: props.hook.bookmarks.map(f => mapToView(f, props.hook, true)),
-                icon: <Icon styles={{fontSize: "1rem"}}>star</Icon>,
-                attributes: {"data-root": "root"}
-            }]
-        }
-    }, [props.hook.items, props.hook.bookmarks])
-    const options = useMemo(() => getDirectoryOptions(props), [])
+    const assets = useMemo(
+        () => props.hook.items.filter(item => item.isFolder && !item.parent),
+        [props.hook.items]
+    )
 
+    const internalID = useId()
     return (
-        <div style={{display: "grid", gap: "4px", height: "100%", width: "300px"}}>
-            <TreeView
-                contextTriggers={ASSETS_TRIGGERS}
-                options={options}
-                draggable={true}
-                onDrop={(event, target) => handleDropFolder(event, target, props.hook)}
-                onDragLeave={(event) => event.preventDefault()}
-                onDragOver={(event) => event.preventDefault()}
-                onDragStart={(e, t) => e.dataTransfer.setData("text", JSON.stringify([t]))}
-                selected={props.hook.currentDirectory.id}
-                nodes={directoriesToRender.assets} className={styles.accordion}
-                handleRename={(item, name) => handleRename(item, name, props.hook)}
-            />
+        <div className={styles.wrapper}>
+            <details
+                className={styles.tree} open={true}
+            >
+                <summary className={styles.summary}>
+                    <Icon>arrow_drop_down</Icon>
+                    <Icon styles={{fontSize: "1rem"}}>
+                        inventory_2
+                    </Icon>
+                    Assets
+                </summary>
+                <div className={styles.content}>
+                    <div
+                        data-highlight={props.hook.currentDirectory.id === FileSystem.sep}
+                        className={styles.folder}
+                        onDragOver={e => {
+                            e.preventDefault()
+                            e.target.classList.add(styles.hovered)
+                        }}
+                        onDragLeave={e => {
+                            e.preventDefault()
+                            e.target.classList.remove(styles.hovered)
+                        }}
+                        onDrop={e => {
+                            e.preventDefault()
+                            e.target.classList.remove(styles.hovered)
+                            handleDropFolder(e.dataTransfer.getData("text"), FileSystem.sep, props.hook)
+                        }}
+                        onClick={() => props.hook.setCurrentDirectory({id: FileSystem.sep})}
+                    >
+                        <Icon styles={{fontSize: "1.1rem"}}>arrow_upward</Icon>
+                        ...
+                    </div>
+                    {assets.map((b, i) => (
+                        <div
+                            data-highlight={b.id === props.hook.currentDirectory.id}
+                            className={styles.folder}
+                            key={i + "-asset-" + internalID}
 
-            <TreeView
-                contextTriggers={BOOKMARKS_TRIGGERS}
-                options={options}
-                draggable={true}
-                onDrop={(event, target) => handleDropFolder(event, target, props.hook)}
-                onDragLeave={(event) => event.preventDefault()}
-                onDragOver={(event) => event.preventDefault()}
-                onDragStart={(e, t) => e.dataTransfer.setData("text", JSON.stringify([t]))}
-                selected={props.hook.currentDirectory.id}
-                nodes={directoriesToRender.bookmarks} className={styles.accordion}
-                handleRename={(folder, newName) => handleRename(folder, newName, props.hook)}
-            />
+                            onDragOver={e => {
+                                e.preventDefault()
+                                e.target.classList.add(styles.hovered)
+                            }}
+                            onDragLeave={e => {
+                                e.preventDefault()
+                                e.target.classList.remove(styles.hovered)
+                            }}
+                            onDrop={e => {
+                                e.preventDefault()
+                                e.target.classList.remove(styles.hovered)
+                                handleDropFolder(e.dataTransfer.getData("text"), b.id, props.hook)
+                            }}
+                            onClick={() => props.hook.setCurrentDirectory(b)}
+                        >
+                            <Icon styles={{fontSize: "1.1rem", color: "var(--folder-color)"}}>
+                                folder
+                            </Icon>
+                            {b.name}
+                        </div>
+                    ))}
+                </div>
+            </details>
+            <details className={styles.tree}>
+                <summary className={styles.summary}>
+                    <Icon>arrow_drop_down</Icon>
+                    <Icon styles={{fontSize: "1rem"}}>
+                        book
+                    </Icon>
+                    Bookmarks
+                </summary>
+                <div className={styles.content}>
+                    {props.hook.bookmarks.map((b, i) => (
+                        <div
+                            className={styles.folder}
+                            key={i + "-bookmark-" + internalID}
+                            onDragOver={e => {
+                                e.preventDefault()
+                                e.target.classList.add(styles.hovered)
+                            }}
+                            onDragLeave={e => {
+                                e.preventDefault()
+                                e.target.classList.remove(styles.hovered)
+                            }}
+                            onDrop={e => {
+                                e.preventDefault()
+                                e.target.classList.remove(styles.hovered)
+                                handleDropFolder(e.dataTransfer.getData("text"), b.id, props.hook)
+                            }}
+                            onClick={() => props.hook.setCurrentDirectory({...b, id: b.path})}
+                        >
+
+                            <Icon styles={{fontSize: "1.1rem", color: "var(--folder-color)"}}>
+                                folder
+                            </Icon>
+                            {b.name}
+                        </div>
+                    ))}
+                </div>
+            </details>
         </div>
     )
 }
