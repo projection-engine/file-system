@@ -32,15 +32,16 @@ export default function ContentBrowser(props) {
         return response
     }, [hook.currentDirectory, hook.items])
     const targetEntities = useMemo(() => {
-        return hook.entities.filter(e => {
-            return (e.components.MeshComponent)
-        }).map(e => {
-            return {
-                name: e.name,
-                entity: e.id,
-                mesh: e.components[COMPONENTS.MESH].meshID
-            }
-        })
+        const values = hook.entities.values()
+        return Array.from(values)
+            .filter(e => e.components[COMPONENTS.MESH])
+            .map(e => {
+                return {
+                    name: e.name,
+                    entity: e.id,
+                    mesh: e.components[COMPONENTS.MESH].meshID
+                }
+            })
     }, [hook.entities])
 
     return (

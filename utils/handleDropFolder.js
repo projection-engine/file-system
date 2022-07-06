@@ -3,18 +3,18 @@ import FileSystem from "../../../utils/files/FileSystem"
 
 const pathResolve = window.require("path")
 export default async function handleDropFolder(event, target, hook) {
-    let entities = []
+    let items = []
     if(Array.isArray( event))
-        entities = event
+        items = event
     else
         try {
-            entities = JSON.parse(event)
+            items = JSON.parse(event)
         } catch (e) {
             alert.pushAlert("Error moving file", "error")
         }
 
-    for (let i = 0; i < entities.length; i++) {
-        const textData = entities[i]
+    for (let i = 0; i < items.length; i++) {
+        const textData = items[i]
         if (target !== FileSystem.sep) {
             let from = textData
             if (!from.includes(FileSystem.sep)) {
@@ -39,9 +39,7 @@ export default async function handleDropFolder(event, target, hook) {
                     .rename(pathResolve.resolve(hook.path + FileSystem.sep + from), pathResolve.resolve(hook.path + to))
                     .then(() => {
                         if (from === hook.currentDirectory.id) hook.setCurrentDirectory(prev => {
-                            return {
-                                ...prev, id: to
-                            }
+                            return {...prev, id: to}
                         })
 
                         hook.refreshFiles()
@@ -53,9 +51,7 @@ export default async function handleDropFolder(event, target, hook) {
                 .rename(pathResolve.resolve(hook.path + FileSystem.sep + textData), pathResolve.resolve(newPath))
                 .then(() => {
                     if (textData === hook.currentDirectory.id) hook.setCurrentDirectory(prev => {
-                        return {
-                            ...prev, id: newPath.replace(hook.path, "")
-                        }
+                        return {...prev, id: newPath.replace(hook.path, "")}
                     })
 
                     hook.refreshFiles()

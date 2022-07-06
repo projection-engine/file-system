@@ -1,8 +1,9 @@
 import FileSystem from "../../../utils/files/FileSystem"
 
-export default function handleDelete(entries, hook,  entities) {
+export default function handleDelete(entries, hook) {
     const ee = !Array.isArray(entries) ? [entries] : entries
     hook.removeBlock(ee)
+    const entities = window.renderer.allEntities
     ee.forEach(id => {
         const files = hook.items.filter(i => (i.id === id) || (i.parent && i.parent.includes(id) && !i.isFolder))
         const relatedFiles = files.map(i => i.registryID).filter(i => i)
