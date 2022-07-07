@@ -6,7 +6,7 @@ import useHotKeys from "../../shortcuts/hooks/useHotKeys"
 import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 
 const {shell} = window.require("electron")
-export default function useShortcuts(hook,  selected, setSelected, entities, internalID) {
+export default function useShortcuts(hook,  selected, setSelected,  internalID) {
     const actions = useMemo(() => {
         const sel = !selected[0] ? undefined : hook.items.find(i => i.id === selected[0])
         return [
@@ -49,7 +49,7 @@ export default function useShortcuts(hook,  selected, setSelected, entities, int
                 callback: () => {
                     const s = [...selected]
                     setSelected([])
-                    handleDelete(s, hook, entities)
+                    handleDelete(s, hook)
                 }
             },
             {

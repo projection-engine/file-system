@@ -10,8 +10,8 @@ import getFileOptions from "../utils/getFileOptions"
 import {Icon} from "@f-ui/core"
 import FileSystem from "../../../utils/files/FileSystem"
 
-function map(arr, items){
-    return   arr.map(e => {
+function map(arr, items) {
+    return arr.map(e => {
         return {
             ...e, children: e.isFolder ? items.filter(i => {
                 return typeof i.parent === "string" && i.parent === e.id
@@ -19,6 +19,7 @@ function map(arr, items){
         }
     })
 }
+
 const TRIGGERS = [
     "data-wrapper",
     "data-file",
@@ -29,19 +30,19 @@ export default function Files(props) {
         fileType, setFileType,
         searchString, setSearchString,
         visualizationType,
-        selected, setSelected, hook, entities
+        selected, setSelected, hook
     } = props
     const internalID = useId()
     const [currentItem, setCurrentItem] = useState()
     const filesToRender = useMemo(() => {
         let type = fileType?.split("")
-        if(type) {
+        if (type) {
             type.shift()
-            type= type.join("")
+            type = type.join("")
         }
-        if(searchString || fileType)
-            return map(hook.items.filter(file => (searchString.trim() && file.name.toLowerCase().includes(searchString)  || type && file.type === type && !file.isFolder), hook.items))
-        if(hook.currentDirectory.id !== FileSystem.sep )
+        if (searchString || fileType)
+            return map(hook.items.filter(file => (searchString.trim() && file.name.toLowerCase().includes(searchString) || type && file.type === type && !file.isFolder), hook.items))
+        if (hook.currentDirectory.id !== FileSystem.sep)
             return map(
                 hook.items
                     .filter(file => file.parent === hook.currentDirectory.id),
@@ -49,17 +50,17 @@ export default function Files(props) {
             )
         return map(hook.items.filter(file => !file.parent), hook.items)
     }, [hook.items, hook.currentDirectory, searchString, fileType])
-    useShortcuts(hook, selected, setSelected, entities, internalID)
-    const options = useMemo(() => {
-        return getFileOptions(hook, setCurrentItem, entities)
-    },
-    [hook.items, hook.currentDirectory?.id, entities, hook.toCut])
+    useShortcuts(hook, selected, setSelected, internalID)
+    const options = useMemo(
+        () => getFileOptions(hook, setCurrentItem),
+        [hook.items, hook.currentDirectory?.id, hook.toCut]
+    )
     useContextTarget(
         {id: internalID, label: "Content Browser", icon: "folder"},
         options,
         TRIGGERS
     )
-    
+
     return (
         <div
             id={internalID}
@@ -68,7 +69,7 @@ export default function Files(props) {
         >
             <div
                 className={styles.filesWrapper}
-                style={{"--card_size": visualizationType === 1 ? "75px": "115px"}}
+                style={{"--card_size": visualizationType === 1 ? "75px" : "115px"}}
             >
                 <SelectBox nodes={hook.items} selected={selected} setSelected={setSelected}/>
                 {filesToRender.length > 0 ?
@@ -86,12 +87,12 @@ export default function Files(props) {
                                 childrenQuantity={child.children}
                                 selected={selected}
                                 setSelected={(e) => setSelected(prev => {
-                                    if(e) {
+                                    if (e) {
                                         if (e.ctrlKey)
                                             return [...prev, child.id]
                                         return [child.id]
                                     }
-                                    return  []
+                                    return []
                                 })}
                                 hook={hook}
                                 onRename={currentItem}
@@ -105,7 +106,7 @@ export default function Files(props) {
                     <div className={styles.empty}>
                         <Icon styles={{fontSize: "100px"}}>folder</Icon>
                         <div style={{fontSize: ".8rem"}}>
-                            Empty folder
+							Empty folder
                         </div>
                     </div>
                 }
@@ -115,7 +116,6 @@ export default function Files(props) {
 }
 
 Files.propTypes = {
-    entities: PropTypes.array,
     fileType: PropTypes.string,
     setFileType: PropTypes.func,
     searchString: PropTypes.string,

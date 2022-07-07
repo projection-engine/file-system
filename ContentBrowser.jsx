@@ -10,6 +10,7 @@ import FileSystem from "../../utils/files/FileSystem"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 import PropTypes from "prop-types"
 import Header from "../../../components/view/components/Header"
+import useInfiniteScroll from "../../../components/tree/useInfiniteScroll"
 
 export default function ContentBrowser(props) {
     const hook = useContentBrowser()
@@ -17,6 +18,7 @@ export default function ContentBrowser(props) {
     const [fileType, setFileType] = useState()
     const [searchString, setSearchString] = useState("")
     const [visualizationType, setVisualizationType] = useState(0)
+
     const search = useDeferredValue(searchString)
     const path = useMemo(() => {
         const findParent = (node) => {
@@ -31,18 +33,6 @@ export default function ContentBrowser(props) {
             })
         return response
     }, [hook.currentDirectory, hook.items])
-    const targetEntities = useMemo(() => {
-        const values = hook.entities.values()
-        return Array.from(values)
-            .filter(e => e.components[COMPONENTS.MESH])
-            .map(e => {
-                return {
-                    name: e.name,
-                    entity: e.id,
-                    mesh: e.components[COMPONENTS.MESH].meshID
-                }
-            })
-    }, [hook.entities])
 
     return (
         <>
@@ -62,10 +52,9 @@ export default function ContentBrowser(props) {
                 null :
                 <div className={styles.wrapper}>
                     <DeleteConfirmation hook={hook} removeEntity={hook.removeEntity}/>
-                    <SideBar entities={targetEntities} hook={hook}/>
+                    <SideBar  hook={hook}/>
                     <ResizableBar type={"width"}/>
                     <Files
-                        entities={targetEntities}
                         setSearchString={setSearchString}
                         fileType={fileType}
                         setFileType={setFileType}
