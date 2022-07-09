@@ -46,7 +46,7 @@ export default function ImportHandler(props) {
                                 }
                             }
                         }
-                        engine.setMeshes(prev => [...prev, ...newMeshes])
+                        engine.dispatchMeshes(newMeshes)
                         engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: newEntities})
                     }
                     else

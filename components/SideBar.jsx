@@ -18,11 +18,9 @@ export default function SideBar(props) {
     const internalID = useId()
     return (
         <div className={styles.wrapper}>
-            <details
-                className={styles.tree} open={true}
-            >
+            <details className={styles.tree} open={true}>
                 <summary className={styles.summary}>
-                    <Icon>arrow_drop_down</Icon>
+                    <Icon className={styles.iconDropdown}>arrow_drop_down</Icon>
                     <Icon styles={{fontSize: "1rem"}}>
                         inventory_2
                     </Icon>
@@ -81,7 +79,7 @@ export default function SideBar(props) {
             </details>
             <details className={styles.tree}>
                 <summary className={styles.summary}>
-                    <Icon>arrow_drop_down</Icon>
+                    <Icon className={styles.iconDropdown}>arrow_drop_down</Icon>
                     <Icon styles={{fontSize: "1rem"}}>
                         book
                     </Icon>
