@@ -69,7 +69,7 @@ export default function Files(props) {
         >
             <div
                 className={styles.filesWrapper}
-                style={{"--card_size": visualizationType === 1 ? "75px" : "115px"}}
+                style={{"--card-size": visualizationType === 1 ? "75px" : "115px"}}
             >
                 <SelectBox nodes={hook.items} selected={selected} setSelected={setSelected}/>
                 {filesToRender.length > 0 ?

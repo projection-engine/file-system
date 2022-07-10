@@ -27,7 +27,10 @@
   position: relative;
   display: grid;
   align-content: flex-start;
-  grid-template-columns: repeat(auto-fill, minmax(var(--card_size), 1fr));
+
+  --card-size: 75px;
+
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-size), 1fr));
 }
 
 .content {
