@@ -1,11 +1,9 @@
 import PropTypes from "prop-types"
-import React, {useContext, useId, useMemo} from "react"
+import React, {useId, useMemo} from "react"
 import styles from "../styles/SideBar.module.css"
 import {Icon} from "@f-ui/core"
 import handleDropFolder from "../utils/handleDropFolder"
 import FileSystem from "../../../utils/files/FileSystem"
-import EngineProvider from "../../../providers/EngineProvider"
-import useInfiniteScroll from "../../../../components/tree/useInfiniteScroll"
 
 export default function SideBar(props) {
 

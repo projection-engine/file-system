@@ -7,10 +7,8 @@ import useContentBrowser from "./hooks/useContentBrowser"
 import ResizableBar from "../../../components/resizable/ResizableBar"
 import DeleteConfirmation from "./components/DeleteConfirmation"
 import FileSystem from "../../utils/files/FileSystem"
-import COMPONENTS from "../../engine/templates/COMPONENTS"
 import PropTypes from "prop-types"
 import Header from "../../../components/view/components/Header"
-import useInfiniteScroll from "../../../components/tree/useInfiniteScroll"
 
 export default function ContentBrowser(props) {
     const hook = useContentBrowser()
