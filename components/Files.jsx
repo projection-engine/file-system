@@ -56,7 +56,7 @@ export default function Files(props) {
         [hook.items, hook.currentDirectory?.id, hook.toCut]
     )
     useContextTarget(
-        {id: internalID, label: "Content Browser", icon: "folder"},
+        internalID,
         options,
         TRIGGERS
     )
