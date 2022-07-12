@@ -1,11 +1,17 @@
-.wrapper {
+.wrapper{
+  display: grid;
+  align-content: flex-start;
+  gap: 2px;
+  overflow-y: auto;
+  width: 300px;
+}
+.section {
   display: flex;
   flex-direction: column;
   justify-items: flex-start;
-  overflow-y: auto;
+
   gap: 4px;
-  height: 100%;
-  width: 300px;
+  height: fit-content;
   color: var(--pj-color-secondary);
   padding: 4px;
   background: var(--pj-border-primary);
