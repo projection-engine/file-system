@@ -49,15 +49,15 @@ export default function ContentBrowser(props) {
                     setSearchString={setSearchString}
                     hook={hook}
                     path={path}
-					view={view}
-					setView={setView}
+                    view={view}
+                    setView={setView}
                 />
             </Header>
             {props.hidden ?
                 null :
                 <div className={styles.wrapper}>
                     <DeleteConfirmation hook={hook} removeEntity={hook.removeEntity}/>
-					{view.sideBar ? <SideBar hook={hook}/> : null}
+                    {view.sideBar ? <SideBar hook={hook}/> : null}
                     <ResizableBar type={"width"}/>
                     <Files
                         setSearchString={setSearchString}

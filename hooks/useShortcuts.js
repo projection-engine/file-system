@@ -3,7 +3,6 @@ import KEYS from "../../../engine/templates/KEYS"
 import handleDelete from "../utils/handleDelete"
 import FileSystem from "../../../utils/files/FileSystem"
 import useHotKeys from "../../shortcuts/hooks/useHotKeys"
-import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 import selection from "../utils/selection"
 import SELECTION_TYPES from "../SELECTION_TYPES"
 
@@ -21,7 +20,7 @@ export default function useShortcuts(hook,  selected, setSelected,  internalID) 
                 callback: () => selection(SELECTION_TYPES.NONE, hook, setSelected, selected)
             },
             {
-                label: "Inverse selection",
+                label: "Invert selection",
                 require: [KEYS.ControlLeft, KEYS.KeyI],
                 callback: () => selection(SELECTION_TYPES.INVERT, hook, setSelected, selected)
             },
