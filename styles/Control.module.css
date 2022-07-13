@@ -1,23 +1,12 @@
-.button {
-  padding: 0 2px !important;
-  height: 100%;
-  gap: 4px;
-  overflow: hidden;
-  max-width: 100%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 0.7rem;
-  color: var(--pj-color-tertiary);
-  background: transparent;
-  outline: none;
-  border: none;
-  cursor: pointer;
-}
-
-.button:hover {
-  color: var(--pj-accent-color);
-}
-
+ .dropdown{
+   padding: 0 10px !important;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 3px !important;
+   font-size: .7rem;
+   height: 23px;
+ }
 .settingsButton {
   height: 23px;
   min-width: 23px;
@@ -60,7 +49,8 @@
   width: 2px;
   height: 20px;
   min-width: 2px;
-  background: var(--pj-border-primary);
+  margin: 0 4px;
+  background: var(--pj-background-tertiary);
 }
 
 .importHeader {
@@ -124,7 +114,6 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 4px;
   max-height: 35px;
   border-left: var(--pj-background-tertiary) 2px solid;
@@ -132,7 +121,10 @@
 
 .buttonGroup {
   display: flex;
+  justify-content: flex-start;
   align-items: center;
+  gap: 2px;
+
 }
 
 .fileType > * {

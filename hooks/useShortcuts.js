@@ -4,44 +4,46 @@ import handleDelete from "../utils/handleDelete"
 import FileSystem from "../../../utils/files/FileSystem"
 import useHotKeys from "../../shortcuts/hooks/useHotKeys"
 import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
+import selection from "../utils/selection"
+import SELECTION_TYPES from "../SELECTION_TYPES"
 
-const {shell} = window.require("electron")
 export default function useShortcuts(hook,  selected, setSelected,  internalID) {
     const actions = useMemo(() => {
-        const sel = !selected[0] ? undefined : hook.items.find(i => i.id === selected[0])
         return [
             {
-                disabled: hook.currentDirectory.id === FileSystem.sep,
+                label: "Select all",
+                require: [KEYS.KeyA],
+                callback: () => selection(SELECTION_TYPES.ALL, hook, setSelected, selected)
+            },
+            {
+                label: "Select none",
+                require: [KEYS.AltLeft, KEYS.KeyA],
+                callback: () => selection(SELECTION_TYPES.NONE, hook, setSelected, selected)
+            },
+            {
+                label: "Inverse selection",
+                require: [KEYS.ControlLeft, KEYS.KeyI],
+                callback: () => selection(SELECTION_TYPES.INVERT, hook, setSelected, selected)
+            },
+
+            {
                 label: "Back",
                 require: [KEYS.Backspace],
                 callback: () => {
-                    const found = hook.currentDirectory.id
-                    if (found) {
-                        const split = found.split(FileSystem.sep )
-                        split.pop()
-                        if (split.length === 1)
-                            hook.setCurrentDirectory({id: FileSystem.sep })
-                        else
-                            hook.setCurrentDirectory({id: split.join(FileSystem.sep)})
+                    if(hook.currentDirectory.id !== FileSystem.sep) {
+                        const found = hook.currentDirectory.id
+                        if (found) {
+                            const split = found.split(FileSystem.sep)
+                            split.pop()
+                            if (split.length === 1)
+                                hook.setCurrentDirectory({id: FileSystem.sep})
+                            else
+                                hook.setCurrentDirectory({id: split.join(FileSystem.sep)})
+                        }
                     }
                 }
             },
-            {
-                label: "Open " + (sel ? sel.name : ""),
-                require: [KEYS.Enter],
-                disabled: selected.length === 0 || sel?.type === "mesh",
-                callback: () => {
-                    if (!sel.isFolder) {
-                        if (sel.type === FILE_TYPES.SCRIPT.replace(".", ""))
-                            shell.openPath(hook.path + FileSystem.sep + sel.id).catch()
-                        else
-                            setSelected([sel.id])
-                    } else {
-                        setSelected([])
-                        hook.setCurrentDirectory(sel)
-                    }
-                }
-            },
+
             {
                 label: "Delete",
                 require: [KEYS.Delete],
@@ -57,7 +59,6 @@ export default function useShortcuts(hook,  selected, setSelected,  internalID) 
                 require: [KEYS.ControlLeft, KEYS.KeyX],
                 callback: () => {
                     alert.pushAlert("Cutting " + selected.length + " files", "info")
-                    console.log(selected)
                     hook.setToCut(selected)
                 }
             },
@@ -67,7 +68,7 @@ export default function useShortcuts(hook,  selected, setSelected,  internalID) 
                 callback: () => hook.paste()
             }
         ]
-    }, [selected, hook.currentDirectory,hook.toCut])
+    }, [selected, hook.items, hook.currentDirectory, hook.toCut])
     useHotKeys({
         focusTargetLabel: "Content browser",
         focusTargetIcon: "folder",

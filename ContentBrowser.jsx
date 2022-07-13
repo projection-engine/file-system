@@ -15,14 +15,20 @@ export default function ContentBrowser(props) {
     const [selected, setSelected] = useState([])
     const [fileType, setFileType] = useState()
     const [searchString, setSearchString] = useState("")
-
+    const [view, setView] = useState({
+        sideBar: true,
+        navigation: true
+    })
     const search = useDeferredValue(searchString)
     const path = useMemo(() => {
         const findParent = (node) => {
             const p = hook.items.find(n => n.id === node.parent)
             return p ? [findParent(p), {name: p.name, path: p.id}] : []
         }
-        const response = [{name: "Assets", path: FileSystem.sep}, findParent(hook.currentDirectory)].flat(Number.POSITIVE_INFINITY)
+        const response = [{
+            name: "Assets",
+            path: FileSystem.sep
+        }, findParent(hook.currentDirectory)].flat(Number.POSITIVE_INFINITY)
         if (hook.currentDirectory.name)
             response.push({
                 name: hook.currentDirectory.name,
@@ -35,19 +41,23 @@ export default function ContentBrowser(props) {
         <>
             <Header {...props} title={"Content Browser"} icon={"folder"}>
                 <ControlBar
+                    setSelected={setSelected}
+                    selected={selected}
                     fileType={fileType}
                     setFileType={setFileType}
                     searchString={searchString}
                     setSearchString={setSearchString}
                     hook={hook}
                     path={path}
+					view={view}
+					setView={setView}
                 />
             </Header>
-            {props.hidden ? 
+            {props.hidden ?
                 null :
                 <div className={styles.wrapper}>
                     <DeleteConfirmation hook={hook} removeEntity={hook.removeEntity}/>
-                    <SideBar  hook={hook}/>
+					{view.sideBar ? <SideBar hook={hook}/> : null}
                     <ResizableBar type={"width"}/>
                     <Files
                         setSearchString={setSearchString}
@@ -64,7 +74,7 @@ export default function ContentBrowser(props) {
     )
 }
 
-ContentBrowser.propTypes={
+ContentBrowser.propTypes = {
     hidden: PropTypes.bool,
     switchView: PropTypes.func,
     orientation: PropTypes.string,
