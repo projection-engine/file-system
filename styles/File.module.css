@@ -57,13 +57,10 @@
   border-radius: 5px;
 }
 
-.icon[data-size="0"] > span {
+.icon > span {
   font-size: 3.5rem !important;
 }
 
-.icon[data-size="1"] > span {
-  font-size: 2.5rem !important;
-}
 
 .floatingIconWrapper {
   display: flex;
@@ -123,11 +120,6 @@
   cursor: pointer;
   flex: 1 1 80px;
   padding: 4px 4px 0;
-}
-
-.file[data-size="1"] {
-  height: 75px;
-  max-width: 75px;
 }
 
 .file:hover,

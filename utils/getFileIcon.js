@@ -4,7 +4,7 @@ import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 import React from "react"
 import {Icon} from "@f-ui/core"
 
-export default function getIcon({
+export default function getFileIcon({
     path,
     type,
     visualization,

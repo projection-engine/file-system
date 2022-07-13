@@ -1,7 +1,7 @@
 import PropTypes from "prop-types"
 import styles from "../styles/File.module.css"
 import React, {useEffect, useMemo, useState} from "react"
-import getIcon from "../utils/getIcon"
+import getFileIcon from "../utils/getFileIcon"
 import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 import FileSystem from "../../../utils/files/FileSystem"
 import handleDropFolder from "../utils/handleDropFolder"
@@ -12,14 +12,12 @@ export default function File(props) {
     useEffect(() => setCurrentLabel(props.data.name), [props.data.name])
     const selected = useMemo(() => props.selected.includes(props.data.id), [props.selected])
     const icon = useMemo(() => {
-        return getIcon({
+        return getFileIcon({
             path: window.fileSystem.path + FileSystem.sep + "previews" +FileSystem.sep +  props.data.registryID + FILE_TYPES.PREVIEW,
             type: props.data.type ? "." + props.data.type : "folder",
-
-            visualization: props.visualizationType,
             childrenQuantity: props.childrenQuantity
         })
-    }, [props.data, props.visualizationType])
+    }, [props.data])
 
     return (
         <div
@@ -53,7 +51,6 @@ export default function File(props) {
                 }
             }}
             id={props.data.id}
-            data-size={props.visualizationType}
             onDragStart={(event) => {
                 if (event.ctrlKey) {
                     const selected = props.selected.map(s => {
@@ -65,9 +62,7 @@ export default function File(props) {
             }}
             draggable={props.onRename !== props.data.id}
             onClick={props.setSelected}
-            style={{
-                background: selected ? "var(--pj-accent-color)" : props.visualizationType === 2 ? (props.index % 2 === 0 ? "var(--pj-background-secondary)" : "var(--pj-background-tertiary)") : undefined
-            }}
+            style={{background: selected ? "var(--pj-accent-color)" : undefined}}
             className={styles.file}
         >
 
@@ -92,12 +87,10 @@ export default function File(props) {
             }
         </div>
     )
-    // TODO - FILE PROPERTIES ON NEW WINDOW
 }
 
 File.propTypes = {
     index: PropTypes.number,
-    visualizationType: PropTypes.number,
     childrenQuantity: PropTypes.number,
     reset: PropTypes.func,
     type: PropTypes.oneOf([0, 1]),

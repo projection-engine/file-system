@@ -1,4 +1,4 @@
-import {onCreate} from "./getDirectoryOptions"
+import createNewFolder from "./createNewFolder"
 import handleDelete from "./handleDelete"
 import AsyncFS from "../../../utils/AsyncFS"
 import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
@@ -20,7 +20,6 @@ export default function getFileOptions(hook, setCurrentItem) {
         return n
     }
     return [
-        // FOLDER
         {
             requiredTrigger: "data-folder",
             label: "Rename",
@@ -39,7 +38,7 @@ export default function getFileOptions(hook, setCurrentItem) {
             requiredTrigger: "data-folder",
             label: "New Folder",
             icon: "create_new_folder",
-            onClick: (node) => onCreate(node.getAttribute("data-folder"), hook).catch()
+            onClick: (node) => createNewFolder(node.getAttribute("data-folder"), hook).catch()
         },
 
         {

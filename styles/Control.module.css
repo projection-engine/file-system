@@ -28,7 +28,7 @@
   justify-content: center;
   font-size: 0.7rem;
   background: var(--pj-border-primary);
-  border-right: var(--pj-background-secondary) 1px solid;
+  border: none !important;
 }
 
 .settingsButton > * {

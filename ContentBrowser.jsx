@@ -15,7 +15,6 @@ export default function ContentBrowser(props) {
     const [selected, setSelected] = useState([])
     const [fileType, setFileType] = useState()
     const [searchString, setSearchString] = useState("")
-    const [visualizationType, setVisualizationType] = useState(0)
 
     const search = useDeferredValue(searchString)
     const path = useMemo(() => {
@@ -39,8 +38,6 @@ export default function ContentBrowser(props) {
                     fileType={fileType}
                     setFileType={setFileType}
                     searchString={searchString}
-                    visualizationType={visualizationType}
-                    setVisualizationType={setVisualizationType}
                     setSearchString={setSearchString}
                     hook={hook}
                     path={path}
@@ -57,7 +54,6 @@ export default function ContentBrowser(props) {
                         fileType={fileType}
                         setFileType={setFileType}
                         hook={hook}
-                        visualizationType={visualizationType}
                         searchString={search}
                         setSelected={setSelected}
                         selected={selected}

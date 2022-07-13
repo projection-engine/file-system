@@ -1,64 +1,58 @@
 import PropTypes from "prop-types"
 import styles from "../styles/Control.module.css"
 import {Button, Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
-import React, {useMemo} from "react"
+import React, {useContext, useMemo} from "react"
 import Search from "../../../../components/search/Search"
-import ImportHandler from "./ImportHandler"
 import AsyncFS from "../../../utils/AsyncFS"
 import FileSystem from "../../../utils/files/FileSystem"
 import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
+import importFile from "../utils/importFile"
+import EngineProvider from "../../../providers/EngineProvider"
 
 export default function ControlBar(props) {
     const {
-        visualizationType,
-        setVisualizationType,
         searchString,
         setSearchString,
-        path,
         hook,
         hidden
     } = props
     const starred = useMemo(() => hook.bookmarks.find(b => b.path === hook.currentDirectory.id) !== undefined, [hook.currentDirectory, hook.bookmarks])
+    const [engine] = useContext(EngineProvider)
 
     return (
         <div className={styles.wrapper} style={{border: hidden ? "none" : undefined}}>
-            <div className={styles.buttonGroup} style={{gap: "4px"}}>
-                <div className={styles.buttonGroup}>
-                    <Button
-                        className={styles.settingsButton}
-                        styles={{borderRadius: "3px 0 0 3px"}}
-                        onClick={() => hook.returnDir()}
-                    >
-                        <Icon>arrow_back</Icon>
-                    </Button>
-                    <Button
-                        styles={{borderRadius: 0}}
-                        className={styles.settingsButton}
-                        onClick={() => hook.forwardDir()}
-                    >
-                        <Icon styles={{transform: "rotate(180deg)"}}>arrow_back</Icon>
-                    </Button>
-                    <Button
-                        className={styles.settingsButton}
-                        styles={{borderRadius: 0}}
-                        disabled={hook.currentDirectory.id === FileSystem.sep}
-                        onClick={hook.goToParent}
-                    >
-                        <Icon
-                            styles={{transform: "rotate(180deg)"}}>subdirectory_arrow_right</Icon>
-                    </Button>
-                    <Button
-                        disabled={hook.loading}
-                        className={styles.settingsButton}
-                        styles={{borderRadius: "0 3px 3px 0", border: "none"}}
-                        onClick={() => {
-                            alert.pushAlert("Refreshing files", "info")
-                            hook.refreshFiles().catch()
-                        }}
-                    >
-                        <Icon>sync</Icon>
-                    </Button>
-                </div>
+
+            <div className={styles.buttonGroup} style={{gap: "2px"}}>
+                <Button
+                    className={styles.settingsButton}
+                    onClick={() => hook.returnDir()}
+                >
+                    <Icon>arrow_back</Icon>
+                </Button>
+                <Button
+                    className={styles.settingsButton}
+                    onClick={() => hook.forwardDir()}
+                >
+                    <Icon styles={{transform: "rotate(180deg)"}}>arrow_back</Icon>
+                </Button>
+                <Button
+                    className={styles.settingsButton}
+                    disabled={hook.currentDirectory.id === FileSystem.sep}
+                    onClick={hook.goToParent}
+                >
+                    <Icon
+                        styles={{transform: "rotate(180deg)"}}>subdirectory_arrow_right</Icon>
+                </Button>
+                <Button
+                    disabled={hook.loading}
+                    className={styles.settingsButton}
+                    onClick={() => {
+                        alert.pushAlert("Refreshing files", "info")
+                        hook.refreshFiles().catch()
+                    }}
+                >
+                    <Icon>sync</Icon>
+                </Button>
                 <Button
                     styles={{border: "none"}}
                     className={styles.settingsButton}
@@ -138,32 +132,15 @@ export default function ControlBar(props) {
                     width={"25%"}
                 />
             </div>
-            <div className={styles.buttonGroup}>
-                <Dropdown
-                    styles={{borderRadius: "3px 0 0 3px"}}
-                    variant={"outlined"}
-                    className={styles.settingsButton}
-                >
-                    <Icon styles={{fontSize: "1.1rem"}}>view_headline</Icon>View
-                    <DropdownOptions>
-                        <DropdownOption option={{
-                            icon: visualizationType === 0 ? <Icon
-                                styles={{fontSize: "1.1rem"}}>check</Icon> : null,
-                            label: "Big card",
-                            onClick: () => setVisualizationType(0)
-                        }}/>
-                        <DropdownOption option={{
-                            icon: visualizationType === 1 ? <Icon
-                                styles={{fontSize: "1.1rem"}}>check</Icon> : null,
-                            label: "Small card",
-                            onClick: () => setVisualizationType(1)
-                        }}/>
 
-                    </DropdownOptions>
-                </Dropdown>
-
-                <ImportHandler {...props}/>
-            </div>
+            <Button
+                styles={{width: "75px", gap: "4px"}}
+                className={styles.settingsButton}
+                onClick={() => importFile(engine, props.hook)}
+            >
+                <Icon  styles={{fontSize: "1rem"}}>open_in_new</Icon>
+                Import
+            </Button>
         </div>
     )
 }
@@ -171,10 +148,6 @@ export default function ControlBar(props) {
 ControlBar.propTypes = {
     fileType: PropTypes.string,
     setFileType: PropTypes.func,
-
-    visualizationType: PropTypes.number,
-    setVisualizationType: PropTypes.func,
-
 
     searchString: PropTypes.string,
     setSearchString: PropTypes.func,

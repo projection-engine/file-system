@@ -29,7 +29,6 @@ export default function Files(props) {
     const {
         fileType, setFileType,
         searchString, setSearchString,
-        visualizationType,
         selected, setSelected, hook
     } = props
     const internalID = useId()
@@ -67,10 +66,7 @@ export default function Files(props) {
             className={styles.content}
             data-wrapper={internalID}
         >
-            <div
-                className={styles.filesWrapper}
-                style={{"--card-size": visualizationType === 1 ? "75px" : "115px"}}
-            >
+            <div className={styles.filesWrapper}>
                 <SelectBox nodes={hook.items} selected={selected} setSelected={setSelected}/>
                 {filesToRender.length > 0 ?
                     filesToRender.map((child, index) => (
@@ -96,8 +92,6 @@ export default function Files(props) {
                                 })}
                                 hook={hook}
                                 onRename={currentItem}
-
-                                visualizationType={visualizationType}
                                 submitRename={name => handleRename(child, name, hook, setCurrentItem)}
                             />
                         </React.Fragment>
