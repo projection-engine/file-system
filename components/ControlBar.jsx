@@ -3,13 +3,13 @@ import styles from "../styles/Control.module.css"
 import {Button, Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 import React, {useContext, useMemo} from "react"
 import Search from "../../../../components/search/Search"
-import AsyncFS from "../../../utils/AsyncFS"
-import FileSystem from "../../../utils/files/FileSystem"
+import AsyncFS from "../../../libs/AsyncFS"
+import FileSystem from "../../../libs/FileSystem"
 import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 import importFile from "../utils/importFile"
-import EngineProvider from "../../../providers/EngineProvider"
+import EngineProvider from "../../../context/EngineProvider"
 import selection from "../utils/selection"
-import SELECTION_TYPES from "../SELECTION_TYPES"
+import SELECTION_TYPES from "../templates/SELECTION_TYPES"
 
 export default function ControlBar(props) {
     const {

@@ -1,10 +1,10 @@
 import {useMemo} from "react"
 import KEYS from "../../../engine/templates/KEYS"
 import handleDelete from "../utils/handleDelete"
-import FileSystem from "../../../utils/files/FileSystem"
+import FileSystem from "../../../libs/FileSystem"
 import useHotKeys from "../../shortcuts/hooks/useHotKeys"
 import selection from "../utils/selection"
-import SELECTION_TYPES from "../SELECTION_TYPES"
+import SELECTION_TYPES from "../templates/SELECTION_TYPES"
 
 export default function useShortcuts(hook,  selected, setSelected,  internalID) {
     const actions = useMemo(() => {

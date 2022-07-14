@@ -6,7 +6,7 @@ import ControlBar from "./components/ControlBar"
 import useContentBrowser from "./hooks/useContentBrowser"
 import ResizableBar from "../../../components/resizable/ResizableBar"
 import DeleteConfirmation from "./components/DeleteConfirmation"
-import FileSystem from "../../utils/files/FileSystem"
+import FileSystem from "../../libs/FileSystem"
 import PropTypes from "prop-types"
 import Header from "../../../components/view/components/Header"
 

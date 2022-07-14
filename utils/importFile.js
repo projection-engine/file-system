@@ -1,6 +1,6 @@
-import importScene from "../../../utils/importer/importScene"
+import importScene from "../../../libs/importer/importScene"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
-import FileSystem from "../../../utils/files/FileSystem"
+import FileSystem from "../../../libs/FileSystem"
 import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
 

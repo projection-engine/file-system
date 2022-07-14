@@ -1,4 +1,4 @@
-import FileSystem from "../../../utils/files/FileSystem"
+import FileSystem from "../../../libs/FileSystem"
 
 export default function comparePaths(includes, included) {
     const path = window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep

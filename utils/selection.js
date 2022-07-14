@@ -1,4 +1,4 @@
-import SELECTION_TYPES from "../SELECTION_TYPES"
+import SELECTION_TYPES from "../templates/SELECTION_TYPES"
 
 export default function selection(type, hook, setSelected, selected) {
     switch (type) {

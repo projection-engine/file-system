@@ -1,8 +1,8 @@
 import createNewFolder from "./createNewFolder"
 import handleDelete from "./handleDelete"
-import AsyncFS from "../../../utils/AsyncFS"
+import AsyncFS from "../../../libs/AsyncFS"
 import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
-import FileSystem from "../../../utils/files/FileSystem"
+import FileSystem from "../../../libs/FileSystem"
 import SCRIPT_TEMPLATE from "../../../../static/misc/SCRIPT_TEMPLATE"
 
 

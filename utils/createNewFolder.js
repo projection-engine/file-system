@@ -1,5 +1,5 @@
-import AsyncFS from "../../../utils/AsyncFS"
-import FileSystem from "../../../utils/files/FileSystem"
+import AsyncFS from "../../../libs/AsyncFS"
+import FileSystem from "../../../libs/FileSystem"
 
 export default async function onCreate(parent, hook) {
     const directories = await window.fileSystem.foldersFromDirectory(hook.path + parent)

@@ -3,7 +3,7 @@ import React, {useId, useMemo} from "react"
 import styles from "../styles/SideBar.module.css"
 import {Icon} from "@f-ui/core"
 import handleDropFolder from "../utils/handleDropFolder"
-import FileSystem from "../../../utils/files/FileSystem"
+import FileSystem from "../../../libs/FileSystem"
 
 export default function SideBar(props) {
     const assets = useMemo(

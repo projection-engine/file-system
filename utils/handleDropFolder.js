@@ -1,5 +1,5 @@
-import AsyncFS from "../../../utils/AsyncFS"
-import FileSystem from "../../../utils/files/FileSystem"
+import AsyncFS from "../../../libs/AsyncFS"
+import FileSystem from "../../../libs/FileSystem"
 
 const pathResolve = window.require("path")
 export default async function handleDropFolder(event, target, hook) {

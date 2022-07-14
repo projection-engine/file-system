@@ -8,7 +8,7 @@ import useShortcuts from "../hooks/useShortcuts"
 import useContextTarget from "../../../../components/context/hooks/useContextTarget"
 import getFileOptions from "../utils/getFileOptions"
 import {Icon} from "@f-ui/core"
-import FileSystem from "../../../utils/files/FileSystem"
+import FileSystem from "../../../libs/FileSystem"
 
 function map(arr, items) {
     return arr.map(e => {

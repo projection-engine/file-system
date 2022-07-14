@@ -1,6 +1,6 @@
 import {useContext, useRef, useState} from "react"
-import FileSystem from "../../../utils/files/FileSystem"
-import FilesProvider from "../../../providers/FilesProvider"
+import FileSystem from "../../../libs/FileSystem"
+import FilesProvider from "../../../context/FilesProvider"
 import handleDropFolder from "../utils/handleDropFolder"
 
 export default function useContentBrowser() {

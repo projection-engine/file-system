@@ -3,7 +3,7 @@ import styles from "../styles/File.module.css"
 import React, {useEffect, useMemo, useState} from "react"
 import getFileIcon from "../utils/getFileIcon"
 import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
-import FileSystem from "../../../utils/files/FileSystem"
+import FileSystem from "../../../libs/FileSystem"
 import handleDropFolder from "../utils/handleDropFolder"
 
 const {shell} = window.require("electron")
