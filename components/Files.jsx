@@ -67,7 +67,11 @@ export default function Files(props) {
             data-wrapper={internalID}
         >
             <div className={styles.filesWrapper}>
-                <SelectBox nodes={hook.items} selected={selected} setSelected={setSelected}/>
+                <SelectBox
+                    nodes={hook.items}
+                    selected={selected}
+                    setSelected={setSelected}
+                />
                 {filesToRender.length > 0 ?
                     filesToRender.map((child, index) => (
                         <React.Fragment key={child.id}>
