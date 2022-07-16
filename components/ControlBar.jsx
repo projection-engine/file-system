@@ -47,6 +47,7 @@ export default function ControlBar(props) {
                             <Icon
                                 styles={{transform: "rotate(180deg)"}}>subdirectory_arrow_right</Icon>
                         </Button>
+                        <div className={styles.divider}/>
                         <Button
                             disabled={hook.loading}
                             className={styles.settingsButton}
