@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import styles from "../styles/Control.module.css"
+import styles from "../styles/ControlBar.module.css"
 import {Button, Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 import React, {useContext, useMemo} from "react"
 import Search from "../../../../components/search/Search"
@@ -190,7 +190,9 @@ export default function ControlBar(props) {
                 <Button
                     styles={{width: "75px", gap: "4px", padding: "0 16px"}}
                     className={styles.settingsButton}
-                    onClick={() => importFile(engine, props.hook)}
+                    onClick={() => {
+                        importFile(engine, props.hook)
+                    }}
                 >
                     <Icon styles={{fontSize: "1rem"}}>open_in_new</Icon>
 					Import

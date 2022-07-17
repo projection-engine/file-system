@@ -16,33 +16,6 @@
   border-color: var(--pj-accent-color);
 }
 
-.toolTip {
-  box-shadow: var(--pj-boxshadow);
-  width: 250px;
-  border-radius: 5px;
-  padding: 4px;
-}
-
-.infoRow {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 8px;
-  font-weight: bold;
-  font-size: 0.8rem;
-}
-
-.infoRowContent {
-  font-weight: normal;
-}
-
-.infoWrapper {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  overflow: hidden;
-  max-width: 100%;
-}
 
 .icon {
   position: relative;
@@ -128,23 +101,4 @@
   background: var(--pj-background-primary);
 }
 
-.dragImage {
-  display: grid;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 4px;
-  color: var(--pj-color-secondary);
-  font-size: 0.75rem;
-  text-align: center;
-  height: fit-content;
-  width: 115px !important;
-  overflow: hidden;
-  background-color: var(--pj-border-primary);
-  box-shadow: var(--pj-boxshadow);
-  border-radius: 5px;
-  padding: 4px;
-}
 
-.dragImage > * {
-  font-size: 1.1rem !important;
-}

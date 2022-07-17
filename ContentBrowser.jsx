@@ -5,7 +5,6 @@ import Files from "./components/Files"
 import ControlBar from "./components/ControlBar"
 import useContentBrowser from "./hooks/useContentBrowser"
 import ResizableBar from "../../../components/resizable/ResizableBar"
-import DeleteConfirmation from "./components/DeleteConfirmation"
 import FileSystem from "../../libs/FileSystem"
 import PropTypes from "prop-types"
 import Header from "../../../components/view/components/Header"
@@ -56,7 +55,6 @@ export default function ContentBrowser(props) {
             {props.hidden ?
                 null :
                 <div className={styles.wrapper}>
-                    <DeleteConfirmation hook={hook} removeEntity={hook.removeEntity}/>
                     {view.sideBar ? <SideBar hook={hook}/> : null}
                     <ResizableBar type={"width"}/>
                     <Files

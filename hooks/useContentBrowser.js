@@ -5,13 +5,12 @@ import handleDropFolder from "../utils/handleDropFolder"
 
 export default function useContentBrowser() {
     const [currentDirectory, setCurrentDirectory] = useState({id: FileSystem.sep})
-    const [toDelete, setToDelete] = useState({})
+    const [toCut, setToCut] = useState([])
     const data = useContext(FilesProvider)
     const history = useRef({
         data: [],
         index: -1
     })
-    const [toCut, setToCut] = useState([])
 
     const setDir = (v) => {
         const historyData = history.current.data
@@ -24,25 +23,15 @@ export default function useContentBrowser() {
     return {
         ...data,
         setToCut,
-        toDelete,
-        setToDelete,
         currentDirectory,
         setCurrentDirectory: setDir,
         toCut,
-        paste: (parent) => {
-            console.log(toCut)
+        paste (parent) {
             if(toCut.length > 0){
                 handleDropFolder(
                     [...toCut],
                     parent ? parent : currentDirectory.id,  
-                    {
-                        ...data,
-                        setToCut,
-                        toDelete,
-                        setToDelete,
-                        currentDirectory,
-                        setCurrentDirectory: setDir,
-                    }
+                    this
                 )
                 setToCut([])
             }

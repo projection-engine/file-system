@@ -6,6 +6,7 @@ import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
 
 export default async function importFile(engine, hook) {
     const toImport = await window.fileSystem.openDialog()
+    console.log(toImport)
     if (toImport.length > 0) {
         alert.pushAlert("Loading files", "info")
         if (toImport.filter(e => e.includes("gltf")).length > 0) {

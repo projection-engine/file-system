@@ -28,22 +28,6 @@
   color: #999;
 }
 
-.pathWrapper {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0;
-  background: var(--pj-background-tertiary);
-  border-radius: 3px;
-  height: 23px;
-  overflow-y: hidden;
-  overflow-x: auto;
-  width: 100%;
-  max-width: 350px;
-  padding: 2px;
-  font-weight: normal;
-  color: var(--pj-color-secondary);
-}
 
 .divider {
   width: 2px;
@@ -53,41 +37,6 @@
   background: var(--pj-background-tertiary);
 }
 
-.importHeader {
-  font-weight: 550;
-}
-
-.modal {
-  color: var(--pj-color-secondary);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  background: var(--pj-background-primary);
-  width: 35%;
-  height: fit-content;
-  max-height: 75%;
-  border-radius: 5px;
-  padding: 8px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.toImport {
-  height: 100%;
-  display: grid;
-  align-items: flex-start;
-  align-content: start;
-  overflow-y: auto;
-}
-
-.toolTip {
-  display: grid;
-  justify-content: flex-start;
-  text-align: left;
-  width: 100%;
-}
 
 .icon {
   width: fit-content;
