@@ -1,5 +1,5 @@
 import {useMemo} from "react"
-import KEYS from "../../../engine/templates/KEYS"
+import KEYS from "../../../engine/data/KEYS"
 import handleDelete from "../utils/handleDelete"
 import FileSystem from "../../../libs/FileSystem"
 import useHotKeys from "../../shortcuts/hooks/useHotKeys"
