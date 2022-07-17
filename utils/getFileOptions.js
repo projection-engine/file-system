@@ -150,10 +150,10 @@ export default function getFileOptions(hook, setCurrentItem) {
         {divider: true, requiredTrigger: "data-wrapper"},
         {
             requiredTrigger: "data-wrapper",
-            label: "New Material",
+            label: "New Mesh",
             icon: "texture",
             onClick: async () => {
-                let path = await check(hook.currentDirectory.id + FileSystem.sep + "New Material", ".material")
+                let path = await check(hook.currentDirectory.id + FileSystem.sep + "New Mesh", ".material")
                 window.fileSystem.writeAsset(path, JSON.stringify({}))
                     .then(() => {
                         hook.refreshFiles()
