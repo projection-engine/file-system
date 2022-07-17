@@ -3,7 +3,7 @@ import handleDelete from "./handleDelete"
 import AsyncFS from "../../../libs/AsyncFS"
 import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 import FileSystem from "../../../libs/FileSystem"
-import SCRIPT_TEMPLATE from "../../../../static/misc/SCRIPT_TEMPLATE"
+import SCRIPT_TEMPLATE from "../../../static/misc/SCRIPT_TEMPLATE"
 
 
 const {shell} = window.require("electron")
