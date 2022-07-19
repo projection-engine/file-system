@@ -150,7 +150,7 @@ export default function ControlBar(props) {
             }
 
             <div className={styles.buttonGroup} style={{justifyContent: "flex-end"}}>
-                <Dropdown className={styles.dropdown} hideArrow={true} variant={"outlined"}>
+                <Dropdown className={styles.settingsButton}    styles={{paddingLeft: "8px"}}>
                     {translate("VIEW")}
                     <DropdownOptions>
                         <DropdownOption
@@ -169,7 +169,7 @@ export default function ControlBar(props) {
                         />
                     </DropdownOptions>
                 </Dropdown>
-                <Dropdown className={styles.dropdown} hideArrow={true} variant={"outlined"}>
+                <Dropdown className={styles.settingsButton}    styles={{paddingLeft: "8px"}}>
 					Select
                     <DropdownOptions>
                         <DropdownOption
