@@ -6,27 +6,28 @@ import useHotKeys from "../../shortcuts/hooks/useHotKeys"
 import selection from "../utils/selection"
 import SELECTION_TYPES from "../templates/SELECTION_TYPES"
 
-export default function useShortcuts(hook,  selected, setSelected,  internalID) {
+export default function useShortcuts(hook,  selected, setSelected,  internalID, translate) {
     const actions = useMemo(() => {
         return [
             {
-                label: "Select all",
+                label: translate("SELECT_ALL"),
                 require: [KEYS.KeyA],
                 callback: () => selection(SELECTION_TYPES.ALL, hook, setSelected, selected)
             },
             {
-                label: "Select none",
+                label: translate("SELECT_NONE"),
                 require: [KEYS.AltLeft, KEYS.KeyA],
                 callback: () => selection(SELECTION_TYPES.NONE, hook, setSelected, selected)
             },
             {
-                label: "Invert selection",
+                label: translate("SELECT_INVERT"),
+
                 require: [KEYS.ControlLeft, KEYS.KeyI],
                 callback: () => selection(SELECTION_TYPES.INVERT, hook, setSelected, selected)
             },
 
             {
-                label: "Back",
+                label: translate("BACK"),
                 require: [KEYS.Backspace],
                 callback: () => {
                     if(hook.currentDirectory.id !== FileSystem.sep) {
@@ -44,7 +45,7 @@ export default function useShortcuts(hook,  selected, setSelected,  internalID) 
             },
 
             {
-                label: "Delete",
+                label: translate("DELETE"),
                 require: [KEYS.Delete],
                 disabled: selected.length === 0,
                 callback: () => {
@@ -54,22 +55,21 @@ export default function useShortcuts(hook,  selected, setSelected,  internalID) 
                 }
             },
             {
-                label: "Cut",
+                label: translate("CUT"),
                 require: [KEYS.ControlLeft, KEYS.KeyX],
                 callback: () => {
-                    alert.pushAlert("Cutting " + selected.length + " files", "info")
                     hook.setToCut(selected)
                 }
             },
             {
-                label: "Paste",
+                label: translate("PASTE"),
                 require: [KEYS.ControlLeft, KEYS.KeyV],
                 callback: () => hook.paste()
             }
         ]
     }, [selected, hook.items, hook.currentDirectory, hook.toCut])
     useHotKeys({
-        focusTargetLabel: "Content browser",
+        focusTargetLabel: translate("TITLE"),
         focusTargetIcon: "folder",
         focusTarget: internalID,
         actions

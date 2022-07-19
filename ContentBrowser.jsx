@@ -8,6 +8,7 @@ import ResizableBar from "../../../components/resizable/ResizableBar"
 import FileSystem from "../../libs/FileSystem"
 import PropTypes from "prop-types"
 import Header from "../../../components/view/components/Header"
+import useLocalization from "../../../global/useLocalization"
 
 export default function ContentBrowser(props) {
     const hook = useContentBrowser()
@@ -25,7 +26,6 @@ export default function ContentBrowser(props) {
             return p ? [findParent(p), {name: p.name, path: p.id}] : []
         }
         const response = [{
-            name: "Assets",
             path: FileSystem.sep
         }, findParent(hook.currentDirectory)].flat(Number.POSITIVE_INFINITY)
         if (hook.currentDirectory.name)
@@ -35,11 +35,12 @@ export default function ContentBrowser(props) {
             })
         return response
     }, [hook.currentDirectory, hook.items])
-
+    const translate = useLocalization("PROJECT", "FILES")
     return (
         <>
-            <Header {...props} title={"Content Browser"} icon={"folder"}>
+            <Header {...props} title={translate("TITLE")} icon={"folder"}>
                 <ControlBar
+                    translate={translate}
                     setSelected={setSelected}
                     selected={selected}
                     fileType={fileType}
@@ -55,9 +56,10 @@ export default function ContentBrowser(props) {
             {props.hidden ?
                 null :
                 <div className={styles.wrapper}>
-                    {view.sideBar ? <SideBar hook={hook}/> : null}
+                    {view.sideBar ? <SideBar translate={translate} hook={hook}/> : null}
                     <ResizableBar type={"width"}/>
                     <Files
+                        translate={translate}
                         setSearchString={setSearchString}
                         fileType={fileType}
                         setFileType={setFileType}

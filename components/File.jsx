@@ -62,7 +62,7 @@ export default function File(props) {
             }}
             draggable={props.onRename !== props.data.id}
             onClick={props.setSelected}
-            style={{background: selected ? "var(--pj-accent-color)" : undefined}}
+            style={{background: selected ? "var(--pj-accent-color-light)" : undefined, opacity: props.hook.toCut.includes(props.data.id) ? ".5" : undefined}}
             className={styles.file}
         >
 

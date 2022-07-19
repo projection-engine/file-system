@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "../styles/ControlBar.module.css"
-import {Button, Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
+import {Button, Dropdown, DropdownOption, DropdownOptions, Icon, ToolTip} from "@f-ui/core"
 import React, {useContext, useMemo} from "react"
 import Search from "../../../../components/search/Search"
 import AsyncFS from "../../../libs/AsyncFS"
@@ -17,7 +17,8 @@ export default function ControlBar(props) {
         setSearchString,
         hook,
         hidden,
-        view, setView
+        view, setView,
+        translate
     } = props
     const starred = useMemo(() => hook.bookmarks.find(b => b.path === hook.currentDirectory.id) !== undefined, [hook.currentDirectory, hook.bookmarks])
     const [engine] = useContext(EngineProvider)
@@ -32,12 +33,14 @@ export default function ControlBar(props) {
                             onClick={() => hook.returnDir()}
                         >
                             <Icon>arrow_back</Icon>
+                            <ToolTip content={translate("BACK_DIR")}/>
                         </Button>
                         <Button
                             className={styles.settingsButton}
                             onClick={() => hook.forwardDir()}
                         >
                             <Icon styles={{transform: "rotate(180deg)"}}>arrow_back</Icon>
+                            <ToolTip content={translate("FORWARD_DIR")}/>
                         </Button>
                         <Button
                             className={styles.settingsButton}
@@ -46,23 +49,25 @@ export default function ControlBar(props) {
                         >
                             <Icon
                                 styles={{transform: "rotate(180deg)"}}>subdirectory_arrow_right</Icon>
+                            <ToolTip content={translate("PARENT_DIR")}/>
                         </Button>
                         <div className={styles.divider}/>
                         <Button
                             disabled={hook.loading}
                             className={styles.settingsButton}
                             onClick={() => {
-                                alert.pushAlert("Refreshing files", "info")
+                                alert.pushAlert(translate("REFRESHING"), "info")
                                 hook.refreshFiles().catch()
                             }}
                         >
                             <Icon>sync</Icon>
+                            <ToolTip content={translate("REFRESH")}/>
                         </Button>
                         <Button
                             styles={{border: "none"}}
                             className={styles.settingsButton}
                             onClick={async () => {
-                                let path = hook.currentDirectory.id + FileSystem.sep + "New folder"
+                                let path = hook.currentDirectory.id + FileSystem.sep + translate("NEW_FOLDER")
 
                                 const existing = window.fileSystem.foldersFromDirectory(hook.path + hook.currentDirectory.id)
                                 if (existing.length > 0)
@@ -73,6 +78,7 @@ export default function ControlBar(props) {
 
                         >
                             <Icon styles={{transform: "rotate(180deg)"}}>create_new_folder</Icon>
+                            <ToolTip content={translate("CREATE_FOLDER")}/>
                         </Button>
                         <Button
                             className={styles.settingsButton}
@@ -86,6 +92,7 @@ export default function ControlBar(props) {
                             }}
                         >
                             <Icon>star</Icon>
+                            <ToolTip content={translate("ADD_BOOKMARK")}/>
                         </Button>
                         <Dropdown
                             disabled={hook.loading} hideArrow={true}
@@ -96,6 +103,7 @@ export default function ControlBar(props) {
                             }}
                             variant={props.fileType !== undefined ? "filled" : undefined}
                         >
+                            <ToolTip content={translate("FILTER_TYPE")}/>
                             <Icon>filter_alt</Icon>
                             <DropdownOptions>
                                 {Object.keys(FILE_TYPES).map((k, i) => (
@@ -143,18 +151,18 @@ export default function ControlBar(props) {
 
             <div className={styles.buttonGroup} style={{justifyContent: "flex-end"}}>
                 <Dropdown className={styles.dropdown} hideArrow={true} variant={"outlined"}>
-					View
+                    {translate("VIEW")}
                     <DropdownOptions>
                         <DropdownOption
                             option={{
-                                label: "Navigation options",
+                                label: translate("OPTIONS"),
                                 icon: view.navigation ? <Icon styles={{fontSize: "1.1rem"}}>check</Icon> : null,
                                 onClick: () => setView({...view, navigation: !view.navigation})
                             }}
                         />
                         <DropdownOption
                             option={{
-                                label: "Side bar",
+                                label: translate("SIDE_BAR"),
                                 icon: view.sideBar ? <Icon styles={{fontSize: "1.1rem"}}>check</Icon> : null,
                                 onClick: () => setView({...view, sideBar: !view.sideBar})
                             }}
@@ -166,21 +174,21 @@ export default function ControlBar(props) {
                     <DropdownOptions>
                         <DropdownOption
                             option={{
-                                label: "All",
+                                label: translate("SELECT_ALL"),
                                 onClick: () => selection(SELECTION_TYPES.ALL, hook, props.setSelected, props.selected),
                                 shortcut: "A"
                             }}
                         />
                         <DropdownOption
                             option={{
-                                label: "None",
+                                label: translate("SELECT_NONE"),
                                 onClick: () => selection(SELECTION_TYPES.NONE, hook, props.setSelected, props.selected),
                                 shortcut: "Alt + A"
                             }}
                         />
                         <DropdownOption
                             option={{
-                                label: "Invert",
+                                label: translate("SELECT_INVERT"),
                                 onClick: () => selection(SELECTION_TYPES.INVERT, hook, props.setSelected, props.selected),
                                 shortcut: "Ctrl + i"
                             }}/>
@@ -195,7 +203,8 @@ export default function ControlBar(props) {
                     }}
                 >
                     <Icon styles={{fontSize: "1rem"}}>open_in_new</Icon>
-					Import
+
+                    {translate("IMPORT")}
                 </Button>
             </div>
         </div>
@@ -203,6 +212,7 @@ export default function ControlBar(props) {
 }
 
 ControlBar.propTypes = {
+    translate: PropTypes.func.isRequired,
     setSelected: PropTypes.func,
     selected: PropTypes.array,
 

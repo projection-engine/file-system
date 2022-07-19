@@ -29,7 +29,8 @@ export default function Files(props) {
     const {
         fileType, setFileType,
         searchString, setSearchString,
-        selected, setSelected, hook
+        selected, setSelected, hook,
+        translate
     } = props
     const internalID = useId()
     const [currentItem, setCurrentItem] = useState()
@@ -49,10 +50,11 @@ export default function Files(props) {
             )
         return map(hook.items.filter(file => !file.parent), hook.items)
     }, [hook.items, hook.currentDirectory, searchString, fileType])
-    useShortcuts(hook, selected, setSelected, internalID)
+    useShortcuts(hook, selected, setSelected, internalID, translate)
+
     const options = useMemo(
-        () => getFileOptions(hook, setCurrentItem),
-        [hook.items, hook.currentDirectory?.id, hook.toCut]
+        () => getFileOptions(hook, setCurrentItem, translate),
+        [hook.items, hook.currentDirectory, hook.toCut]
     )
     useContextTarget(
         internalID,
@@ -105,7 +107,7 @@ export default function Files(props) {
                     <div className={styles.empty}>
                         <Icon styles={{fontSize: "100px"}}>folder</Icon>
                         <div style={{fontSize: ".8rem"}}>
-							Empty folder
+                            {translate("EMPTY")}
                         </div>
                     </div>
                 }
@@ -115,6 +117,7 @@ export default function Files(props) {
 }
 
 Files.propTypes = {
+    translate: PropTypes.func,
     fileType: PropTypes.string,
     setFileType: PropTypes.func,
     searchString: PropTypes.string,

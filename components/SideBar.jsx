@@ -6,9 +6,10 @@ import handleDropFolder from "../utils/handleDropFolder"
 import FileSystem from "../../../libs/FileSystem"
 
 export default function SideBar(props) {
+    const {translate, hook} =props
     const assets = useMemo(
-        () => props.hook.items.filter(item => item.isFolder && !item.parent),
-        [props.hook.items]
+        () => hook.items.filter(item => item.isFolder && !item.parent),
+        [hook.items]
     )
 
     // const [ref, offset, maxDepth] = useInfiniteScroll()
@@ -23,11 +24,11 @@ export default function SideBar(props) {
                         <Icon styles={{fontSize: "1rem"}}>
 							inventory_2
                         </Icon>
-						Assets
+                        {translate("ASSETS")}
                     </summary>
                     <div className={styles.content}>
                         <div
-                            data-highlight={props.hook.currentDirectory.id === FileSystem.sep}
+                            data-highlight={hook.currentDirectory.id === FileSystem.sep}
                             className={styles.folder}
                             onDragOver={e => {
                                 e.preventDefault()
@@ -40,16 +41,16 @@ export default function SideBar(props) {
                             onDrop={e => {
                                 e.preventDefault()
                                 e.target.classList.remove(styles.hovered)
-                                handleDropFolder(e.dataTransfer.getData("text"), FileSystem.sep, props.hook)
+                                handleDropFolder(e.dataTransfer.getData("text"), FileSystem.sep, hook)
                             }}
-                            onClick={() => props.hook.setCurrentDirectory({id: FileSystem.sep})}
+                            onClick={() => hook.setCurrentDirectory({id: FileSystem.sep})}
                         >
                             <Icon styles={{fontSize: "1.1rem"}}>arrow_upward</Icon>
 							...
                         </div>
                         {assets.map((b, i) => (
                             <div
-                                data-highlight={b.id === props.hook.currentDirectory.id}
+                                data-highlight={b.id === hook.currentDirectory.id}
                                 className={styles.folder}
                                 key={i + "-asset-" + internalID}
 
@@ -64,9 +65,9 @@ export default function SideBar(props) {
                                 onDrop={e => {
                                     e.preventDefault()
                                     e.target.classList.remove(styles.hovered)
-                                    handleDropFolder(e.dataTransfer.getData("text"), b.id, props.hook)
+                                    handleDropFolder(e.dataTransfer.getData("text"), b.id, hook)
                                 }}
-                                onClick={() => props.hook.setCurrentDirectory(b)}
+                                onClick={() => hook.setCurrentDirectory(b)}
                             >
                                 <Icon styles={{fontSize: "1.1rem", color: "var(--folder-color)"}}>
 									folder
@@ -84,10 +85,10 @@ export default function SideBar(props) {
                         <Icon styles={{fontSize: "1rem"}}>
 							book
                         </Icon>
-						Bookmarks
+                        {translate("BOOKMARKS")}
                     </summary>
                     <div className={styles.content}>
-                        {props.hook.bookmarks.map((b, i) => (
+                        {hook.bookmarks.map((b, i) => (
                             <div
                                 className={styles.folder}
                                 key={i + "-bookmark-" + internalID}
@@ -102,9 +103,9 @@ export default function SideBar(props) {
                                 onDrop={e => {
                                     e.preventDefault()
                                     e.target.classList.remove(styles.hovered)
-                                    handleDropFolder(e.dataTransfer.getData("text"), b.id, props.hook)
+                                    handleDropFolder(e.dataTransfer.getData("text"), b.id, hook)
                                 }}
-                                onClick={() => props.hook.setCurrentDirectory({...b, id: b.path})}
+                                onClick={() => hook.setCurrentDirectory({...b, id: b.path})}
                             >
 
                                 <Icon styles={{fontSize: "1.1rem", color: "var(--folder-color)"}}>
@@ -121,5 +122,6 @@ export default function SideBar(props) {
 }
 
 SideBar.propTypes = {
+    translate: PropTypes.func.isRequired,
     hook: PropTypes.object.isRequired
 }
