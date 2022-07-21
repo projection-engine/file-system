@@ -138,7 +138,6 @@ export default function ControlBar(props) {
                     />
                     <Search
                         searchString={searchString}
-                        height={"30px"}
                         setSearchString={setSearchString}
                         width={"25%"}
                     />
